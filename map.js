@@ -17,6 +17,9 @@ class Map {
             if (value === 2) {
                 tile = new Ladder(x, y, camera, value, this);
             }
+            if (value === 3) {
+                tile = new TopLadder(x, y, camera, value, this);
+            }
             this.tiles[y * mapWidth + x] = tile;
         }    
     }

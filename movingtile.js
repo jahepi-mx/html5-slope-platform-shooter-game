@@ -3,7 +3,7 @@ class MovingTile extends Entity {
     constructor(camera, map) {
         super();
         this.start = new Vector(2 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
-        this.end = new Vector(3 * map.tileWidth + map.tileWidth * 0.5, 3 * map.tileHeight + map.tileHeight * 0.5);
+        this.end = new Vector(2 * map.tileWidth + map.tileWidth * 0.5, 4 * map.tileHeight + map.tileHeight * 0.5);
         this.size.x = 75;
         this.size.y = 25;
         this.map = map;
@@ -12,7 +12,7 @@ class MovingTile extends Entity {
         this.to = this.end.clone();
         this.turn = 0;
         this.translation = new Vector(0, 0);
-        this.velocity = new Vector(20, 0);
+        this.velocity = new Vector(80, 0);
         this.velocityLength = this.velocity.length();
         this.camera = camera;
     }
@@ -27,9 +27,9 @@ class MovingTile extends Entity {
         
         var translation = this.position.sub(this.to);
         translation = translation.normalize();
-        translation = translation.mulByScalar(this.velocityLength);
-        this.translation = translation.mulByScalar(dt);
-        this.position.addThis(this.translation);
+        this.translation = translation.mulByScalar(this.velocityLength);
+        translation = this.translation.mulByScalar(dt);
+        this.position.addThis(translation);
     }
     
     render(context) {
@@ -42,9 +42,11 @@ class MovingTile extends Entity {
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
     }
     
-    collide(entity) {
+    collideFromFalling(entity) {
         if (entity.velocity.y < 0) {
-            var diff = this.position.sub(entity.position);
+            var pos = entity.position.clone();
+            pos.y -= entity.size.y * 0.5;
+            var diff = this.position.sub(pos);
             if (diff.y > 0) {
                 var width = this.size.x * 0.5;
                 var height = this.size.y * 0.5;
