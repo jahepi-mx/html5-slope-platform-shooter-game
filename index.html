@@ -16,6 +16,7 @@ and open the template in the editor.
         <script type="text/javascript" src="tile.js"></script>
         <script type="text/javascript" src="player.js"></script>
         <script type="text/javascript" src="movingtile.js"></script>
+        <script type="text/javascript" src="rotatingtile.js"></script>
         <script type="text/javascript" src="ladder.js"></script>
         <script type="text/javascript" src="topladder.js"></script>
         <script type="text/javascript">
@@ -40,7 +41,7 @@ and open the template in the editor.
                   1,1,1,1,1,1,1,
                   1,0,0,0,0,0,1,
                   1,0,0,0,0,0,1,
-                  1,0,0,1,3,1,1,
+                  1,0,0,1,3,0,1,
                   1,0,0,0,2,0,1,
                   1,0,0,0,2,0,1,
                   1,1,1,1,1,1,1,
@@ -52,7 +53,7 @@ and open the template in the editor.
               var canvasHeight = tileHeight * 4;
               map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
               player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
-              movingTile = new MovingTile(camera, map);
+              movingTile = new RotatingTile(camera, map, 2, 2);
               player.movingTiles.push(movingTile);
               canvas = document.getElementById("engine");
               canvas.width = canvasWidth;
@@ -70,7 +71,7 @@ and open the template in the editor.
             function update(time) {
                 var dt = (time - prevTime) / 1000;
                 
-                /*
+                
                 var maxFps = 1 / 10;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
@@ -80,8 +81,8 @@ and open the template in the editor.
                     requestAnimationFrame(update);
                     return;
                 }
-                */
                 
+                console.log(1 / dt);
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 
                 camera.update(player);
