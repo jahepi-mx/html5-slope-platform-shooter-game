@@ -25,6 +25,22 @@ class Entity {
         var yDistant = Math.abs(this.position.y - entity.position.y);
         return xDistant <= width + otherWidth && yDistant <= height + otherHeight;
     }
+    
+    left() {
+        return this.position.x - this.size.x * 0.5;
+    }
+    
+    right() {
+        return this.position.x + this.size.x * 0.5;
+    }
+    
+    top() {
+        return this.position.y + this.size.y * 0.5;
+    }
+    
+    bottom() {
+        return this.position.y - this.size.y * 0.5;
+    }
 }
 
 

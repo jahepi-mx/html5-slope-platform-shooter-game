@@ -3,7 +3,7 @@ class MovingTile extends Entity {
     constructor(camera, map) {
         super();
         this.start = new Vector(2 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
-        this.end = new Vector(2 * map.tileWidth + map.tileWidth * 0.5, 4 * map.tileHeight + map.tileHeight * 0.5);
+        this.end = new Vector(5 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
         this.size.x = 75;
         this.size.y = 25;
         this.map = map;
@@ -12,7 +12,7 @@ class MovingTile extends Entity {
         this.to = this.end.clone();
         this.turn = 0;
         this.translation = new Vector(0, 0);
-        this.velocity = new Vector(80, 0);
+        this.velocity = new Vector(30, 0);
         this.velocityLength = this.velocity.length();
         this.camera = camera;
     }
@@ -51,13 +51,23 @@ class MovingTile extends Entity {
                 var width = this.size.x * 0.5;
                 var height = this.size.y * 0.5;
                 var otherWidth = entity.size.x * 0.5;
-                var otherHeight = entity.size.y * 0.5;
+                var otherHeight = 0; // entity.size.y * 0.5;
                 var xDistant = Math.abs(this.position.x - entity.position.x);
-                var yDistant = Math.abs(this.position.y - entity.position.y);
+                var yDistant = Math.abs(this.position.y - pos.y);
                 return xDistant <= width + otherWidth && yDistant <= height + otherHeight;
             }
         }
         return false;
+    }
+    
+    collide(entity) {
+        var width = this.size.x * 0.5;
+        var height = this.size.y * 0.5;
+        var otherWidth = entity.size.x * 0.5;
+        var otherHeight = 0; // entity.size.y * 0.5;
+        var xDistant = Math.abs(this.position.x - entity.position.x);
+        var yDistant = Math.abs(this.position.y - (entity.position.y - entity.size.y * 0.5));
+        return xDistant <= width + otherWidth && yDistant <= height + otherHeight + 3;
     }
 }
 
