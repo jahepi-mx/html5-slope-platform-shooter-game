@@ -33,7 +33,6 @@ class Player extends Entity {
                 this.velocity.x = this.movingTile.translation.x;
                 this.velocity.y = this.movingTile.translation.y;
             } else {
-                console.log("ouch");
                 this.isOnMovingTile = false;
             }
         }  
@@ -105,7 +104,7 @@ class Player extends Entity {
                     }
                 }
                 if (!this.isOnLadder && tile instanceof Ladder 
-                        && this.collide(tile) && !this.isJumping && this.velocity.y >= 0) {
+                        && this.collide(tile) && !this.isJumping && (this.up || this.down)) {
                     this.isOnLadder = true;
                 }
                 if (this.isOnLadder && tile instanceof Ladder && this.collide(tile) && !this.isJumping) {
@@ -146,7 +145,6 @@ class Player extends Entity {
                             collidedMovingTile = true;
                             tmpPosY = this.position.y;
                             this.movingTile = movingTile;
-                            console.log("ouch2");
                         }
                     }
                 }
@@ -173,7 +171,7 @@ class Player extends Entity {
                         }
                     }
                     if (!this.isOnLadder && tile instanceof Ladder 
-                        && this.collide(tile) && !this.isJumping && this.velocity.y >= 0) {
+                        && this.collide(tile) && !this.isJumping && (this.up || this.down)) {
                         this.isOnLadder = true;
                     }
                     if (this.isOnLadder && tile instanceof Ladder && this.collide(tile) && !this.isJumping) {
@@ -238,7 +236,5 @@ class Player extends Entity {
     
     makeJump(bool) {
         this.jump = bool;
-    }
-    
+    }   
 }
-

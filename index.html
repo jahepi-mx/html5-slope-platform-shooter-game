@@ -71,8 +71,8 @@ and open the template in the editor.
             function update(time) {
                 var dt = (time - prevTime) / 1000;
                 
-                
-                var maxFps = 1 / 20;
+                /*
+                var maxFps = 1 / 15;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;
@@ -81,7 +81,7 @@ and open the template in the editor.
                     prevTime = time;
                     requestAnimationFrame(update);
                     return;
-                }
+                }*/
                 
                 //console.log(1 / dt);
                 context.clearRect(0, 0, canvas.width, canvas.height);
