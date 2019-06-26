@@ -20,6 +20,9 @@ class Map {
             if (value === 3) {
                 tile = new TopLadder(x, y, camera, value, this);
             }
+            if (value === 4) {
+                tile = new CeilingTile(tileWidth, tileHeight, x, y, camera, value);
+            }
             this.tiles[y * mapWidth + x] = tile;
         }    
     }

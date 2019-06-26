@@ -77,6 +77,8 @@ class Player extends Entity {
         if (this.down && this.isOnLadder) {
             this.velocity.y = -this.scalarVelocity;
         }
+        
+        this.isOnLadder = false;
 
         var tmpVelocity = this.velocity.mulByScalar(dt);
         
@@ -87,8 +89,7 @@ class Player extends Entity {
         var currentY = parseInt(this.position.y / this.map.tileHeight);
         var collided = false;
         var collidedWall = false;
-        var collidedTopLadder = false;
-        var collidedLadder = false;
+        var collidedTopLadder = null;
         for (let move of this.moves) {
             var newX = currentX + move[0];
             var newY = currentY + move[1];
@@ -100,19 +101,15 @@ class Player extends Entity {
                         collidedWall = true;
                     }
                     if (tile.type === 3) {
-                        collidedTopLadder = true;
+                        collidedTopLadder = tile;
                     }
                 }
-                if (!this.isOnLadder && tile instanceof Ladder 
-                        && this.collide(tile) && !this.isJumping && (this.up || this.down)) {
+                if (!this.isOnLadder && tile.type === 2 && !this.isJumping && this.collide(tile)) {
                     this.isOnLadder = true;
-                }
-                if (this.isOnLadder && tile instanceof Ladder && this.collide(tile) && !this.isJumping) {
-                    collidedLadder = true;
                 }
             }
         }
-        if (!collidedWall && collidedTopLadder && (this.left || this.right)) {
+        if (!collidedWall && collidedTopLadder !== null && (this.left || this.right)) {
             collided = false;
             this.isOnLadder = true;
         }
@@ -127,7 +124,7 @@ class Player extends Entity {
         currentY = parseInt(this.position.y / this.map.tileHeight);
         collided = false;
         collidedWall = false;
-        collidedTopLadder = false;
+        collidedTopLadder = null;
         
         var hitFloor = false;
         var precision = 10;
@@ -167,23 +164,34 @@ class Player extends Entity {
                             collidedWall = true;
                         }
                         if (tile.type === 3) {
-                            collidedTopLadder = true;
+                            collidedTopLadder = tile;
                         }
                     }
-                    if (!this.isOnLadder && tile instanceof Ladder 
-                        && this.collide(tile) && !this.isJumping && (this.up || this.down)) {
-                        this.isOnLadder = true;
+                    if (!this.isOnMovingTile) {
+                        if (tile.type === 4 && tile.collideFromFalling(this)) {
+                            if (!collidedMovingTile) {
+                                collidedMovingTile = true;
+                                tmpPosY = this.position.y;
+                                this.movingTile = tile;
+                            }
+                        }
                     }
-                    if (this.isOnLadder && tile instanceof Ladder && this.collide(tile) && !this.isJumping) {
-                        collidedLadder = true;
+                    if (!this.isOnLadder && tile.type === 2 && !this.isJumping && this.collide(tile)) {
+                        this.isOnLadder = true;
                     }
                 }
             }
         }
-        
-        if (!collidedWall && collidedTopLadder && (this.up || this.down)) {
-            collided = false;
-            this.isOnLadder = true;
+       
+        if (!collidedWall && collidedTopLadder !== null) {
+            var prevYPos = this.position.y;
+            this.position.y = tmpY;
+            var diffLadder = this.position.y - collidedTopLadder.position.y;
+            if (diffLadder >= 0 && this.down || diffLadder < 0 && this.up || collidedTopLadder.collide(this)) {
+                collided = false;
+                this.isOnLadder = true;
+            }
+            this.position.y = prevYPos; 
         }
         
         if (!collided && collidedMovingTile) {
@@ -194,10 +202,6 @@ class Player extends Entity {
         
         if (collided) {
             this.position.y = tmpY;
-        }
-        
-        if (!collidedLadder) {
-            this.isOnLadder = false;
         }
         
         if (!hitFloor) {
@@ -214,7 +218,7 @@ class Player extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        context.fillStyle = "#f4f4f4";
+        context.fillStyle = "#f9f9f9";
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
     }
     
