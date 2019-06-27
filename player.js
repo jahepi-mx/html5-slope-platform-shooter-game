@@ -67,6 +67,7 @@ class Player extends Entity {
             if (!this.isJumping) {
                 this.velocity.y += this.scalarVelocity * 4;
                 this.isJumping = true;
+                console.log("jumping");
             }
         }
         
@@ -90,6 +91,7 @@ class Player extends Entity {
         var collided = false;
         var collidedWall = false;
         var collidedTopLadder = null;
+        var slopeTile = null;
         for (let move of this.moves) {
             var newX = currentX + move[0];
             var newY = currentY + move[1];
@@ -104,6 +106,9 @@ class Player extends Entity {
                         collidedTopLadder = tile;
                     }
                 }
+                if (tile.type === 5 && tile.collide(this)) {
+                    slopeTile = tile;
+                }
                 if (!this.isOnLadder && tile.type === 2 && !this.isJumping && this.collide(tile)) {
                     this.isOnLadder = true;
                 }
@@ -114,7 +119,7 @@ class Player extends Entity {
             this.isOnLadder = true;
         }
         
-        if (collided) {
+        if (collided && slopeTile === null) {
             this.position.x = tmpX;
         }
 
@@ -131,6 +136,7 @@ class Player extends Entity {
         var step = tmpVelocity.y / precision; 
         var collidedMovingTile = false;
         var tmpPosY = 0;
+        slopeTile = null;
         // This precision steps are for detecing collision on low framerate instances.
         for (var a = 0; a < precision; a++) {
             
@@ -167,6 +173,21 @@ class Player extends Entity {
                             collidedTopLadder = tile;
                         }
                     }
+                    if (tile.type === 5 && tile.collide(this) && !this.isJumping) {
+                        slopeTile = tile;
+                        this.velocity.y = 0;
+                        hitFloor = true;
+                    }
+                    
+                    if (tile.type === 5 && tile.collide(this) && this.isJumping) {
+                        var thisBottom = this.position.y;
+                        var correctBottom = tile.getNewY(this);
+                        if (thisBottom < correctBottom) {
+                            slopeTile = tile;
+                            this.velocity.y = 0;
+                            this.isJumping = false;
+                        }
+                    }
                     if (!this.isOnMovingTile) {
                         if (tile.type === 4 && tile.collideFromFalling(this)) {
                             if (!collidedMovingTile) {
@@ -200,8 +221,12 @@ class Player extends Entity {
             this.position.y = tmpPosY;
         }
         
-        if (collided) {
+        if (collided && slopeTile === null) {
             this.position.y = tmpY;
+        }
+        
+        if (slopeTile !== null) {
+            this.position.y = slopeTile.getNewY(this);
         }
         
         if (!hitFloor) {

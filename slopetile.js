@@ -1,0 +1,37 @@
+class SlopeTile extends Tile {
+    
+    constructor(width, height, x, y, camera, type) {
+        super(width, height, x, y, camera, type);
+        this.walkable = true;
+    }
+    
+    collide(entity) {
+        var width = this.size.x * 0.5;
+        var entityBottom = entity.position.y - entity.size.y * 0.5;
+        var height = this.size.y * 0.5;
+        var xDiff = Math.abs(entity.position.x - this.position.x);
+        var yDiff = Math.abs(entityBottom - this.position.y) - 5;
+        return xDiff <= width && yDiff <= height;
+    }
+    
+    getNewY(entity) {
+        var yOffset = 5;
+        var diff = entity.position.x - this.left();
+        var final = this.bottom() + diff + entity.size.y * 0.5;
+        return final + yOffset;
+    }
+    
+    render(context) {
+        var newX = this.position.x - this.camera.position.x;
+        var newY = this.position.y - this.camera.position.y;
+        newX -= this.size.x * 0.5;
+        newY += this.size.y * 0.5;
+        
+        context.fillStyle = "#f4f4f4";
+        context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        
+    }
+    
+}
+
+

@@ -23,6 +23,9 @@ class Map {
             if (value === 4) {
                 tile = new CeilingTile(tileWidth, tileHeight, x, y, camera, value);
             }
+            if (value === 5) {
+                tile = new SlopeTile(tileWidth, tileHeight, x, y, camera, value);
+            }
             this.tiles[y * mapWidth + x] = tile;
         }    
     }
