@@ -3,7 +3,7 @@ class MovingTile extends Entity {
     constructor(camera, map) {
         super();
         this.start = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
-        this.end = new Vector(6 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
+        this.end = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 4 * map.tileHeight + map.tileHeight * 0.5);
         this.size.x = 75;
         this.size.y = 25;
         this.map = map;
@@ -12,6 +12,7 @@ class MovingTile extends Entity {
         this.to = this.end.clone();
         this.turn = 0;
         this.translation = new Vector(0, 0);
+        this.prevPosition = new Vector(0, 0);
         this.velocity = new Vector(80, 0);
         this.velocityLength = this.velocity.length();
         this.camera = camera;
@@ -29,6 +30,7 @@ class MovingTile extends Entity {
         translation = translation.normalize();
         this.translation = translation.mulByScalar(this.velocityLength);
         translation = this.translation.mulByScalar(dt);
+        this.prevPosition = this.position.clone();
         this.position.addThis(translation);
     }
     
@@ -44,27 +46,33 @@ class MovingTile extends Entity {
     
     collideFromFalling(entity) {
         if (entity.velocity.y < 0) {
+            var entityBottom = entity.position.y - entity.size.y * 0.5;
+            var tileTop = this.position.y + this.size.y * 0.4;
+            var tileTopMid = this.position.y; //this.position.y + this.size.y * 0.5 * 0.5;
+            
             var width = this.size.x * 0.5;
-            var height = this.size.y * 0.5;
             var otherWidth = entity.size.x * 0.5;
-            var otherHeight = entity.size.x * 0.5 * 0.5;
             var xDistant = Math.abs(this.position.x - entity.position.x);
-            // The vector obtained from the entity position to the moving tile position must be positive.
-            var yDistant = entity.position.y - this.position.y;
-            return xDistant <= width + otherWidth && yDistant <= height + otherHeight && yDistant >= 0;
+            return xDistant <= width + otherWidth && entityBottom < tileTop && entityBottom > tileTopMid;
         }
         return false;
     }
     
     collide(entity) {
+        
+        /*
+         Previous position of the moving tile is compared for collision detection because the moving tile
+         position is updated before the player position or any entity position.
+         */
+        
+        var entityBottom = entity.position.y - entity.size.y * 0.5;
+        var tileTop = this.prevPosition.y + this.size.y * 0.5;
+        var tileTopMid = this.prevPosition.y; //this.prevPosition.y + this.size.y * 0.5 * 0.5;
+
         var width = this.size.x * 0.5;
-        var height = this.size.y * 0.5;
         var otherWidth = entity.size.x * 0.5;
-        var otherHeight = entity.size.y * 0.5;
-        var xDistant = Math.abs(this.position.x - entity.position.x);
-        // The vector obtained from the entity position to the moving tile position must be positive.
-        var yDistant = entity.position.y - this.position.y;
-        return xDistant <= width + otherWidth && yDistant <= height + otherHeight && yDistant >= 0;
+        var xDistant = Math.abs(this.prevPosition.x - entity.position.x);
+        return xDistant <= width + otherWidth && entityBottom < tileTop && entityBottom > tileTopMid;
     }
 }
 

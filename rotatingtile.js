@@ -18,8 +18,9 @@ class RotatingTile extends MovingTile {
         
         var rotated = normalized.ccwTransform(this.degrees);
         
-        this.translation = diff.sub(rotated);
+        this.translation = diff.sub(rotated).mulByScalar(1);
         var translation = this.translation.mulByScalar(dt);
+        this.prevPosition = this.position.clone();
         this.position.addThis(translation);
         
     }
