@@ -179,7 +179,7 @@ class Player extends Entity {
                         hitFloor = true;
                     }
                     
-                    if (tile.type === 5 && tile.collide(this) && this.isJumping) {
+                    if (tile.type === 5 && tile.collide(this) && this.isJumping && this.velocity.y < 0) {
                         var thisBottom = this.position.y;
                         var correctBottom = tile.getNewY(this);
                         if (thisBottom < correctBottom) {

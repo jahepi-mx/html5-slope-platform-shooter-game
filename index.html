@@ -44,8 +44,8 @@ and open the template in the editor.
                   1,0,0,0,0,0,0,1,
                   1,0,0,0,1,0,1,1,
                   1,0,0,0,0,0,0,1,
-                  1,0,0,0,5,4,0,1,
-                  1,0,0,5,0,1,0,1,
+                  1,0,0,0,0,5,5,1,
+                  1,0,0,5,5,1,1,1,
                   1,1,1,1,1,1,1,1,
               ];
               
@@ -74,7 +74,7 @@ and open the template in the editor.
                 var dt = (time - prevTime) / 1000;
                 
                 
-                var maxFps = 1 / 30;
+                var maxFps = 1 / 10;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;

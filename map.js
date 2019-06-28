@@ -27,7 +27,16 @@ class Map {
                 tile = new SlopeTile(tileWidth, tileHeight, x, y, camera, value);
             }
             this.tiles[y * mapWidth + x] = tile;
-        }    
+        }
+        
+        this.tiles[1 * mapWidth + 3].low = 0;
+        this.tiles[1 * mapWidth + 3].high = tileHeight * 0.3;
+        this.tiles[1 * mapWidth + 4].low = tileHeight * 0.3;
+        this.tiles[1 * mapWidth + 4].high = tileHeight;
+        this.tiles[2 * mapWidth + 5].low = 0;
+        this.tiles[2 * mapWidth + 5].high = tileHeight * 0.5;
+        this.tiles[2 * mapWidth + 6].low = tileHeight * 0.5;
+        this.tiles[2 * mapWidth + 6].high = tileHeight;
     }
     
     render(context) {
