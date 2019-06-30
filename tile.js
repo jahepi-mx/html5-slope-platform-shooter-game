@@ -17,8 +17,10 @@ class Tile extends Entity {
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         
-        context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
-        context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        if (!this.walkable) {
+            context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
+            context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        }
     }
 }
 

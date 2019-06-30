@@ -21,6 +21,7 @@ and open the template in the editor.
         <script type="text/javascript" src="topladder.js"></script>
         <script type="text/javascript" src="celilingtile.js"></script>
         <script type="text/javascript" src="slopetile.js"></script>
+        <script type="text/javascript" src="parallaxbg.js"></script>
         <script type="text/javascript">
             var canvas;
             var context;
@@ -30,6 +31,7 @@ and open the template in the editor.
             var offsetY;
             var camera;
             var movingTile;
+            var parallaxBg;
             
             window.onload = function() {
               console.log("loaded");
@@ -53,6 +55,7 @@ and open the template in the editor.
               
               var canvasWidth = tileWidth * 5;
               var canvasHeight = tileHeight * 4;
+              parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight);
               map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
               player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
               movingTile = new MovingTile(camera, map);
@@ -89,7 +92,7 @@ and open the template in the editor.
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 
                 camera.update(player);
-                
+                parallaxBg.render(context);
                 movingTile.update(dt);
             
                 player.update(dt);
