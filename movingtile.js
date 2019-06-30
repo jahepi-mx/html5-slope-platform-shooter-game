@@ -19,19 +19,21 @@ class MovingTile extends Entity {
     }
     
     update(dt) {
-        var diff = this.position.sub(this.to).length();
-        
-        if (diff < 5) {
-            this.to = this.turn % 2 > 0 ? this.start.clone() : this.end.clone();
-            this.turn++;
-        }
         
         var translation = this.position.sub(this.to);
-        translation = translation.normalize();
+        var length = translation.length();
+        // Normalize vector
+        translation.x /= length;
+        translation.y /= length;
         this.translation = translation.mulByScalar(this.velocityLength);
         translation = this.translation.mulByScalar(dt);
-        this.prevPosition = this.position.clone();
+        this.prevPosition.x = this.position.x;
+        this.prevPosition.y = this.position.y;
         this.position.addThis(translation);
+        
+        if (length < 5) {
+            this.to = this.turn++ % 2 > 0 ? this.start.clone() : this.end.clone();
+        }
     }
     
     render(context) {
@@ -48,7 +50,7 @@ class MovingTile extends Entity {
         if (entity.velocity.y < 0) {
             var entityBottom = entity.position.y - entity.size.y * 0.5;
             var tileTop = this.position.y + this.size.y * 0.4;
-            var tileTopMid = this.position.y; //this.position.y + this.size.y * 0.5 * 0.5;
+            var tileTopMid = this.position.y;
             
             var width = this.size.x * 0.5;
             var otherWidth = entity.size.x * 0.5;
@@ -67,7 +69,7 @@ class MovingTile extends Entity {
         
         var entityBottom = entity.position.y - entity.size.y * 0.5;
         var tileTop = this.prevPosition.y + this.size.y * 0.5;
-        var tileTopMid = this.prevPosition.y; //this.prevPosition.y + this.size.y * 0.5 * 0.5;
+        var tileTopMid = this.prevPosition.y;
 
         var width = this.size.x * 0.5;
         var otherWidth = entity.size.x * 0.5;

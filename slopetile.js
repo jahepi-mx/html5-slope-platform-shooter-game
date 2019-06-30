@@ -12,20 +12,17 @@ class SlopeTile extends Tile {
         var entityBottom = entity.position.y - entity.size.y * 0.5;
         var height = this.size.y * 0.5;
         var xDiff = Math.abs(entity.position.x - this.position.x);
-        var yDiff = Math.abs(entityBottom - this.position.y) - 5;
+        var yDiff = Math.abs(entityBottom - this.position.y);
         return xDiff <= width && yDiff <= height;
     }
     
     getNewY(entity) {
-        
         var offset = this.low;
         var x = this.size.x;
         var y = this.high - this.low;
-        var slope = y / x;
+        var slope = x === 0 ? 0 : y / x;
         
-        var yOffset = 5;
-        //var diff = entity.position.x - this.left();
-        //var final = this.bottom() + diff + entity.size.y * 0.5;
+        var yOffset = 1;
         var diff = (entity.position.x - this.left()) * slope;
         var final = offset + this.bottom() + diff + entity.size.y * 0.5;
         return final + yOffset;
@@ -34,11 +31,6 @@ class SlopeTile extends Tile {
     render(context) {
         var newX = this.position.x - this.camera.position.x;
         var newY = this.position.y - this.camera.position.y;
-        //newX -= this.size.x * 0.5;
-        //newY += this.size.y * 0.5;
-        
-        //context.fillStyle = "#f4f4f4";
-        //context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
         
         newX -= this.size.x * 0.5;
         newY -= this.size.y * 0.5;
@@ -50,10 +42,8 @@ class SlopeTile extends Tile {
         context.lineTo(newX + this.size.x, offsetY - (newY + this.high));
         context.lineTo(newX, offsetY - (newY + this.low));
         context.lineTo(newX, offsetY - newY);
-        context.fill();
-        
-    }
-    
+        context.fill();   
+    } 
 }
 
 

@@ -1,9 +1,8 @@
 class Ladder extends Tile {
     
-    constructor(x, y, camera, type, map) {
-        super(map.tileWidth, map.tileHeight, x, y, camera, type);
-        this.map = map;
-        
+    constructor(width, height, x, y, camera, type) {
+        super(width, height, x, y, camera, type);
+        this.walkable = true;
     }
     
     render(context) {

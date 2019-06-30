@@ -1,6 +1,6 @@
 class TopLadder extends Ladder {
-    constructor(x, y, camera, type, map) {
-        super(x, y, camera, type, map);
+    constructor(width, height, x, y, camera, type) {
+        super(width, height, x, y, camera, type);
         this.walkable = false;
     }
 }

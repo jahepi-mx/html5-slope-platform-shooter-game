@@ -8,7 +8,7 @@ class Tile extends Entity {
         this.position.y = y * height + height * 0.5;
         this.camera = camera;
         this.type = type;
-        this.walkable = type === 0 || type === 2;
+        this.walkable = type === 0;
     }
     
     render(context) {
@@ -19,7 +19,6 @@ class Tile extends Entity {
         
         context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
-        
     }
 }
 

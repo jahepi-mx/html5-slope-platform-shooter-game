@@ -15,10 +15,10 @@ class Map {
             var value = matrix[a];
             var tile = new Tile(tileWidth, tileHeight, x, y, camera, value);
             if (value === 2) {
-                tile = new Ladder(x, y, camera, value, this);
+                tile = new Ladder(tileWidth, tileHeight, x, y, camera, value);
             }
             if (value === 3) {
-                tile = new TopLadder(x, y, camera, value, this);
+                tile = new TopLadder(tileWidth, tileHeight, x, y, camera, value);
             }
             if (value === 4) {
                 tile = new CeilingTile(tileWidth, tileHeight, x, y, camera, value);
@@ -37,6 +37,14 @@ class Map {
         this.tiles[2 * mapWidth + 5].high = tileHeight * 0.5;
         this.tiles[2 * mapWidth + 6].low = tileHeight * 0.5;
         this.tiles[2 * mapWidth + 6].high = tileHeight;
+        this.tiles[0 * mapWidth + 2].low = tileHeight;
+        this.tiles[0 * mapWidth + 2].high = tileHeight;
+        this.tiles[2 * mapWidth + 7].low = tileHeight;
+        this.tiles[2 * mapWidth + 7].high = tileHeight;
+        this.tiles[2 * mapWidth + 11].low = tileHeight;
+        this.tiles[2 * mapWidth + 11].high = 0;
+        this.tiles[1 * mapWidth + 5].low = tileHeight;
+        this.tiles[1 * mapWidth + 5].high = tileHeight;
     }
     
     render(context) {
