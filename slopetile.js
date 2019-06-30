@@ -22,7 +22,7 @@ class SlopeTile extends Tile {
         var y = this.high - this.low;
         var slope = x === 0 ? 0 : y / x;
         
-        var yOffset = 1;
+        var yOffset = 0.1;
         var diff = (entity.position.x - this.left()) * slope;
         var final = offset + this.bottom() + diff + entity.size.y * 0.5;
         return final + yOffset;
