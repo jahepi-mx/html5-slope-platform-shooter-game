@@ -32,6 +32,8 @@ and open the template in the editor.
             var camera;
             var movingTile;
             var parallaxBg;
+            var parallaxBg2;
+            var parallaxBg3;
             
             window.onload = function() {
               console.log("loaded");
@@ -55,7 +57,9 @@ and open the template in the editor.
               
               var canvasWidth = tileWidth * 5;
               var canvasHeight = tileHeight * 4;
-              parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight);
+              parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background.png", 1.5);
+              parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2.png", 1.1);
+              parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3.png", 0.8);
               map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
               player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
               movingTile = new MovingTile(camera, map);
@@ -92,10 +96,12 @@ and open the template in the editor.
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 
                 camera.update(player);
-                parallaxBg.render(context);
                 movingTile.update(dt);
-            
                 player.update(dt);
+                
+                parallaxBg3.render(context);
+                parallaxBg2.render(context);
+                parallaxBg.render(context);
                 
                 map.render(context);
                 player.render(context);
