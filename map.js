@@ -1,3 +1,9 @@
+let WALL_TILE = 1;
+let LADDER_TILE = 2;
+let TOP_LADDER_TILE = 3;
+let CEILING_TILE = 4;
+let SLOPE_TILE = 5;
+
 class Map {
     
     constructor(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera) {

@@ -10,7 +10,8 @@ class Player extends Entity {
         this.friction.x = 0.9;
         this.friction.y = 1;
         this.camera = map.camera;
-        this.scalarVelocity = 40;
+        this.jumpScalarVelocity = 40;
+        this.walkScalarVelocity = 100;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
         this.acceleration.y = -200;
         this.isJumping = false;
@@ -39,17 +40,17 @@ class Player extends Entity {
         
         if (this.left) {
             if (this.isOnMovingTile) {
-                this.velocity.x += -this.scalarVelocity;
+                this.velocity.x += -this.walkScalarVelocity;
             } else {
-                this.velocity.x = -this.scalarVelocity;
+                this.velocity.x = -this.walkScalarVelocity;
             }
         }
         
         if (this.right) {
             if (this.isOnMovingTile) {
-                this.velocity.x += this.scalarVelocity;
+                this.velocity.x += this.walkScalarVelocity;
             } else {
-                this.velocity.x = this.scalarVelocity;
+                this.velocity.x = this.walkScalarVelocity;
             }
         }
         
@@ -58,25 +59,24 @@ class Player extends Entity {
                 if (this.velocity.y < 0) {
                     this.velocity.y = 0;
                 }
-                this.velocity.y += this.scalarVelocity * 4;
+                this.velocity.y += this.jumpScalarVelocity * 4;
                 this.isJumping = true;
             }
         }
         
         if (this.jump && !this.isOnMovingTile && this.velocity.y >= 0) {
             if (!this.isJumping) {
-                this.velocity.y += this.scalarVelocity * 4;
+                this.velocity.y += this.jumpScalarVelocity * 4;
                 this.isJumping = true;
-                console.log("jumping");
             }
         }
         
         if (this.up && this.isOnLadder) {
-            this.velocity.y = this.scalarVelocity;
+            this.velocity.y = this.walkScalarVelocity;
         }
         
         if (this.down && this.isOnLadder) {
-            this.velocity.y = -this.scalarVelocity;
+            this.velocity.y = -this.walkScalarVelocity;
         }
         
         this.isOnLadder = false;
@@ -99,17 +99,17 @@ class Player extends Entity {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
                 if (!tile.walkable && this.collide(tile)) {
                     collided = true;
-                    if (tile.type === 1) {
+                    if (tile.type === WALL_TILE) {
                         collidedWall = true;
                     }
-                    if (tile.type === 3) {
+                    if (tile.type === TOP_LADDER_TILE) {
                         collidedTopLadder = tile;
                     }
                 }
-                if (tile.type === 5 && tile.collide(this)) {
+                if (tile.type === SLOPE_TILE && tile.collide(this)) {
                     slopeTile = tile;
                 }
-                if (!this.isOnLadder && tile.type === 2 && !this.isJumping && this.collide(tile)) {
+                if (!this.isOnLadder && tile.type === LADDER_TILE && !this.isJumping && this.collide(tile)) {
                     this.isOnLadder = true;
                 }
             }
@@ -138,8 +138,7 @@ class Player extends Entity {
         var tmpPosY = 0;
         slopeTile = null;
         // This precision steps are for detecing collision on low framerate instances.
-        for (var a = 0; a < precision; a++) {
-            
+        for (var a = 0; a < precision; a++) {            
             this.position.y += step;
             if (!this.isOnMovingTile) {
                 for (let movingTile of this.movingTiles) {
@@ -166,20 +165,21 @@ class Player extends Entity {
                             this.isJumping = false;
                             hitFloor = true;
                         }
-                        if (tile.type === 1) {
+                        if (tile.type === WALL_TILE) {
                             collidedWall = true;
                         }
-                        if (tile.type === 3) {
+                        if (tile.type === TOP_LADDER_TILE) {
                             collidedTopLadder = tile;
                         }
                     }
-                    if (tile.type === 5 && tile.collide(this) && !this.isJumping) {
+                    
+                    if (tile.type === SLOPE_TILE && tile.collide(this) && !this.isJumping && this.velocity.y >= 0) {
                         slopeTile = tile;
                         this.velocity.y = 0;
                         hitFloor = true;
                     }
                     
-                    if (tile.type === 5 && tile.collide(this) && this.isJumping && this.velocity.y < 0) {
+                    if (tile.type === SLOPE_TILE && tile.collide(this) && this.velocity.y < 0) {
                         var thisBottom = this.position.y;
                         var correctBottom = tile.getNewY(this);
                         if (thisBottom < correctBottom) {
@@ -189,7 +189,7 @@ class Player extends Entity {
                         }
                     }
                     if (!this.isOnMovingTile) {
-                        if (tile.type === 4 && tile.collideFromFalling(this)) {
+                        if (tile.type === CEILING_TILE && tile.collideFromFalling(this)) {
                             if (!collidedMovingTile) {
                                 collidedMovingTile = true;
                                 tmpPosY = this.position.y;
@@ -197,7 +197,7 @@ class Player extends Entity {
                             }
                         }
                     }
-                    if (!this.isOnLadder && tile.type === 2 && !this.isJumping && this.collide(tile)) {
+                    if (!this.isOnLadder && tile.type === LADDER_TILE && !this.isJumping && this.collide(tile)) {
                         this.isOnLadder = true;
                     }
                 }
