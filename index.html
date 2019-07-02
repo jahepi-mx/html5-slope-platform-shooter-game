@@ -39,15 +39,15 @@ and open the template in the editor.
               console.log("loaded");
               
               camera = new Camera();
-              var tileWidth = 50;
-              var tileHeight = 50;
+              var tileWidth = 150 * 1.5;
+              var tileHeight = 150;
               var mapWidth = 15;
               var mapHeight = 7;
               var matrix = [
                   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
                   1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
                   1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-                  1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+                  1,0,0,0,0,0,0,4,0,0,0,0,0,0,1,
                   1,0,0,0,0,5,5,5,1,0,5,5,0,0,1,
                   1,0,0,5,5,5,1,1,1,0,1,1,0,0,1,
                   1,1,5,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -62,7 +62,7 @@ and open the template in the editor.
               parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3.png", 0.8);
               map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
               player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
-              movingTile = new MovingTile(camera, map);
+              movingTile = new RotatingTile(camera, map, 2, 2);
               player.movingTiles.push(movingTile);
               canvas = document.getElementById("engine");
               canvas.width = canvasWidth;

@@ -10,10 +10,10 @@ class Player extends Entity {
         this.friction.x = 0.9;
         this.friction.y = 1;
         this.camera = map.camera;
-        this.jumpScalarVelocity = 40;
-        this.walkScalarVelocity = 100;
+        this.jumpScalarVelocity = map.tileHeight * 0.8;
+        this.walkScalarVelocity = map.tileWidth * 1.5;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
-        this.acceleration.y = -200;
+        this.acceleration.y = -map.tileHeight * 4;
         this.isJumping = false;
         this.left = this.right = this.up = false, this.down = false, this.jump = false;
         this.isOnMovingTile = false;

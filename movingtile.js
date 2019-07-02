@@ -4,8 +4,8 @@ class MovingTile extends Entity {
         super();
         this.start = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
         this.end = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 4 * map.tileHeight + map.tileHeight * 0.5);
-        this.size.x = 75;
-        this.size.y = 25;
+        this.size.x = map.tileWidth * 1.5;
+        this.size.y = map.tileHeight * 0.5;
         this.map = map;
         this.position.x = this.start.x;
         this.position.y = this.start.y;

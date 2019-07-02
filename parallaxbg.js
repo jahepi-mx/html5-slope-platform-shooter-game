@@ -17,8 +17,8 @@ class ParallaxBg {
         
         var x = 0;
         var y = this.yOffset + this.camera.position.y;
-        context.drawImage(this.img, x - xOffset, y);
-        context.drawImage(this.leftImg, x - xOffset + this.mapWidth, y);
+        context.drawImage(this.img, x - xOffset, y, this.mapWidth, this.mapHeight);
+        context.drawImage(this.leftImg, x - xOffset + this.mapWidth, y, this.mapWidth, this.mapHeight);
     }
 }
 
