@@ -20,16 +20,16 @@ class Map {
             var y = (mapHeight - 1) - parseInt(a / mapWidth);
             var value = matrix[a];
             var tile = new Tile(tileWidth, tileHeight, x, y, camera, value);
-            if (value === 2) {
+            if (value === LADDER_TILE) {
                 tile = new Ladder(tileWidth, tileHeight, x, y, camera, value);
             }
-            if (value === 3) {
+            if (value === TOP_LADDER_TILE) {
                 tile = new TopLadder(tileWidth, tileHeight, x, y, camera, value);
             }
-            if (value === 4) {
+            if (value === CEILING_TILE) {
                 tile = new CeilingTile(tileWidth, tileHeight, x, y, camera, value);
             }
-            if (value === 5) {
+            if (value === SLOPE_TILE) {
                 tile = new SlopeTile(tileWidth, tileHeight, x, y, camera, value);
             }
             this.tiles[y * mapWidth + x] = tile;
@@ -47,10 +47,22 @@ class Map {
         this.tiles[0 * mapWidth + 2].high = tileHeight;
         this.tiles[2 * mapWidth + 7].low = tileHeight;
         this.tiles[2 * mapWidth + 7].high = tileHeight;
-        this.tiles[2 * mapWidth + 11].low = tileHeight;
-        this.tiles[2 * mapWidth + 11].high = 0;
+        this.tiles[2 * mapWidth + 17].low = tileHeight;
+        this.tiles[2 * mapWidth + 17].high = 0;
         this.tiles[1 * mapWidth + 5].low = tileHeight;
         this.tiles[1 * mapWidth + 5].high = tileHeight;
+        this.tiles[0 * mapWidth + 3].low = tileHeight;
+        this.tiles[0 * mapWidth + 3].high = tileHeight;
+        this.tiles[1 * mapWidth + 10].low = tileHeight;
+        this.tiles[1 * mapWidth + 10].high = tileHeight;
+        this.tiles[2 * mapWidth + 9].low = tileHeight;
+        this.tiles[2 * mapWidth + 9].high = tileHeight;
+        this.tiles[2 * mapWidth + 10].low = tileHeight;
+        this.tiles[2 * mapWidth + 10].high = 0;
+        this.tiles[1 * mapWidth + 11].low = tileHeight;
+        this.tiles[1 * mapWidth + 11].high = tileHeight * 0.5;
+        this.tiles[1 * mapWidth + 12].low = tileHeight * 0.5;
+        this.tiles[1 * mapWidth + 12].high = 0;
     }
     
     render(context) {
