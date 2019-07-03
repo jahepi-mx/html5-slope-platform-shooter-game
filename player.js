@@ -25,10 +25,6 @@ class Player extends Entity {
     
     update(dt) {
         
-        if (this.isOnLadder) {
-            this.velocity.y = 0;
-        }
-       
         if (this.isOnMovingTile) {
             if (this.movingTile.collide(this) && !this.isJumping) {
                 this.velocity.x = this.movingTile.translation.x;
@@ -68,18 +64,14 @@ class Player extends Entity {
             if (!this.isJumping) {
                 this.velocity.y += this.jumpScalarVelocity * 4;
                 this.isJumping = true;
+                this.isOnLadder = false;
             }
         }
         
-        if (this.up && this.isOnLadder) {
-            this.velocity.y = this.walkScalarVelocity;
+        if (this.isOnLadder) {
+            var velY = this.up ? this.walkScalarVelocity * 0.6 : this.down ? -this.walkScalarVelocity * 0.6 : 0;
+            this.velocity.y = velY;
         }
-        
-        if (this.down && this.isOnLadder) {
-            this.velocity.y = -this.walkScalarVelocity;
-        }
-        
-        this.isOnLadder = false;
 
         var tmpVelocity = this.velocity.mulByScalar(dt);
         
@@ -89,37 +81,21 @@ class Player extends Entity {
         var currentX = parseInt(this.position.x / this.map.tileWidth);
         var currentY = parseInt(this.position.y / this.map.tileHeight);
         var collided = false;
-        var collidedWall = false;
-        var collidedTopLadder = null;
         var slopeTile = null;
         for (let move of this.moves) {
             var newX = currentX + move[0];
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
-                if (!tile.walkable && this.collide(tile)) {
-                    collided = true;
-                    if (tile.type === WALL_TILE) {
-                        collidedWall = true;
+                if (!tile.walkable && this.collide(tile)) {   
+                    if ((this.isOnLadder && tile.type === WALL_TILE) || !this.isOnLadder) {
+                        collided = true;
                     }
-                    if (tile.type === TOP_LADDER_TILE) {
-                        collidedTopLadder = tile;
-                    }
-                }
-                if (tile.type === SLOPE_TILE && tile.collide(this)) {
-                    slopeTile = tile;
-                }
-                if (!this.isOnLadder && tile.type === LADDER_TILE && !this.isJumping && this.collide(tile)) {
-                    this.isOnLadder = true;
                 }
             }
         }
-        if (!collidedWall && collidedTopLadder !== null && (this.left || this.right)) {
-            collided = false;
-            this.isOnLadder = true;
-        }
         
-        if (collided && slopeTile === null) {
+        if (collided) {
             this.position.x = tmpX;
         }
 
@@ -128,8 +104,9 @@ class Player extends Entity {
         currentX = parseInt(this.position.x / this.map.tileWidth);
         currentY = parseInt(this.position.y / this.map.tileHeight);
         collided = false;
-        collidedWall = false;
-        collidedTopLadder = null;
+        var collidedWall = false;
+        var collidedTopLadder = null;
+        var isOnLadderTmp = false;
         
         var hitFloor = false;
         var precision = 10;
@@ -158,7 +135,9 @@ class Player extends Entity {
                 if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                     var tile = this.map.tiles[newY * this.map.mapWidth + newX];
                     if (!tile.walkable && this.collide(tile)) {
-                        collided = true;
+                        if ((this.isOnLadder && tile.type === WALL_TILE) || !this.isOnLadder) {
+                            collided = true;
+                        }
                         this.velocity.y = 0;
                         // If the player hits the floor and not the ceiling
                         if (this.position.y - tmpY < 0) {
@@ -197,14 +176,18 @@ class Player extends Entity {
                             }
                         }
                     }
-                    if (!this.isOnLadder && tile.type === LADDER_TILE && !this.isJumping && this.collide(tile)) {
-                        this.isOnLadder = true;
+                    
+                    if (tile.type === LADDER_TILE && !this.isJumping && this.collide(tile)) {
+                        if (this.isOnLadder || (this.up && this.velocity.y >= 0)) {
+                            isOnLadderTmp = true;
+                        }
                     }
                 }
             }
         }
-       
-        if (!collidedWall && collidedTopLadder !== null) {
+        this.isOnLadder = isOnLadderTmp;
+        if (!collidedWall && collidedTopLadder !== null && (this.up || this.down || this.left || this.right)) {
+            this.isOnLadder = false;
             var prevYPos = this.position.y;
             this.position.y = tmpY;
             var diffLadder = this.position.y - collidedTopLadder.position.y;
@@ -212,7 +195,7 @@ class Player extends Entity {
                 collided = false;
                 this.isOnLadder = true;
             }
-            this.position.y = prevYPos; 
+            this.position.y = prevYPos;
         }
         
         if (!collided && collidedMovingTile) {
@@ -227,6 +210,10 @@ class Player extends Entity {
         
         if (slopeTile !== null) {
             this.position.y = slopeTile.getNewY(this);
+        }
+        
+        if (this.isOnLadder) {
+            hitFloor = true;
         }
         
         if (!hitFloor) {
