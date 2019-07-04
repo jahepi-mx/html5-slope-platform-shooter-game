@@ -22,6 +22,9 @@ and open the template in the editor.
         <script type="text/javascript" src="celilingtile.js"></script>
         <script type="text/javascript" src="slopetile.js"></script>
         <script type="text/javascript" src="parallaxbg.js"></script>
+        <script type="text/javascript" src="assets.js"></script>
+        <script type="text/javascript" src="atlas.js"></script>
+        <script type="text/javascript" src="animation.js"></script>
         <script type="text/javascript">
             var canvas;
             var context;
@@ -36,45 +39,54 @@ and open the template in the editor.
             var parallaxBg3;
             
             window.onload = function() {
-              console.log("loaded");
-              
-              camera = new Camera();
-              var tileWidth = 150 * 1.5;
-              var tileHeight = 150;
-              var mapWidth = 21;
-              var mapHeight = 7;
-              var matrix = [
-                  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                  1,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,
-                  1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
-                  1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
-                  1,0,0,0,0,5,5,5,1,5,5,0,0,0,0,0,5,5,0,0,1,
-                  1,0,0,5,5,5,1,1,1,1,5,5,5,0,0,0,1,1,0,0,1,
-                  1,1,5,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-              ];
-              
-              
-              
-              var canvasWidth = tileWidth * 5;
-              var canvasHeight = tileHeight * 4;
-              parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background.png", 1.5);
-              parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2.png", 1.1);
-              parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3.png", 0.8);
-              map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
-              player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
-              movingTile = new RotatingTile(camera, map, 2, 2);
-              player.movingTiles.push(movingTile);
-              canvas = document.getElementById("engine");
-              canvas.width = canvasWidth;
-              canvas.height = canvasHeight;
-              context = canvas.getContext("2d");
-              offsetY = canvasHeight; 
-              canvas.style = "border: 1px solid #ccc";
-              document.onkeydown = onKeyDown;
-              document.onkeyup = onKeyUp;
-              requestAnimationFrame(update);
-              
+              var assets = Assets.getInstance();
+              assets.loadAll(onLoadAssets, null);
             };
+            
+            function onLoadAssets() {
+                var atlas = Atlas.getInstance();
+                atlas.loadAll(onLoadAtlas, null);
+            }
+            
+            function onLoadAtlas() {
+                console.log("loaded");
+              
+                camera = new Camera();
+                var tileWidth = 15; //150 * 1.5;
+                var tileHeight = 15; //150;
+                var mapWidth = 21;
+                var mapHeight = 7;
+                var matrix = [
+                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                    1,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,
+                    1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+                    1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+                    1,0,0,0,0,5,5,5,1,5,5,0,0,0,0,0,5,5,0,0,1,
+                    1,0,0,5,5,5,1,1,1,1,5,5,5,0,0,0,1,1,0,0,1,
+                    1,1,5,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                ];
+
+
+
+                var canvasWidth = tileWidth * 5;
+                var canvasHeight = tileHeight * 4;
+                parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.5);
+                parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.1);
+                parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 0.8);
+                map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
+                player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
+                movingTile = new RotatingTile(camera, map, 2, 2);
+                player.movingTiles.push(movingTile);
+                canvas = document.getElementById("engine");
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                context = canvas.getContext("2d");
+                offsetY = canvasHeight; 
+                canvas.style = "border: 1px solid #ccc";
+                document.onkeydown = onKeyDown;
+                document.onkeyup = onKeyUp;
+                requestAnimationFrame(update);
+            }
             
             var fpsLimit = 0;
             function update(time) {
@@ -92,7 +104,6 @@ and open the template in the editor.
                     return;
                 }
                 
-                //console.log(1 / dt);
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 
                 camera.update(player);

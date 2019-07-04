@@ -3,12 +3,11 @@ class ParallaxBg {
         this.camera = camera;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
-        this.img = new Image();
-        this.img.src = "assets/" + image;
-        this.leftImg = new Image();
-        this.leftImg.src = "assets/" + image;
-        this.yOffset = -50;
+        this.image = image;
+        this.yOffset = -mapHeight * 0.3;
         this.factor = factor;
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance();
     }
     
     render(context) {
@@ -17,8 +16,28 @@ class ParallaxBg {
         
         var x = 0;
         var y = this.yOffset + this.camera.position.y;
-        context.drawImage(this.img, x - xOffset, y, this.mapWidth, this.mapHeight);
-        context.drawImage(this.leftImg, x - xOffset + this.mapWidth, y, this.mapWidth, this.mapHeight);
+
+        context.drawImage(
+            this.assets.spritesAtlas, 
+            this.atlas.sprites[this.image].x,
+            this.atlas.sprites[this.image].y,
+            this.atlas.sprites[this.image].width,
+            this.atlas.sprites[this.image].height,
+            x - xOffset,
+            y,
+            this.mapWidth,
+            this.mapHeight);
+            
+        context.drawImage(
+            this.assets.spritesAtlas, 
+            this.atlas.sprites[this.image].x,
+            this.atlas.sprites[this.image].y,
+            this.atlas.sprites[this.image].width,
+            this.atlas.sprites[this.image].height,
+            x - xOffset + this.mapWidth,
+            y,
+            this.mapWidth,
+            this.mapHeight);
     }
 }
 
