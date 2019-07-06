@@ -2,12 +2,14 @@ class Player extends Entity {
     
     constructor(width, height, x, y, map) {
         super();
-        this.size.x = width;
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance(); 
+        this.size.x = this.atlas.sprites["stand"].width / this.atlas.sprites["stand"].height * height;
         this.size.y = height; 
         this.map = map;
         this.position.x = x * map.tileWidth + map.tileWidth * 0.5;
         this.position.y = y * map.tileHeight + map.tileHeight * 0.5;
-        this.friction.x = 0.9;
+        this.friction.x = 0.8;
         this.friction.y = 1;
         this.camera = map.camera;
         this.jumpScalarVelocity = map.tileHeight * 0.8;
@@ -21,10 +23,25 @@ class Player extends Entity {
         this.movingTiles = [];
         this.isOnLadder = false;
         this.targetFriction = new Vector(Math.pow(this.friction.x, 60), Math.pow(this.friction.y, 60));
+        this.direction = new Vector(1, 0);
+        this.runAnimation = new Animation(7, 3);
+        this.cursor = Cursor.getInstance();
+        this.shootTime = 0;
+        this.shootTimeLimit = 0.1;
+        this.gunRadiansDir = 0;
     }
     
     update(dt) {
-        
+        var newX = this.position.x - this.camera.position.x;
+        var newY = this.position.y - this.camera.position.y;
+        var diffVector = new Vector(this.cursor.position.x - newX, this.cursor.position.y - newY);
+        this.gunRadiansDir = -Math.atan2(diffVector.y, diffVector.x) + (this.direction.x > 0 ? 0 : Math.PI);
+        this.shootTime += dt;
+        if (this.shootTime >= this.shootTimeLimit && this.cursor.isPressed) {
+            this.map.bullets.push(new Bullet(this.position.x, this.position.y, this.map, -this.gunRadiansDir + (this.direction.x > 0 ? 0 : Math.PI)));
+            this.shootTime = 0;
+        }
+        this.runAnimation.update(dt);
         if (this.isOnMovingTile) {
             if (this.movingTile.collide(this) && !this.isJumping) {
                 this.velocity.x = this.movingTile.translation.x;
@@ -35,19 +52,13 @@ class Player extends Entity {
         }  
         
         if (this.left) {
-            if (this.isOnMovingTile) {
-                this.velocity.x += -this.walkScalarVelocity;
-            } else {
-                this.velocity.x = -this.walkScalarVelocity;
-            }
+            this.direction.x = -1;
+            this.velocity.x = this.isOnMovingTile ? this.velocity.x - this.walkScalarVelocity : -this.walkScalarVelocity;
         }
         
         if (this.right) {
-            if (this.isOnMovingTile) {
-                this.velocity.x += this.walkScalarVelocity;
-            } else {
-                this.velocity.x = this.walkScalarVelocity;
-            }
+            this.direction.x = 1;
+            this.velocity.x = this.isOnMovingTile ? this.velocity.x + this.walkScalarVelocity : this.walkScalarVelocity;
         }
         
         if (this.jump && this.isOnMovingTile) {
@@ -228,10 +239,20 @@ class Player extends Entity {
     render(context) {
         var newX = this.position.x - this.camera.position.x;
         var newY = this.position.y - this.camera.position.y;
+        var tmpX = newX, tmpY = newY;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        context.fillStyle = "#f9f9f9";
-        context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        var image = this.direction.x > 0 ? "stand" : "stand_left";
+        var gunImage = this.direction.x > 0 ? "gun" : "gun_left";
+        if ((this.left || this.right) && !this.isJumping && !this.isOnLadder) {
+             image = "run_" + (this.direction.x > 0 ? "" : "left_") + (this.runAnimation.getFrame() + 1);
+        }
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.save();
+        context.translate(tmpX, offsetY - tmpY);
+        context.rotate(this.gunRadiansDir);
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[gunImage].x, this.atlas.sprites[gunImage].y, this.atlas.sprites[gunImage].width, this.atlas.sprites[gunImage].height, -this.size.x * 0.5, -this.size.y * 0.5, this.size.x, this.size.y);
+        context.restore();
     }
     
     moveLeft(bool) {

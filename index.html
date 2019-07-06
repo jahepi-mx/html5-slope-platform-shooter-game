@@ -22,9 +22,11 @@ and open the template in the editor.
         <script type="text/javascript" src="celilingtile.js"></script>
         <script type="text/javascript" src="slopetile.js"></script>
         <script type="text/javascript" src="parallaxbg.js"></script>
+        <script type="text/javascript" src="bullet.js"></script>
         <script type="text/javascript" src="assets.js"></script>
         <script type="text/javascript" src="atlas.js"></script>
         <script type="text/javascript" src="animation.js"></script>
+        <script type="text/javascript" src="cursor.js"></script>
         <script type="text/javascript">
             var canvas;
             var context;
@@ -33,6 +35,7 @@ and open the template in the editor.
             var prevTime = 0;
             var offsetY;
             var camera;
+            var cursor;
             var movingTile;
             var parallaxBg;
             var parallaxBg2;
@@ -49,17 +52,15 @@ and open the template in the editor.
             }
             
             function onLoadAtlas() {
-                console.log("loaded");
-              
                 camera = new Camera();
-                var tileWidth = 15; //150 * 1.5;
-                var tileHeight = 15; //150;
+                var tileWidth = 150; //150 * 1.5;
+                var tileHeight = 150; //150;
                 var mapWidth = 21;
                 var mapHeight = 7;
                 var matrix = [
                     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                    1,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,
-                    1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+                    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+                    1,0,0,0,0,0,1,3,1,0,0,0,0,0,0,0,0,0,0,0,1,
                     1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
                     1,0,0,0,0,5,5,5,1,5,5,0,0,0,0,0,5,5,0,0,1,
                     1,0,0,5,5,5,1,1,1,1,5,5,5,0,0,0,1,1,0,0,1,
@@ -74,7 +75,7 @@ and open the template in the editor.
                 parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.1);
                 parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 0.8);
                 map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera);
-                player = new Player(tileWidth * 0.5, tileHeight * 0.5, 1, 1, map);
+                player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, map);
                 movingTile = new RotatingTile(camera, map, 2, 2);
                 player.movingTiles.push(movingTile);
                 canvas = document.getElementById("engine");
@@ -85,15 +86,33 @@ and open the template in the editor.
                 canvas.style = "border: 1px solid #ccc";
                 document.onkeydown = onKeyDown;
                 document.onkeyup = onKeyUp;
+                cursor = Cursor.getInstance();
+                canvas.addEventListener("mousemove", function(evt) {
+                    var rect = canvas.getBoundingClientRect();
+                    var x = evt.clientX - rect.left;
+                    var y = evt.clientY - rect.top;
+                    cursor.update(x, y);
+                });
+                
+                canvas.addEventListener("mousedown", function(evt) {
+                    cursor.isPressed = true;
+                });
+
+                canvas.addEventListener("mouseup", function(evt) {
+                    cursor.isPressed = false;
+                });
+                
+                canvas.addEventListener("mouseout", function(evt) {
+                    cursor.isPressed = false;
+                });
+                
                 requestAnimationFrame(update);
             }
             
             var fpsLimit = 0;
             function update(time) {
-                var dt = (time - prevTime) / 1000;
-                
-                
-                var maxFps = 1 / 30;
+                var dt = (time - prevTime) / 1000;                               
+                var maxFps = 1 / 60;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;
@@ -105,19 +124,21 @@ and open the template in the editor.
                 }
                 
                 context.clearRect(0, 0, canvas.width, canvas.height);
+                context.imageSmoothingEnabled = false;
                 
+                map.update(dt);
                 camera.update(player);
                 movingTile.update(dt);
                 player.update(dt);
                 
                 parallaxBg3.render(context);
-                parallaxBg2.render(context);
                 parallaxBg.render(context);
+                parallaxBg2.render(context); 
                 
                 map.render(context);
-                player.render(context);
                 movingTile.render(context);
-                
+                player.render(context);
+
                 prevTime = time;
                 requestAnimationFrame(update);
             }

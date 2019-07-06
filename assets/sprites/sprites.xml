@@ -1,5 +1,23 @@
 <TextureAtlas imagePath="sprites.png">
 	<SubTexture name="background.png" x="252" y="0" width="250" height="200"/>
-	<SubTexture name="background2.png" x="0" y="202" width="250" height="200"/>
-	<SubTexture name="background3.png" x="0" y="0" width="250" height="200"/>
+	<SubTexture name="background2.png" x="0" y="0" width="250" height="200"/>
+	<SubTexture name="background3.png" x="0" y="202" width="250" height="200"/>
+	<SubTexture name="gun.png" x="336" y="400" width="46" height="64"/>
+	<SubTexture name="gun_left.png" x="348" y="202" width="46" height="64"/>
+	<SubTexture name="run_1.png" x="300" y="334" width="46" height="64"/>
+	<SubTexture name="run_2.png" x="300" y="268" width="46" height="64"/>
+	<SubTexture name="run_3.png" x="300" y="202" width="46" height="64"/>
+	<SubTexture name="run_4.png" x="288" y="400" width="46" height="64"/>
+	<SubTexture name="run_5.png" x="252" y="334" width="46" height="64"/>
+	<SubTexture name="run_6.png" x="384" y="400" width="46" height="64"/>
+	<SubTexture name="run_7.png" x="348" y="334" width="46" height="64"/>
+	<SubTexture name="run_left_1.png" x="240" y="404" width="46" height="64"/>
+	<SubTexture name="run_left_2.png" x="192" y="404" width="46" height="64"/>
+	<SubTexture name="run_left_3.png" x="144" y="404" width="46" height="64"/>
+	<SubTexture name="run_left_4.png" x="96" y="404" width="46" height="64"/>
+	<SubTexture name="run_left_5.png" x="48" y="404" width="46" height="64"/>
+	<SubTexture name="run_left_6.png" x="0" y="404" width="46" height="64"/>
+	<SubTexture name="run_left_7.png" x="252" y="268" width="46" height="64"/>
+	<SubTexture name="stand.png" x="252" y="202" width="46" height="64"/>
+	<SubTexture name="stand_left.png" x="348" y="268" width="46" height="64"/>
 </TextureAtlas>
