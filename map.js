@@ -9,6 +9,7 @@ class Map {
     constructor(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera) {
         this.tiles = [];
         this.bullets = [];
+        this.particles = [];
         this.camera = camera;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -73,6 +74,12 @@ class Map {
                 this.bullets.splice(a--, 1);
             }
         }
+        for (var a = 0; a < this.particles.length; a++) {
+            this.particles[a].update(dt);
+            if (this.particles[a].dispose) {
+                this.particles.splice(a--, 1);
+            }
+        }
     }
     
     render(context) {
@@ -81,6 +88,9 @@ class Map {
         }
         for (let bullet of this.bullets) {
             bullet.render(context);
+        }
+        for (let particle of this.particles) {
+            particle.render(context);
         }
     }
     

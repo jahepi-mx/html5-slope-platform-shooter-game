@@ -25,8 +25,11 @@ class Bullet extends Entity {
         this.time += dt;
         this.position.x += this.velocity.x * this.xDisplacement * dt;
         this.position.y += this.velocity.x * this.yDisplacement * dt;
-        if (this.time > 3) {
+        if (this.time > 0.5) {
             this.dispose = true;
+            for (var a = 0; a < 5; a++) {
+                this.map.particles.push(new Particle(this.position.x, this.position.y, this.map, this.xDisplacement, this.yDisplacement));
+            }
         }
     }
     

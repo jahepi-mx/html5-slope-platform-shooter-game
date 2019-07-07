@@ -32,13 +32,10 @@ class Player extends Entity {
     }
     
     update(dt) {
-        var newX = this.position.x - this.camera.position.x;
-        var newY = this.position.y - this.camera.position.y;
-        var diffVector = new Vector(this.cursor.position.x - newX, this.cursor.position.y - newY);
-        this.gunRadiansDir = -Math.atan2(diffVector.y, diffVector.x) + (this.direction.x > 0 ? 0 : Math.PI);
+        this.gunRadiansDir = Math.atan2(this.cursor.position.y - (this.position.y - this.camera.position.y), this.cursor.position.x - (this.position.x - this.camera.position.x));
         this.shootTime += dt;
         if (this.shootTime >= this.shootTimeLimit && this.cursor.isPressed) {
-            this.map.bullets.push(new Bullet(this.position.x, this.position.y, this.map, -this.gunRadiansDir + (this.direction.x > 0 ? 0 : Math.PI)));
+            this.map.bullets.push(new Bullet(this.position.x, this.position.y, this.map, this.gunRadiansDir));
             this.shootTime = 0;
         }
         this.runAnimation.update(dt);
@@ -239,7 +236,6 @@ class Player extends Entity {
     render(context) {
         var newX = this.position.x - this.camera.position.x;
         var newY = this.position.y - this.camera.position.y;
-        var tmpX = newX, tmpY = newY;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         var image = this.direction.x > 0 ? "stand" : "stand_left";
@@ -249,8 +245,8 @@ class Player extends Entity {
         }
         context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
         context.save();
-        context.translate(tmpX, offsetY - tmpY);
-        context.rotate(this.gunRadiansDir);
+        context.translate(newX + this.size.x * 0.5, offsetY - (newY - this.size.y * 0.5));
+        context.rotate(-this.gunRadiansDir + (this.direction.x > 0 ? 0 : Math.PI));
         context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[gunImage].x, this.atlas.sprites[gunImage].y, this.atlas.sprites[gunImage].width, this.atlas.sprites[gunImage].height, -this.size.x * 0.5, -this.size.y * 0.5, this.size.x, this.size.y);
         context.restore();
     }
