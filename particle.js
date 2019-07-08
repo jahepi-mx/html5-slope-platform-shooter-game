@@ -13,12 +13,17 @@ class Particle extends Entity {
         var velocity = Math.random() * 500 + 100;
         this.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
         this.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
-        this.acceleration.y = -(Math.random() * 100 + 400);
+        this.acceleration.y = -(Math.random() * 400 + 400);
         var friction = 0.9 + Math.random() * 0.1;
         this.friction.y = friction;
         this.friction.x = friction;
         this.dispose = false;
         this.time = 0;
+        this.r = 255;
+        this.g = parseInt(Math.random() * 255);
+        this.b = 0;
+        this.alpha = 1;
+        this.alphaSpeed = Math.random() * 3 + 1;
     }
     
     update(dt) {
@@ -26,7 +31,10 @@ class Particle extends Entity {
         if (this.time > 1) {
             this.dispose = true;
         }
-        
+        this.alpha -= dt * this.alphaSpeed;
+        if (this.alpha < 0) {
+            this.alpha = 0;
+        }
         this.position.addThis(this.velocity.mulByScalar(dt));
         this.velocity.addThis(this.acceleration.mulByScalar(dt));
         this.velocity.mulThis(this.friction);
@@ -37,7 +45,7 @@ class Particle extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        context.fillStyle = "#ff0000";
+        context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',0 ,' + this.alpha + ')';
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
     }
 }

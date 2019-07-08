@@ -9,6 +9,10 @@ class Tile extends Entity {
         this.camera = camera;
         this.type = type;
         this.walkable = type === 0;
+        this.tmpType = type;
+        if (this.type > 0) {
+            this.type = WALL_TILE;
+        }
     }
     
     render(context) {
@@ -18,8 +22,12 @@ class Tile extends Entity {
         newY += this.size.y * 0.5;
         
         if (!this.walkable) {
-            context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
-            context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+            var atlas = Atlas.getInstance();
+            var assets = Assets.getInstance(); 
+            //context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
+            //context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+            var image = "tile" + this.tmpType;
+            context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
         }
     }
 }
