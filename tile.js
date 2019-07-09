@@ -27,7 +27,7 @@ class Tile extends Entity {
             //context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
             //context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
             var image = "tile" + this.tmpType;
-            context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+            context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
         }
     }
 }

@@ -54,8 +54,8 @@ and open the template in the editor.
             
             function onLoadAtlas() {
                 camera = new Camera();
-                var tileWidth = 150; //150 * 1.5;
-                var tileHeight = 150; //150;
+                var tileWidth = 260; //150 * 1.5;
+                var tileHeight = 180; //150;
                 var mapWidth = 21;
                 var mapHeight = 10;
                 var matrix = [
@@ -117,7 +117,7 @@ and open the template in the editor.
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               
                 
-                var maxFps = 1 / 10;
+                var maxFps = 1 / 60;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;
@@ -141,7 +141,7 @@ and open the template in the editor.
                 parallaxBg.render(context);
                 parallaxBg2.render(context); 
                 
-                map.render(context);
+                map.render(context, player);
                 movingTile.render(context);
                 player.render(context);
 

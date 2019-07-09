@@ -19,7 +19,7 @@ class Map {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.pixelData = pixelData;
-        //console.log(this.getSlopeRatio("slope24"));
+
         var atlas = Atlas.getInstance();
         for (var a = 0; a < mapWidth * mapHeight; a++) {
             var x = a % mapWidth;
@@ -42,42 +42,11 @@ class Map {
             }
             this.tiles[y * mapWidth + x] = tile;
         }
-        /*
-        this.tiles[1 * mapWidth + 3].low = 0;
-        this.tiles[1 * mapWidth + 3].high = tileHeight * 0.3;
-        this.tiles[1 * mapWidth + 4].low = tileHeight * 0.3;
-        this.tiles[1 * mapWidth + 4].high = tileHeight;
-        this.tiles[2 * mapWidth + 5].low = 0;
-        this.tiles[2 * mapWidth + 5].high = tileHeight * 0.5;
-        this.tiles[2 * mapWidth + 6].low = tileHeight * 0.5;
-        this.tiles[2 * mapWidth + 6].high = tileHeight;
-        this.tiles[0 * mapWidth + 2].low = tileHeight;
-        this.tiles[0 * mapWidth + 2].high = tileHeight;
-        this.tiles[2 * mapWidth + 7].low = tileHeight;
-        this.tiles[2 * mapWidth + 7].high = tileHeight;
-        this.tiles[2 * mapWidth + 17].low = tileHeight;
-        this.tiles[2 * mapWidth + 17].high = 0;
-        this.tiles[1 * mapWidth + 5].low = tileHeight;
-        this.tiles[1 * mapWidth + 5].high = tileHeight;
-        this.tiles[0 * mapWidth + 3].low = tileHeight;
-        this.tiles[0 * mapWidth + 3].high = tileHeight;
-        this.tiles[1 * mapWidth + 10].low = tileHeight;
-        this.tiles[1 * mapWidth + 10].high = tileHeight;
-        this.tiles[2 * mapWidth + 9].low = tileHeight;
-        this.tiles[2 * mapWidth + 9].high = tileHeight;
-        this.tiles[2 * mapWidth + 10].low = tileHeight;
-        this.tiles[2 * mapWidth + 10].high = 0;
-        this.tiles[1 * mapWidth + 11].low = tileHeight;
-        this.tiles[1 * mapWidth + 11].high = tileHeight * 0.5;
-        this.tiles[1 * mapWidth + 12].low = tileHeight * 0.5;
-        this.tiles[1 * mapWidth + 12].high = 0;
-        */
     }
     
     getSlopeRatio(imgName) {
         var atlas = Atlas.getInstance();
         var assets = Assets.getInstance();
-        //var imgName = "slope24";
         var imgX = parseInt(atlas.sprites[imgName].x);
         var imgY = parseInt(atlas.sprites[imgName].y);
         var imgW = parseInt(atlas.sprites[imgName].width);
@@ -93,9 +62,6 @@ class Map {
                     var g = this.pixelData[index + 1];
                     var b = this.pixelData[index + 2];
                     var a = this.pixelData[index + 3];
-                    //context.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ',' + a + ')';
-                    //console.log('rgb(' + r + ',' + g + ',' + b + ',' + a + ')');
-                    //context.fillRect(x, y, 1, 1);
                     if (x === imgX && r === 0 && g === 0 && b === 0 && left < 0) {
                         left = yTmp;
                     }
@@ -111,7 +77,7 @@ class Map {
         if (right < 0) {
             right = imgH;
         }
-        return {"left": left / imgH > 0.9 ? 1 : left / imgH, "right": right / imgH > 0.9 ? 1 : right / imgH};
+        return {"left": left / imgH, "right": right / imgH};
     }
     
     update(dt) {
@@ -129,10 +95,21 @@ class Map {
         }
     }
     
-    render(context) {
-        for (let tile of this.tiles) {
-            tile.render(context);
+    render(context, player) {
+        var marginOfError = 2;
+        var offsetX = parseInt(this.canvasWidth / this.tileWidth * 0.5) + marginOfError;
+        var offsetY = parseInt(this.canvasHeight / this.tileHeight * 0.5) + marginOfError;
+        var playerX = parseInt(player.position.x / this.tileWidth);
+        var playerY = parseInt(player.position.y / this.tileHeight);
+        
+        for (var y = playerY - offsetY; y < playerY + offsetY; y++) {
+            for (var x = playerX - offsetX; x < playerX + offsetX; x++) {
+                if (x >= 0 && y >= 0 && x < this.mapWidth && y < this.mapHeight) {
+                    this.tiles[y * this.mapWidth + x].render(context);
+                }
+            }
         }
+        
         for (let bullet of this.bullets) {
             bullet.render(context);
         }
