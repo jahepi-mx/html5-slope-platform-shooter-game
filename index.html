@@ -55,7 +55,7 @@ and open the template in the editor.
             function onLoadAtlas() {
                 camera = new Camera();
                 var tileWidth = 250; //150 * 1.5;
-                var tileHeight = 200; //150;
+                var tileHeight = 180; //150;
                 var mapWidth = 21;
                 var mapHeight = 10;
                 var matrix = [
@@ -72,13 +72,13 @@ and open the template in the editor.
 
                 var canvasWidth = tileWidth * 5;
                 var canvasHeight = tileHeight * 4;
-                parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.5);
-                parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.1);
+                parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.2);
+                parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.0);
                 parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 0.8);
                 canvas = document.getElementById("engine");
                 context = canvas.getContext("2d");
                 offsetY = canvasHeight; 
-                canvas.style = "border: 1px solid #ccc";
+                canvas.style = "border: 1px solid #ccc; background-color: #071239";
                 document.onkeydown = onKeyDown;
                 document.onkeyup = onKeyUp;
                 cursor = Cursor.getInstance();
@@ -141,8 +141,8 @@ and open the template in the editor.
                 player.update(dt);
                 
                 parallaxBg3.render(context);
-                parallaxBg.render(context);
                 parallaxBg2.render(context); 
+                parallaxBg.render(context);
                 
                 map.render(context, player);
                 movingTile.render(context);

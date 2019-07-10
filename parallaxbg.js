@@ -4,7 +4,7 @@ class ParallaxBg {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.image = image;
-        this.yOffset = -mapHeight * 0.3;
+        this.yOffset = -mapHeight * 0.6;
         this.factor = factor;
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
@@ -25,8 +25,8 @@ class ParallaxBg {
             this.atlas.sprites[this.image].height,
             x - xOffset,
             y,
-            this.mapWidth,
-            this.mapHeight);
+            this.mapWidth + 1,
+            this.mapHeight + 1);
             
         context.drawImage(
             this.assets.spritesAtlas, 
@@ -36,8 +36,8 @@ class ParallaxBg {
             this.atlas.sprites[this.image].height,
             x - xOffset + this.mapWidth,
             y,
-            this.mapWidth,
-            this.mapHeight);
+            this.mapWidth + 1,
+            this.mapHeight + 1);
     }
 }
 
