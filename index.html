@@ -54,8 +54,8 @@ and open the template in the editor.
             
             function onLoadAtlas() {
                 camera = new Camera();
-                var tileWidth = 260; //150 * 1.5;
-                var tileHeight = 180; //150;
+                var tileWidth = 250; //150 * 1.5;
+                var tileHeight = 200; //150;
                 var mapWidth = 21;
                 var mapHeight = 10;
                 var matrix = [
@@ -76,8 +76,6 @@ and open the template in the editor.
                 parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.1);
                 parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 0.8);
                 canvas = document.getElementById("engine");
-                canvas.width = canvasWidth;
-                canvas.height = canvasHeight;
                 context = canvas.getContext("2d");
                 offsetY = canvasHeight; 
                 canvas.style = "border: 1px solid #ccc";
@@ -104,8 +102,12 @@ and open the template in the editor.
                 });
                 
                 var assets = Assets.getInstance();
+                canvas.width = 1024;
+                canvas.height = 768;
                 context.drawImage(assets.spritesAtlas, 0, 0);
                 var pixelData = context.getImageData(0, 0, assets.spritesAtlas.width, assets.spritesAtlas.height).data;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
                 map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera, pixelData);
                 player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, map);
                 movingTile = new RotatingTile(camera, map, 2, 2);
@@ -117,6 +119,7 @@ and open the template in the editor.
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               
                 
+                /*
                 var maxFps = 1 / 60;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
@@ -127,7 +130,7 @@ and open the template in the editor.
                     requestAnimationFrame(update);
                     return;
                 }
-                
+                */
                 //console.log(1 / dt);
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 context.imageSmoothingEnabled = false;

@@ -89,7 +89,6 @@ class Player extends Entity {
         var currentX = parseInt(this.position.x / this.map.tileWidth);
         var currentY = parseInt(this.position.y / this.map.tileHeight);
         var collided = false;
-        var slopeTile = null;
         for (let move of this.moves) {
             var newX = currentX + move[0];
             var newY = currentY + move[1];
@@ -121,7 +120,7 @@ class Player extends Entity {
         var step = tmpVelocity.y / precision; 
         var collidedMovingTile = false;
         var tmpPosY = 0;
-        slopeTile = null;
+        var slopeTile = null;
         // This precision steps are for detecing collision on low framerate instances.
         for (var a = 0; a < precision; a++) {            
             this.position.y += step;
@@ -173,6 +172,7 @@ class Player extends Entity {
                             slopeTile = tile;
                             this.velocity.y = 0;
                             this.isJumping = false;
+                            hitFloor = true;
                         }
                     }
                     if (!this.isOnMovingTile) {
