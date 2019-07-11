@@ -16,6 +16,8 @@ class MovingTile extends Entity {
         this.velocity = new Vector(80, 0);
         this.velocityLength = this.velocity.length();
         this.camera = camera;
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance(); 
     }
     
     update(dt) {
@@ -42,8 +44,8 @@ class MovingTile extends Entity {
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         
-        context.fillStyle = "#f4f4f4";
-        context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        var image = "platform";
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
     }
     
     collideFromFalling(entity) {

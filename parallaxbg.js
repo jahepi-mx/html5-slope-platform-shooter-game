@@ -1,29 +1,36 @@
 class ParallaxBg {
-    constructor(camera, mapWidth, mapHeight, image, factor) {
+    constructor(camera, mapWidth, mapHeight, image, factor, yOffset, keepScrolling) {
         this.camera = camera;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.image = image;
-        this.yOffset = -mapHeight * 0.6;
+        this.yOffset = yOffset;
+        this.xOffset = 0;
         this.factor = factor;
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
+        this.keepScrolling = keepScrolling;
+        this.position = new Vector(0, 0);
+        this.scalarVelocity = 20;
     }
     
-    render(context) {
-        var xOffset = this.camera.position.x * this.factor;
-        xOffset %= this.mapWidth;
-        
-        var x = 0;
+    update(dt) {
+        if (this.keepScrolling) {
+            this.position.x += this.scalarVelocity * dt;
+        }
+        this.xOffset = (this.camera.position.x + this.position.x) * this.factor;
+        this.xOffset %= this.mapWidth;
+    }
+    
+    render(context) { 
         var y = this.yOffset + this.camera.position.y;
-
         context.drawImage(
             this.assets.spritesAtlas, 
             this.atlas.sprites[this.image].x,
             this.atlas.sprites[this.image].y,
             this.atlas.sprites[this.image].width,
             this.atlas.sprites[this.image].height,
-            x - xOffset,
+            -this.xOffset,
             y,
             this.mapWidth + 1,
             this.mapHeight + 1);
@@ -34,7 +41,7 @@ class ParallaxBg {
             this.atlas.sprites[this.image].y,
             this.atlas.sprites[this.image].width,
             this.atlas.sprites[this.image].height,
-            x - xOffset + this.mapWidth,
+            -this.xOffset + this.mapWidth,
             y,
             this.mapWidth + 1,
             this.mapHeight + 1);

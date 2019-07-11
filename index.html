@@ -54,8 +54,8 @@ and open the template in the editor.
             
             function onLoadAtlas() {
                 camera = new Camera();
-                var tileWidth = 250; //150 * 1.5;
-                var tileHeight = 180; //150;
+                var tileWidth = 260; //150 * 1.5;
+                var tileHeight = 190; //150;
                 var mapWidth = 21;
                 var mapHeight = 10;
                 var matrix = [
@@ -72,13 +72,13 @@ and open the template in the editor.
 
                 var canvasWidth = tileWidth * 5;
                 var canvasHeight = tileHeight * 4;
-                parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.2);
-                parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.0);
-                parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 0.8);
+                parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.2, -canvasHeight * 0.05, false);
+                parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.0, -canvasHeight * 0.7, false);
+                parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 0.8, true);
                 canvas = document.getElementById("engine");
                 context = canvas.getContext("2d");
                 offsetY = canvasHeight; 
-                canvas.style = "border: 1px solid #ccc; background-color: #071239";
+                canvas.style = "border: 1px solid #ccc; background-color: #ff7f15";
                 document.onkeydown = onKeyDown;
                 document.onkeyup = onKeyUp;
                 cursor = Cursor.getInstance();
@@ -120,7 +120,7 @@ and open the template in the editor.
                 var dt = (time - prevTime) / 1000;                               
                 
                 /*
-                var maxFps = 1 / 60;
+                var maxFps = 1 / 10;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;
@@ -134,6 +134,10 @@ and open the template in the editor.
                 //console.log(1 / dt);
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 context.imageSmoothingEnabled = false;
+                
+                parallaxBg3.update(dt);
+                parallaxBg2.update(dt); 
+                parallaxBg.update(dt);
                 
                 map.update(dt);
                 camera.update(player);

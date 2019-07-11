@@ -10,6 +10,8 @@ class Tile extends Entity {
         this.type = type;
         this.walkable = type === 0;
         this.tmpType = type;
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance(); 
         if (this.type > 0) {
             this.type = WALL_TILE;
         }
@@ -22,12 +24,8 @@ class Tile extends Entity {
         newY += this.size.y * 0.5;
         
         if (!this.walkable) {
-            var atlas = Atlas.getInstance();
-            var assets = Assets.getInstance(); 
-            //context.fillStyle = this.walkable ? "#fff" : "#f4f4f4";
-            //context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
             var image = "tile" + this.tmpType;
-            context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
         }
     }
 }
