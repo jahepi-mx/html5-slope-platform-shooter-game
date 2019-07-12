@@ -74,7 +74,7 @@ and open the template in the editor.
                 var canvasHeight = tileHeight * 4;
                 parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.2, -canvasHeight * 0.05, false);
                 parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.0, -canvasHeight * 0.7, false);
-                parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 0.8, true);
+                parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 1.1, true);
                 canvas = document.getElementById("engine");
                 context = canvas.getContext("2d");
                 offsetY = canvasHeight; 
@@ -102,8 +102,8 @@ and open the template in the editor.
                 });
                 
                 var assets = Assets.getInstance();
-                canvas.width = 1024;
-                canvas.height = 768;
+                canvas.width = assets.spritesAtlas.width;
+                canvas.height = assets.spritesAtlas.height;
                 context.drawImage(assets.spritesAtlas, 0, 0);
                 var pixelData = context.getImageData(0, 0, assets.spritesAtlas.width, assets.spritesAtlas.height).data;
                 canvas.width = canvasWidth;

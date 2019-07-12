@@ -4,19 +4,19 @@ class Bullet extends Entity {
         super();
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance(); 
-        this.size.x = 20;
-        this.size.y = 20; 
+        this.size.x = map.tileWidth * 0.1;
+        this.size.y = map.tileWidth * 0.1; 
         this.map = map;
         this.position.x = x;
         this.position.y = y;
         this.camera = map.camera;
         this.cursor = Cursor.getInstance();
-        this.velocity.x = 600;
+        this.velocity.x = map.tileWidth * 3;
         this.velocity.y = 0;
         this.xDisplacement = Math.cos(radians); 
         this.yDisplacement = Math.sin(radians);
-        this.position.x += this.velocity.x * 0.12 * this.xDisplacement;
-        this.position.y += this.velocity.x * 0.12 * this.yDisplacement;
+        this.position.x += map.tileWidth * 0.25 * this.xDisplacement;
+        this.position.y += map.tileWidth * 0.25 * this.yDisplacement;
         this.dispose = false;
         this.time = 0;
     }
@@ -28,7 +28,7 @@ class Bullet extends Entity {
         if (this.time > 0.5) {
             this.dispose = true;
             for (var a = 0; a < 5; a++) {
-                this.map.particles.push(new Particle(this.position.x, this.position.y, this.map, this.xDisplacement, this.yDisplacement));
+                this.map.particles.push(new Particle(this.position.x, this.position.y, this.map));
             }
         }
     }

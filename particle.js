@@ -1,19 +1,25 @@
 class Particle extends Entity {
-    constructor(x, y, map, cos, sin) {
+    constructor(x, y, map) {
         super();
         this.atlas = Atlas.getInstance();
-        this.assets = Assets.getInstance(); 
-        var size = Math.random() * 10 + 5;
+        this.assets = Assets.getInstance();
+        var minSize = map.tileWidth * 0.02;
+        var maxSize = map.tileWidth * 0.1;
+        var size = Math.random() * (maxSize - minSize) + minSize;
         this.size.x = size;
         this.size.y = size; 
         this.map = map;
         this.position.x = x;
         this.position.y = y;
         this.camera = map.camera;
-        var velocity = Math.random() * 500 + 100;
+        var maxVelocity = map.tileWidth * 4;
+        var minVelocity = map.tileHeight * 2;
+        var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
         this.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
         this.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
-        this.acceleration.y = -(Math.random() * 400 + 400);
+        var maxAcceleration = map.tileHeight * 10;
+        var minAcceleration = map.tileHeight * 7;
+        this.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
         var friction = 0.9 + Math.random() * 0.1;
         this.friction.y = friction;
         this.friction.x = friction;

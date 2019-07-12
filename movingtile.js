@@ -4,8 +4,8 @@ class MovingTile extends Entity {
         super();
         this.start = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
         this.end = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 4 * map.tileHeight + map.tileHeight * 0.5);
-        this.size.x = map.tileWidth * 1.5;
-        this.size.y = map.tileHeight * 0.5;
+        this.size.x = map.tileHeight * 0.7 * 2;
+        this.size.y = map.tileHeight * 0.7;
         this.map = map;
         this.position.x = this.start.x;
         this.position.y = this.start.y;
@@ -13,7 +13,7 @@ class MovingTile extends Entity {
         this.turn = 0;
         this.translation = new Vector(0, 0);
         this.prevPosition = new Vector(0, 0);
-        this.velocity = new Vector(80, 0);
+        this.velocity = new Vector(map.tileHeight * 0.5, 0);
         this.velocityLength = this.velocity.length();
         this.camera = camera;
         this.atlas = Atlas.getInstance();

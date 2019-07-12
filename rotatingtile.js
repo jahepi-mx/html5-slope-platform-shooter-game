@@ -8,7 +8,7 @@ class RotatingTile extends MovingTile {
         this.position.x = this.start.x + this.velocityLength;
         this.position.y = this.start.y;
         this.degrees = 45;
-        this.speed = 4;
+        this.speed = map.tileHeight * 0.01;
     }
     
     update(dt) {

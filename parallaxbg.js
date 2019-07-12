@@ -11,7 +11,7 @@ class ParallaxBg {
         this.assets = Assets.getInstance();
         this.keepScrolling = keepScrolling;
         this.position = new Vector(0, 0);
-        this.scalarVelocity = 20;
+        this.scalarVelocity = mapWidth * 0.03;
     }
     
     update(dt) {
