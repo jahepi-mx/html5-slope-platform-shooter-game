@@ -37,7 +37,7 @@ and open the template in the editor.
             var offsetY;
             var camera;
             var cursor;
-            var movingTile;
+            var movingTile, movingTile2;
             var parallaxBg;
             var parallaxBg2;
             var parallaxBg3;
@@ -56,19 +56,19 @@ and open the template in the editor.
                 camera = new Camera();
                 var tileWidth = 260; //150 * 1.5;
                 var tileHeight = 190; //150;
-                var mapWidth = 21;
+                var mapWidth = 42;
                 var mapHeight = 10;
                 var matrix = [
-                    2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
-                    2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,0,0,3,
-                    2,0,0,0,0,0,0,0,0,0,0,0,4,12,4,4,4,4,0,0,3,
-                    2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,3,
-                    2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,3,
-                    2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,3,
-                    2,0,0,0,0,0,0,0,26,28,30,32,14,4,14,39,37,27,0,0,3,
-                    2,0,0,0,22,24,14,4,15,1,1,1,1,1,1,1,1,16,14,4,1,
-                    2,0,0,20,15,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                    1,4,14,15,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+                    2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,3,
+2,0,0,0,0,0,0,0,0,0,0,0,4,12,4,4,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,3,
+2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,20,21,0,0,1,1,1,0,0,0,0,0,0,0,3,
+2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,20,41,42,21,0,0,0,0,0,0,0,0,0,0,0,3,
+2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,20,41,1,1,42,21,0,0,0,0,0,0,0,0,0,0,3,
+2,0,0,0,0,0,0,0,26,28,30,32,14,4,14,39,37,27,0,0,0,0,0,0,20,41,1,1,1,1,42,21,0,0,0,0,0,0,0,0,0,3,
+2,0,0,0,22,24,14,4,5,1,1,1,1,1,1,1,1,6,4,4,4,4,4,4,5,1,1,1,1,1,1,42,21,0,0,22,24,25,23,0,0,3,
+2,0,0,20,41,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,4,5,1,1,42,21,0,3,
+1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1];
 
                 var canvasWidth = tileWidth * 5;
                 var canvasHeight = tileHeight * 4;
@@ -111,7 +111,9 @@ and open the template in the editor.
                 map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera, pixelData);
                 player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, map);
                 movingTile = new RotatingTile(camera, map, 2, 2);
+                movingTile2 = new MovingTile(camera, map);
                 player.movingTiles.push(movingTile);
+                player.movingTiles.push(movingTile2);
                 requestAnimationFrame(update);
             }
             
@@ -119,8 +121,8 @@ and open the template in the editor.
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               
                 
-                /*
-                var maxFps = 1 / 10;
+                
+                var maxFps = 1 / 35;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;
@@ -130,7 +132,7 @@ and open the template in the editor.
                     requestAnimationFrame(update);
                     return;
                 }
-                */
+                
                 //console.log(1 / dt);
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 context.imageSmoothingEnabled = false;
@@ -142,6 +144,7 @@ and open the template in the editor.
                 map.update(dt);
                 camera.update(player);
                 movingTile.update(dt);
+                movingTile2.update(dt);
                 player.update(dt);
                 
                 parallaxBg3.render(context);
@@ -150,6 +153,7 @@ and open the template in the editor.
                 
                 map.render(context, player);
                 movingTile.render(context);
+                movingTile2.render(context);
                 player.render(context);
 
                 prevTime = time;

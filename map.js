@@ -27,6 +27,11 @@ class Map {
             var value = matrix[a];
             var tile = new Tile(tileWidth, tileHeight, x, y, camera, value);
             
+            if (atlas.sprites["walkable" + value] !== undefined) {
+                tile.walkable = true;
+                tile.tmpType = value;
+            }
+            
             if (value === LADDER_TILE) {
                 tile = new Ladder(tileWidth, tileHeight, x, y, camera, value);
             }

@@ -27,6 +27,10 @@ class Tile extends Entity {
             var image = "tile" + this.tmpType;
             context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
         }
+        if (this.walkable && this.tmpType > 0) {
+            var image = "walkable" + this.tmpType;
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
+        }
     }
 }
 

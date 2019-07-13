@@ -60,4 +60,9 @@
 	<SubTexture name="tile7.png" x="306" y="466" width="32" height="32"/>
 	<SubTexture name="tile8.png" x="272" y="470" width="32" height="32"/>
 	<SubTexture name="tile9.png" x="238" y="470" width="32" height="32"/>
+	<SubTexture name="walkable40.png" x="396" y="236" width="32" height="32"/>
+	<SubTexture name="walkable41.png" x="374" y="466" width="32" height="32"/>
+	<SubTexture name="walkable42.png" x="340" y="466" width="32" height="32"/>
+	<SubTexture name="walkable43.png" x="306" y="466" width="32" height="32"/>
+	<SubTexture name="walkable44.png" x="272" y="470" width="32" height="32"/>
 </TextureAtlas>

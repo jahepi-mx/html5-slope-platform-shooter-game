@@ -2,8 +2,8 @@ class MovingTile extends Entity {
     
     constructor(camera, map) {
         super();
-        this.start = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 1 * map.tileHeight + map.tileHeight * 0.5);
-        this.end = new Vector(1 * map.tileWidth + map.tileWidth * 0.5, 4 * map.tileHeight + map.tileHeight * 0.5);
+        this.start = new Vector(19 * map.tileWidth + map.tileWidth * 0.5, 3 * map.tileHeight + map.tileHeight * 0.5);
+        this.end = new Vector(22 * map.tileWidth + map.tileWidth * 0.5, 3 * map.tileHeight + map.tileHeight * 0.5);
         this.size.x = map.tileHeight * 0.7 * 2;
         this.size.y = map.tileHeight * 0.7;
         this.map = map;

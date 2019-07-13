@@ -11,7 +11,7 @@ class SlopeTile extends Tile {
     collide(entity) {
         var width = this.size.x * 0.5;
         var entityBottom = entity.position.y - entity.size.y * 0.5;
-        var height = this.size.y * 0.5;
+        var height = this.size.y;
         var xDiff = Math.abs(entity.position.x - this.position.x);
         var yDiff = Math.abs(entityBottom - this.position.y);
         return xDiff <= width && yDiff <= height;
