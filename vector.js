@@ -52,6 +52,10 @@ class Vector {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     
+    lengthWithOutSqrt() {
+        return this.x * this.x + this.y * this.y;
+    }
+    
     dot(vector) {
         return this.x * vector.x + this.y * vector.y;
     }

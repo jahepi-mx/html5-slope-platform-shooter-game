@@ -15,6 +15,7 @@ and open the template in the editor.
         <script type="text/javascript" src="map.js"></script>
         <script type="text/javascript" src="tile.js"></script>
         <script type="text/javascript" src="player.js"></script>
+        <script type="text/javascript" src="monster.js"></script>
         <script type="text/javascript" src="movingtile.js"></script>
         <script type="text/javascript" src="rotatingtile.js"></script>
         <script type="text/javascript" src="ladder.js"></script>
@@ -33,6 +34,7 @@ and open the template in the editor.
             var context;
             var map;
             var player;
+            var monster;
             var prevTime = 0;
             var offsetY;
             var camera;
@@ -54,8 +56,8 @@ and open the template in the editor.
             
             function onLoadAtlas() {
                 camera = new Camera();
-                var tileWidth = 260; //150 * 1.5;
-                var tileHeight = 190; //150;
+                var tileWidth = window.innerWidth / 5; //150 * 1.5;
+                var tileHeight = window.innerHeight / 4; //150;
                 var mapWidth = 42;
                 var mapHeight = 10;
                 var matrix = [
@@ -110,6 +112,7 @@ and open the template in the editor.
                 canvas.height = canvasHeight;
                 map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera, pixelData);
                 player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, map);
+                monster = new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, map, player);
                 movingTile = new RotatingTile(camera, map, 2, 2);
                 movingTile2 = new MovingTile(camera, map);
                 player.movingTiles.push(movingTile);
@@ -120,8 +123,7 @@ and open the template in the editor.
             var fpsLimit = 0;
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               
-                
-                
+       
                 var maxFps = 1 / 35;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
@@ -145,6 +147,7 @@ and open the template in the editor.
                 camera.update(player);
                 movingTile.update(dt);
                 movingTile2.update(dt);
+                monster.update(dt);
                 player.update(dt);
                 
                 parallaxBg3.render(context);
@@ -155,7 +158,13 @@ and open the template in the editor.
                 movingTile.render(context);
                 movingTile2.render(context);
                 player.render(context);
-
+                monster.render(context);
+                
+                var fps = 1 / dt;
+                context.fillStyle = "#00ff00";
+                context.font = parseInt(map.tileHeight * 0.15) + "px Arial";
+                context.fillText(parseInt(fps), map.tileWidth * 0.15, map.tileHeight * 0.15);
+                
                 prevTime = time;
                 requestAnimationFrame(update);
             }
@@ -197,7 +206,7 @@ and open the template in the editor.
             }
         </script>
     </head>
-    <body>
+    <body style="margin:0; padding: 0">
         <canvas id="engine"></canvas>
     </body>
 </html>
