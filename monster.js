@@ -21,7 +21,7 @@ class Monster extends Entity {
         this.movingTile = null;
         this.targetFriction = new Vector(Math.pow(this.friction.x, 60), Math.pow(this.friction.y, 60));
         this.direction = new Vector(1, 0);
-        this.runAnimation = new Animation(4, 5);
+        this.runAnimation = new Animation(6, 2);
         this.attackAnimation = new Animation(5, 3);
         this.player = player;
         this.isAttacking = false;
@@ -210,9 +210,9 @@ class Monster extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        var image = this.direction.x > 0 ? "enemy_left" : "enemy";
+        var image = this.direction.x > 0 ? "enemy" : "enemy_left";
         if (this.isStanding) {
-            image = this.direction.x > 0 ? "enemy_left" : "enemy";
+            image = this.direction.x > 0 ? "enemy" : "enemy_left";
         } else if ((this.left || this.right) && !this.isJumping && !this.isAttacking) {
              image = "monster_run_" + (this.direction.x > 0 ? "" : "left_") + (this.runAnimation.getFrame() + 1);
         } else if (this.isAttacking) {
