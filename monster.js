@@ -23,6 +23,7 @@ class Monster extends Entity {
         this.direction = new Vector(1, 0);
         this.runAnimation = new Animation(6, 2);
         this.attackAnimation = new Animation(5, 3);
+        this.standingAnimation = new Animation(2, 2);
         this.player = player;
         this.isAttacking = false;
         this.attackingTime = 0;
@@ -63,6 +64,7 @@ class Monster extends Entity {
         
         this.attackAnimation.update(dt);
         this.runAnimation.update(dt);
+        this.standingAnimation.update(dt);
         if (this.isOnMovingTile) {
             if (this.movingTile.collide(this) && !this.isJumping) {
                 this.velocity.x = this.movingTile.translation.x;
@@ -210,13 +212,13 @@ class Monster extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        var image = this.direction.x > 0 ? "enemy" : "enemy_left";
+        var image = "enemy_" + (this.direction.x > 0 ? "" : "left_") + (this.standingAnimation.getFrame() + 1);
         if (this.isStanding) {
-            image = this.direction.x > 0 ? "enemy" : "enemy_left";
+            image = "enemy_" + (this.direction.x > 0 ? "" : "left_") + (this.standingAnimation.getFrame() + 1);
         } else if ((this.left || this.right) && !this.isJumping && !this.isAttacking) {
              image = "monster_run_" + (this.direction.x > 0 ? "" : "left_") + (this.runAnimation.getFrame() + 1);
         } else if (this.isAttacking) {
-            image = "enemy_attack_" + (this.direction.x > 0 ? "left_" : "") + (this.attackAnimation.getFrame() + 1);
+            image = "enemy_attack_" + (this.direction.x > 0 ? "" : "left_") + (this.attackAnimation.getFrame() + 1);
         }
         context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
     }
