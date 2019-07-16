@@ -29,24 +29,18 @@ and open the template in the editor.
         <script type="text/javascript" src="atlas.js"></script>
         <script type="text/javascript" src="animation.js"></script>
         <script type="text/javascript" src="cursor.js"></script>
+        <script type="text/javascript" src="levels/Level1.js"></script>
         <script type="text/javascript">
             var canvas;
             var context;
-            var map;
-            var player;
-            var monster;
             var prevTime = 0;
             var offsetY;
-            var camera;
             var cursor;
-            var movingTile, movingTile2;
-            var parallaxBg;
-            var parallaxBg2;
-            var parallaxBg3;
+            var currentLevel = null;
             
             window.onload = function() {
-              var assets = Assets.getInstance();
-              assets.loadAll(onLoadAssets, null);
+                var assets = Assets.getInstance();
+                assets.loadAll(onLoadAssets, null);
             };
             
             function onLoadAssets() {
@@ -55,28 +49,10 @@ and open the template in the editor.
             }
             
             function onLoadAtlas() {
-                camera = new Camera();
-                var tileWidth = window.innerWidth / 5; //150 * 1.5;
-                var tileHeight = window.innerHeight / 4; //150;
-                var mapWidth = 42;
-                var mapHeight = 10;
-                var matrix = [
-                    2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
-2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,3,
-2,0,0,0,0,0,0,0,0,0,0,0,4,12,4,4,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,3,
-2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,20,21,0,0,1,1,1,0,0,0,0,0,0,0,3,
-2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,20,41,42,21,0,0,0,0,0,0,0,0,0,0,0,3,
-2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,20,41,1,1,42,21,0,0,0,0,0,0,0,0,0,0,3,
-2,0,0,0,0,0,0,0,26,28,30,32,14,4,14,39,37,27,0,0,0,0,0,0,20,41,1,1,1,1,42,21,0,0,0,0,0,0,0,0,0,3,
-2,0,0,0,22,24,14,4,5,1,1,1,1,1,1,1,1,6,4,4,4,4,4,4,5,1,1,1,1,1,1,42,21,0,0,22,24,25,23,0,0,3,
-2,0,0,20,41,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,4,5,1,1,42,21,0,3,
-1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1];
-
+                var tileWidth = 15; //window.innerWidth / 5;
+                var tileHeight = 15; //window.innerHeight / 4;
                 var canvasWidth = tileWidth * 5;
                 var canvasHeight = tileHeight * 4;
-                parallaxBg = new ParallaxBg(camera, canvasWidth, canvasHeight, "background", 1.2, -canvasHeight * 0.05, false);
-                parallaxBg2 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background2", 1.0, -canvasHeight * 0.7, false);
-                parallaxBg3 = new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 1.1, true);
                 canvas = document.getElementById("engine");
                 context = canvas.getContext("2d");
                 offsetY = canvasHeight; 
@@ -110,20 +86,13 @@ and open the template in the editor.
                 var pixelData = context.getImageData(0, 0, assets.spritesAtlas.width, assets.spritesAtlas.height).data;
                 canvas.width = canvasWidth;
                 canvas.height = canvasHeight;
-                map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera, pixelData);
-                player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, map);
-                monster = new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, map, player);
-                movingTile = new RotatingTile(camera, map, 2, 2);
-                movingTile2 = new MovingTile(camera, map);
-                player.movingTiles.push(movingTile);
-                player.movingTiles.push(movingTile2);
+                currentLevel = new Level1(pixelData, tileWidth, tileHeight, canvasWidth, canvasHeight);
                 requestAnimationFrame(update);
             }
             
             var fpsLimit = 0;
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               
-       
                 var maxFps = 1 / 35;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
@@ -135,35 +104,22 @@ and open the template in the editor.
                     return;
                 }
                 
-                //console.log(1 / dt);
+                var fps = 1 / dt;
+                if (fps < 10) {
+                    prevTime = time;
+                    requestAnimationFrame(update);
+                    return;
+                }
+                
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 context.imageSmoothingEnabled = false;
                 
-                parallaxBg3.update(dt);
-                parallaxBg2.update(dt); 
-                parallaxBg.update(dt);
+                currentLevel.update(dt);
+                currentLevel.render(context);        
                 
-                map.update(dt);
-                camera.update(player);
-                movingTile.update(dt);
-                movingTile2.update(dt);
-                monster.update(dt);
-                player.update(dt);
-                
-                parallaxBg3.render(context);
-                parallaxBg2.render(context); 
-                parallaxBg.render(context);
-                
-                map.render(context, player);
-                movingTile.render(context);
-                movingTile2.render(context);
-                player.render(context);
-                monster.render(context);
-                
-                var fps = 1 / dt;
                 context.fillStyle = "#00ff00";
-                context.font = parseInt(map.tileHeight * 0.15) + "px Arial";
-                context.fillText(parseInt(fps), map.tileWidth * 0.15, map.tileHeight * 0.15);
+                context.font = parseInt(currentLevel.map.tileHeight * 0.15) + "px Arial";
+                context.fillText(parseInt(fps), currentLevel.map.tileWidth * 0.15, currentLevel.map.tileHeight * 0.15);
                 
                 prevTime = time;
                 requestAnimationFrame(update);
@@ -171,37 +127,37 @@ and open the template in the editor.
             
             function onKeyDown(key) {
                 if (key.keyCode === 38) {
-                    player.moveUp(true);
+                    currentLevel.player.moveUp(true);
                 }
                 if (key.keyCode === 37) {
-                    player.moveLeft(true);
+                    currentLevel.player.moveLeft(true);
                 }
                 if (key.keyCode === 39) {
-                    player.moveRight(true);
+                    currentLevel.player.moveRight(true);
                 }
                 if (key.keyCode === 40) {
-                    player.moveDown(true);
+                    currentLevel.player.moveDown(true);
                 }
                 if (key.keyCode === 32) {
-                    player.makeJump(true);
+                    currentLevel.player.makeJump(true);
                 }
             }
             
             function onKeyUp(key) {
                 if (key.keyCode === 38) {
-                    player.moveUp(false);
+                    currentLevel.player.moveUp(false);
                 }
                 if (key.keyCode === 37) {
-                    player.moveLeft(false);
+                    currentLevel.player.moveLeft(false);
                 }
                 if (key.keyCode === 39) {
-                    player.moveRight(false);
+                    currentLevel.player.moveRight(false);
                 }
                 if (key.keyCode === 40) {
-                    player.moveDown(false);
+                    currentLevel.player.moveDown(false);
                 }
                 if (key.keyCode === 32) {
-                    player.makeJump(false);
+                    currentLevel.player.makeJump(false);
                 }
             }
         </script>
