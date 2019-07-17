@@ -29,7 +29,14 @@ class Bullet extends Entity {
         if (this.time > 0.5) {
             this.dispose = true;
             for (var a = 0; a < 5; a++) {
-                this.level.particles.push(new Particle(this.position.x, this.position.y, this.level));
+                var particle = null;
+                if (this.level.particlesPooling.hasObjects()) {
+                    particle = this.level.particlesPooling.get();
+                    particle.resetState(this.position.x, this.position.y);
+                } else {
+                    particle = new Particle(this.position.x, this.position.y, this.level)
+                }
+                this.level.particles.push(particle);
             }
         }
     }
@@ -41,6 +48,17 @@ class Bullet extends Entity {
         newY += this.size.y * 0.5;
         context.fillStyle = "#ff0000";
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+    }
+    
+    resetState(x, y, radians) {
+        this.position.x = x;
+        this.position.y = y;
+        this.xDisplacement = Math.cos(radians); 
+        this.yDisplacement = Math.sin(radians);
+        this.position.x += this.map.tileWidth * 0.25 * this.xDisplacement;
+        this.position.y += this.map.tileWidth * 0.25 * this.yDisplacement;
+        this.dispose = false;
+        this.time = 0;
     }
 }
 

@@ -1,18 +1,18 @@
 class ObjectPooling {
     
-    constructor(size) {
-        this.size = size;
+    constructor(capacity) {
+        this.capacity = capacity;
         this.objects = [];
     }
     
     add(object) {
-        while (this.length() >= this.size) {
+        while (this.size() >= this.capacity) {
             this.objects.pop();
         }
         this.objects.push(object);
     }
     
-    length() {
+    size() {
         return this.objects.length;
     }
     
@@ -24,8 +24,7 @@ class ObjectPooling {
     }
     
     hasObjects() {
-        return this.objects.length > 0;
-    }
-    
+        return this.size() > 0;
+    } 
 }
 

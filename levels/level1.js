@@ -38,18 +38,23 @@ class Level1 {
         for (let movingTile of this.movingTiles) {
             this.player.movingTiles.push(movingTile);
         }
+        
+        this.bulletsPooling = new ObjectPooling(30);
+        this.particlesPooling = new ObjectPooling(100);
     }
     
     update(dt) { 
         for (var a = 0; a < this.bullets.length; a++) {
             this.bullets[a].update(dt);
             if (this.bullets[a].dispose) {
+                this.bulletsPooling.add(this.bullets[a]);
                 this.bullets.splice(a--, 1);
             }
         }
         for (var a = 0; a < this.particles.length; a++) {
             this.particles[a].update(dt);
             if (this.particles[a].dispose) {
+                this.particlesPooling.add(this.particles[a]);
                 this.particles.splice(a--, 1);
             }
         }

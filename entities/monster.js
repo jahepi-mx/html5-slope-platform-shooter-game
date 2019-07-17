@@ -56,7 +56,14 @@ class Monster extends Entity {
             if (this.attackingBloodTime > this.attackingBloodTimeLimit) {
                 this.attackingBloodTime = 0;
                 for (var a = 0; a < 3; a++) {
-                    this.level.particles.push(new Particle(this.position.x + (this.direction.x < 0 ? -this.size.x * 0.5 : this.size.x * 0.5), this.position.y + this.size.y * 0.5, this.level));
+                    var particle = null;
+                    if (this.level.particlesPooling.hasObjects()) {
+                        particle = this.level.particlesPooling.get();
+                        particle.resetState(this.position.x + (this.direction.x < 0 ? -this.size.x * 0.5 : this.size.x * 0.5), this.position.y + this.size.y * 0.5);
+                    } else {
+                        particle = new Particle(this.position.x + (this.direction.x < 0 ? -this.size.x * 0.5 : this.size.x * 0.5), this.position.y + this.size.y * 0.5, this.level);
+                    }
+                    this.level.particles.push(particle);
                 }
             }
         }

@@ -36,7 +36,14 @@ class Player extends Entity {
         this.gunRadiansDir = Math.atan2(this.cursor.position.y - (this.position.y - this.camera.position.y), this.cursor.position.x - (this.position.x - this.camera.position.x));
         this.shootTime += dt;
         if (this.shootTime >= this.shootTimeLimit && this.cursor.isPressed) {
-            this.level.bullets.push(new Bullet(this.position.x, this.position.y, this.level, this.gunRadiansDir));
+            var bullet = null;
+            if (this.level.bulletsPooling.hasObjects()) {
+                bullet = this.level.bulletsPooling.get();
+                bullet.resetState(this.position.x, this.position.y, this.gunRadiansDir);
+            } else {
+                bullet = new Bullet(this.position.x, this.position.y, this.level, this.gunRadiansDir);
+            }
+            this.level.bullets.push(bullet);
             this.shootTime = 0;
         }
         this.runAnimation.update(dt);

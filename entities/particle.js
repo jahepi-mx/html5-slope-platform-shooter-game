@@ -54,6 +54,34 @@ class Particle extends Entity {
         context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',0 ,' + this.alpha + ')';
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
     }
+    
+    resetState(x, y) {
+        var minSize = this.map.tileWidth * 0.02;
+        var maxSize = this.map.tileWidth * 0.1;
+        var size = Math.random() * (maxSize - minSize) + minSize;
+        this.size.x = size;
+        this.size.y = size; 
+        this.position.x = x;
+        this.position.y = y;
+        var maxVelocity = this.map.tileWidth * 4;
+        var minVelocity = this.map.tileHeight * 2;
+        var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+        this.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
+        this.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
+        var maxAcceleration = this.map.tileHeight * 10;
+        var minAcceleration = this.map.tileHeight * 7;
+        this.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
+        var friction = 0.9 + Math.random() * 0.1;
+        this.friction.y = friction;
+        this.friction.x = friction;
+        this.dispose = false;
+        this.time = 0;
+        this.r = 255;
+        this.g = parseInt(Math.random() * 255);
+        this.b = 0;
+        this.alpha = 1;
+        this.alphaSpeed = Math.random() * 3 + 1;
+    }
 }
 
 
