@@ -17,6 +17,8 @@ class Level1 {
             2,0,0,20,41,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,4,5,1,1,42,21,0,3,
             1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1];
 
+        this.bullets = [];
+        this.particles = [];
         this.parallaxBgs = [];
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 1.1, true));
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background2", 1.0, -canvasHeight * 0.7, false));
@@ -24,14 +26,14 @@ class Level1 {
         
         this.map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
         
-        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, this.map);
+        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, this);
         
         this.monsters = [];
-        this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, this.map, this.player));
+        this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, this));
         
         this.movingTiles = [];
-        this.movingTiles.push(new RotatingTile(this.camera, this.map, 2, 2));
-        this.movingTiles.push(new MovingTile(this.camera, this.map));
+        this.movingTiles.push(new RotatingTile(this.camera, this, 2, 2));
+        this.movingTiles.push(new MovingTile(this.camera, this));
         
         for (let movingTile of this.movingTiles) {
             this.player.movingTiles.push(movingTile);
@@ -39,6 +41,18 @@ class Level1 {
     }
     
     update(dt) { 
+        for (var a = 0; a < this.bullets.length; a++) {
+            this.bullets[a].update(dt);
+            if (this.bullets[a].dispose) {
+                this.bullets.splice(a--, 1);
+            }
+        }
+        for (var a = 0; a < this.particles.length; a++) {
+            this.particles[a].update(dt);
+            if (this.particles[a].dispose) {
+                this.particles.splice(a--, 1);
+            }
+        }
         for (let parallaxBg of this.parallaxBgs) {
             parallaxBg.update(dt);
         }       
@@ -64,6 +78,12 @@ class Level1 {
         this.player.render(context);
         for (let monster of this.monsters) {
             monster.render(context);
+        }
+        for (let bullet of this.bullets) {
+            bullet.render(context);
+        }
+        for (let particle of this.particles) {
+            particle.render(context);
         }
     }
 }

@@ -1,70 +1,45 @@
-class Monster extends Entity {
-    constructor(width, height, x, y, map, player) {
+class Player extends Entity {
+    
+    constructor(width, height, x, y, level) {
         super();
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance(); 
         this.size.x = this.atlas.sprites["stand"].width / this.atlas.sprites["stand"].height * height;
         this.size.y = height; 
-        this.map = map;
-        this.position.x = x * map.tileWidth + map.tileWidth * 0.5;
-        this.position.y = y * map.tileHeight + map.tileHeight * 0.5;
+        this.map = level.map;
+        this.level = level;
+        this.position.x = x * this.map.tileWidth + this.map.tileWidth * 0.5;
+        this.position.y = y * this.map.tileHeight + this.map.tileHeight * 0.5;
         this.friction.x = 0.8;
         this.friction.y = 1;
-        this.camera = map.camera;
-        this.jumpScalarVelocity = map.tileHeight * 0.8;
-        this.walkScalarVelocity = map.tileWidth * 1.2;
+        this.camera = this.map.camera;
+        this.jumpScalarVelocity = this.map.tileHeight * 0.8;
+        this.walkScalarVelocity = this.map.tileWidth * 1.5;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
-        this.acceleration.y = -map.tileHeight * 4;
+        this.acceleration.y = -this.map.tileHeight * 4;
         this.isJumping = false;
         this.left = this.right = this.up = false, this.down = false, this.jump = false;
         this.isOnMovingTile = false;
         this.movingTile = null;
+        this.movingTiles = [];
+        this.isOnLadder = false;
         this.targetFriction = new Vector(Math.pow(this.friction.x, 60), Math.pow(this.friction.y, 60));
         this.direction = new Vector(1, 0);
-        this.runAnimation = new Animation(6, 2);
-        this.attackAnimation = new Animation(5, 3);
-        this.standingAnimation = new Animation(2, 2);
-        this.player = player;
-        this.isAttacking = false;
-        this.attackingTime = 0;
-        this.attackingTimeLimit = 0.5;
-        this.isStanding = false;
+        this.runAnimation = new Animation(7, 3);
+        this.cursor = Cursor.getInstance();
+        this.shootTime = 0;
+        this.shootTimeLimit = 0.1;
+        this.gunRadiansDir = 0;
     }
     
     update(dt) {
-        var diffVector = this.position.sub(this.player.position);
-        if (Math.abs(diffVector.x) <= this.size.x * 0.5 && !this.collide(this.player)) {
-            this.isStanding = true;
-        } else {
-            this.isStanding = false;
+        this.gunRadiansDir = Math.atan2(this.cursor.position.y - (this.position.y - this.camera.position.y), this.cursor.position.x - (this.position.x - this.camera.position.x));
+        this.shootTime += dt;
+        if (this.shootTime >= this.shootTimeLimit && this.cursor.isPressed) {
+            this.level.bullets.push(new Bullet(this.position.x, this.position.y, this.level, this.gunRadiansDir));
+            this.shootTime = 0;
         }
-        
-        if (Math.abs(diffVector.x) <= this.size.x * 0.5  && this.collide(this.player)) {
-            this.isAttacking = true;
-            this.attackingTime = 0;
-        } else {
-            this.attackingTime += dt;
-            if (this.attackingTime >= this.attackingTimeLimit) {
-                this.isAttacking = false; 
-            }
-        }
-        
-        if (!this.isAttacking && !this.isStanding) {
-            if (diffVector.x < 0) {
-                this.moveLeft(true);
-                this.moveRight(false);
-            } else {
-                this.moveLeft(false);
-                this.moveRight(true);
-            }
-        } else {
-            this.moveLeft(false);
-            this.moveRight(false);
-        }
-        
-        this.attackAnimation.update(dt);
         this.runAnimation.update(dt);
-        this.standingAnimation.update(dt);
         if (this.isOnMovingTile) {
             if (this.movingTile.collide(this) && !this.isJumping) {
                 this.velocity.x = this.movingTile.translation.x;
@@ -98,7 +73,13 @@ class Monster extends Entity {
             if (!this.isJumping) {
                 this.velocity.y += this.jumpScalarVelocity * 4;
                 this.isJumping = true;
+                this.isOnLadder = false;
             }
+        }
+        
+        if (this.isOnLadder) {
+            var velY = this.up ? this.walkScalarVelocity * 0.6 : this.down ? -this.walkScalarVelocity * 0.6 : 0;
+            this.velocity.y = velY;
         }
 
         var tmpVelocity = this.velocity.mulByScalar(dt);
@@ -115,7 +96,9 @@ class Monster extends Entity {
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
                 if (!tile.walkable && this.collide(tile)) {   
-                    collided = true;
+                    if ((this.isOnLadder && tile.type === WALL_TILE) || !this.isOnLadder) {
+                        collided = true;
+                    }
                 }
             }
         }
@@ -129,6 +112,9 @@ class Monster extends Entity {
         currentX = parseInt(this.position.x / this.map.tileWidth);
         currentY = parseInt(this.position.y / this.map.tileHeight);
         collided = false;
+        var collidedWall = false;
+        var collidedTopLadder = null;
+        var isOnLadderTmp = false;
         
         var hitFloor = false;
         var precision = 10;
@@ -139,6 +125,17 @@ class Monster extends Entity {
         // This precision steps are for detecing collision on low framerate instances.
         for (var a = 0; a < precision; a++) {            
             this.position.y += step;
+            if (!this.isOnMovingTile) {
+                for (let movingTile of this.movingTiles) {
+                    if (movingTile.collideFromFalling(this)) {
+                        if (!collidedMovingTile) {
+                            collidedMovingTile = true;
+                            tmpPosY = this.position.y;
+                            this.movingTile = movingTile;
+                        }
+                    }
+                }
+            }
             
             for (let move of this.moves) {
                 var newX = currentX + move[0];
@@ -146,12 +143,20 @@ class Monster extends Entity {
                 if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                     var tile = this.map.tiles[newY * this.map.mapWidth + newX];
                     if (!tile.walkable && this.collide(tile)) {
-                        collided = true;
+                        if ((this.isOnLadder && tile.type === WALL_TILE) || !this.isOnLadder) {
+                            collided = true;
+                        }
                         this.velocity.y = 0;
                         // If the player hits the floor and not the ceiling
                         if (this.position.y - tmpY < 0) {
                             this.isJumping = false;
                             hitFloor = true;
+                        }
+                        if (tile.type === WALL_TILE) {
+                            collidedWall = true;
+                        }
+                        if (tile.type === TOP_LADDER_TILE) {
+                            collidedTopLadder = tile;
                         }
                     }
                     
@@ -180,8 +185,26 @@ class Monster extends Entity {
                             }
                         }
                     }
+                    
+                    if (tile.type === LADDER_TILE && !this.isJumping && this.collide(tile)) {
+                        if (this.isOnLadder || (this.up && this.velocity.y >= 0)) {
+                            isOnLadderTmp = true;
+                        }
+                    }
                 }
             }
+        }
+        this.isOnLadder = isOnLadderTmp;
+        if (!collidedWall && collidedTopLadder !== null && (this.up || this.down || this.left || this.right)) {
+            this.isOnLadder = false;
+            var prevYPos = this.position.y;
+            this.position.y = tmpY;
+            var diffLadder = this.position.y - collidedTopLadder.position.y;
+            if (diffLadder >= 0 && this.down || diffLadder < 0 && this.up || collidedTopLadder.collide(this)) {
+                collided = false;
+                this.isOnLadder = true;
+            }
+            this.position.y = prevYPos;
         }
         
         if (!collided && collidedMovingTile) {
@@ -198,6 +221,10 @@ class Monster extends Entity {
             this.position.y = slopeTile.getNewY(this);
         }
         
+        if (this.isOnLadder) {
+            hitFloor = true;
+        }
+        
         if (!hitFloor) {
             this.velocity.addThis(this.acceleration.mulByScalar(dt));
         }
@@ -212,15 +239,17 @@ class Monster extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        var image = "enemy_" + (this.direction.x > 0 ? "" : "left_") + (this.standingAnimation.getFrame() + 1);
-        if (this.isStanding) {
-            image = "enemy_" + (this.direction.x > 0 ? "" : "left_") + (this.standingAnimation.getFrame() + 1);
-        } else if ((this.left || this.right) && !this.isJumping && !this.isAttacking) {
-             image = "monster_run_" + (this.direction.x > 0 ? "" : "left_") + (this.runAnimation.getFrame() + 1);
-        } else if (this.isAttacking) {
-            image = "enemy_attack_" + (this.direction.x > 0 ? "" : "left_") + (this.attackAnimation.getFrame() + 1);
+        var image = this.direction.x > 0 ? "stand" : "stand_left";
+        var gunImage = this.direction.x > 0 ? "gun" : "gun_left";
+        if ((this.left || this.right) && !this.isJumping && !this.isOnLadder) {
+             image = "run_" + (this.direction.x > 0 ? "" : "left_") + (this.runAnimation.getFrame() + 1);
         }
         context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.save();
+        context.translate(newX + this.size.x * 0.5, offsetY - (newY - this.size.y * 0.5));
+        context.rotate(-this.gunRadiansDir + (this.direction.x > 0 ? 0 : Math.PI));
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[gunImage].x, this.atlas.sprites[gunImage].y, this.atlas.sprites[gunImage].width, this.atlas.sprites[gunImage].height, -this.size.x * 0.5, -this.size.y * 0.5, this.size.x, this.size.y);
+        context.restore();
     }
     
     moveLeft(bool) {
@@ -231,8 +260,15 @@ class Monster extends Entity {
         this.right = bool;
     }
     
+    moveUp(bool) {
+        this.up = bool; 
+    }
+    
+    moveDown(bool) {
+        this.down = bool; 
+    }
+    
     makeJump(bool) {
         this.jump = bool;
-    }
+    }   
 }
-
