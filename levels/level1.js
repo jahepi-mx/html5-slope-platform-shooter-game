@@ -25,6 +25,7 @@ class Level1 {
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background", 1.2, -canvasHeight * 0.05, false));
         
         this.map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
+        this.camera.setup(this.map);
         
         this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 1, this);
         
@@ -43,7 +44,15 @@ class Level1 {
         this.particlesPooling = new ObjectPooling(100);
     }
     
-    update(dt) { 
+    update(dt) {
+        // Example for offsetting the camera on the X axis. 
+        /*
+        var tile = this.map.tiles[4 * this.map.mapWidth + 13];
+        if (this.player.collide(tile)) {
+            this.camera.xOffset = this.map.tileWidth * 13;
+            this.camera.minX = this.camera.xOffset + this.map.canvasWidth * 0.5;
+        }
+        */
         for (var a = 0; a < this.bullets.length; a++) {
             this.bullets[a].update(dt);
             if (this.bullets[a].dispose) {
@@ -66,8 +75,11 @@ class Level1 {
         for (let movingTile of this.movingTiles) {
             movingTile.update(dt);
         }
-        for (let monster of this.monsters) {
-            monster.update(dt);
+        for (var a = 0; a < this.monsters.length; a++) {
+            this.monsters[a].update(dt);
+            if (this.monsters[a].dispose) {
+                this.monsters.splice(a--, 1);
+            }
         }
         this.player.update(dt);
     }

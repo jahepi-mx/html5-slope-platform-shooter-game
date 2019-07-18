@@ -20,13 +20,14 @@ class Bullet extends Entity {
         this.position.y += this.map.tileWidth * 0.25 * this.yDisplacement;
         this.dispose = false;
         this.time = 0;
+        this.isReadyToDispose = false;
     }
     
     update(dt) {
         this.time += dt;
         this.position.x += this.velocity.x * this.xDisplacement * dt;
         this.position.y += this.velocity.x * this.yDisplacement * dt;
-        if (this.time > 0.5) {
+        if (this.time > 0.8 || this.isReadyToDispose) {
             this.dispose = true;
             for (var a = 0; a < 5; a++) {
                 var particle = null;
@@ -46,7 +47,7 @@ class Bullet extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        context.fillStyle = "#ff0000";
+        context.fillStyle = "#EF7F1A";
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
     }
     
@@ -59,6 +60,7 @@ class Bullet extends Entity {
         this.position.y += this.map.tileWidth * 0.25 * this.yDisplacement;
         this.dispose = false;
         this.time = 0;
+        this.isReadyToDispose = false;
     }
 }
 

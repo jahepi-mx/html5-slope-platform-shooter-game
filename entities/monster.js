@@ -32,9 +32,49 @@ class Monster extends Entity {
         this.attackingBloodTime = 0;
         this.attackingBloodTimeLimit = 0.5;
         this.isStanding = false;
+        this.dispose = false;
+        this.life = 5;
     }
     
     update(dt) {
+        
+        for (let bullet of this.level.bullets) {
+            if (this.collide(bullet)) {
+                bullet.isReadyToDispose = true;
+                this.life--;
+                break;
+            }
+        }
+        
+        if (this.life <= 0) {
+            this.dispose = true;
+            for (var a = 0; a < 10; a++) {
+                var particle = null;
+                if (this.level.particlesPooling.hasObjects()) {
+                    particle = this.level.particlesPooling.get();
+                    particle.resetState(this.position.x, this.position.y);
+                } else {
+                    particle = new Particle(this.position.x, this.position.y, this.level);
+                }
+                particle.r = 255;
+                particle.g = 0;
+                var minSize = this.map.tileWidth * 0.08;
+                var maxSize = this.map.tileWidth * 0.16;
+                var size = Math.random() * (maxSize - minSize) + minSize;
+                var maxVelocity = this.map.tileWidth * 2;
+                var minVelocity = this.map.tileHeight * 1;
+                var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+                particle.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
+                particle.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
+                var maxAcceleration = this.map.tileHeight * 8;
+                var minAcceleration = this.map.tileHeight * 4;
+                particle.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
+                particle.size.x = size;
+                particle.size.y = size; 
+                this.level.particles.push(particle);
+            }
+        }
+        
         var diffVector = this.position.sub(this.player.position);
         if (Math.abs(diffVector.x) <= this.size.x * 0.5 && !this.collide(this.player)) {
             this.isStanding = true;
@@ -63,6 +103,21 @@ class Monster extends Entity {
                     } else {
                         particle = new Particle(this.position.x + (this.direction.x < 0 ? -this.size.x * 0.5 : this.size.x * 0.5), this.position.y + this.size.y * 0.5, this.level);
                     }
+                    particle.r = 255;
+                    particle.g = 0;
+                    var minSize = this.map.tileWidth * 0.08;
+                    var maxSize = this.map.tileWidth * 0.16;
+                    var size = Math.random() * (maxSize - minSize) + minSize;
+                    var maxVelocity = this.map.tileWidth * 2;
+                    var minVelocity = this.map.tileHeight * 1;
+                    var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+                    particle.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
+                    particle.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
+                    var maxAcceleration = this.map.tileHeight * 8;
+                    var minAcceleration = this.map.tileHeight * 4;
+                    particle.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
+                    particle.size.x = size;
+                    particle.size.y = size; 
                     this.level.particles.push(particle);
                 }
             }

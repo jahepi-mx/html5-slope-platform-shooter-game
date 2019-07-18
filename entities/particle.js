@@ -5,7 +5,7 @@ class Particle extends Entity {
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
         var minSize = this.map.tileWidth * 0.02;
-        var maxSize = this.map.tileWidth * 0.1;
+        var maxSize = this.map.tileWidth * 0.06;
         var size = Math.random() * (maxSize - minSize) + minSize;
         this.size.x = size;
         this.size.y = size; 
@@ -30,11 +30,12 @@ class Particle extends Entity {
         this.b = 0;
         this.alpha = 1;
         this.alphaSpeed = Math.random() * 3 + 1;
+        this.timeLimit = 1;
     }
     
     update(dt) {
         this.time += dt;
-        if (this.time > 1) {
+        if (this.time > this.timeLimit) {
             this.dispose = true;
         }
         this.alpha -= dt * this.alphaSpeed;
