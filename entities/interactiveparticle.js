@@ -1,9 +1,13 @@
-class InteractiveParticle extends Particle {
+class InteractiveParticle extends Entity {
     
-    constructor(x, y, level) {
-        super(x, y, level);
+    constructor(x, y, level, image) {
+        super();
+        this.map = level.map;
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance();
+        this.camera = this.map.camera;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
-        this.timeLimit = 5;
+        this.resetState(x, y, image);
     }
     
     update(dt) {
@@ -79,6 +83,55 @@ class InteractiveParticle extends Particle {
         
         this.velocity.addThis(this.acceleration.mulByScalar(dt));
         this.velocity.mulThis(this.friction);
+    }
+    
+    render(context) {
+        var newX = this.position.x - this.camera.position.x;
+        var newY = this.position.y - this.camera.position.y;
+        newX -= this.size.x * 0.5;
+        newY += this.size.y * 0.5;
+        
+        if (this.image !== "") {
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        } else {
+            context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',0 ,' + this.alpha + ')';
+            context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        }
+    }
+    
+    resetState(x, y, image) {
+        this.image = image;  
+        if (this.image !== "") {
+            var ratio = this.atlas.sprites[this.image].width / this.atlas.sprites[this.image].height;
+            this.size.x = this.map.tileWidth * 0.25;
+            this.size.y = this.size.x / ratio;
+        } else {
+            var minSize = this.map.tileWidth * 0.03;
+            var maxSize = this.map.tileWidth * 0.10;
+            var size = Math.random() * (maxSize - minSize) + minSize;
+            this.size.x = size;
+            this.size.y = size; 
+        }
+        this.position.x = x;
+        this.position.y = y;
+        this.r = 255;
+        this.g = 0;
+        this.b = 0;
+        this.friction.x = 0.95;
+        this.friction.y = 0.95;
+        var maxVelocity = this.map.tileWidth * 2;
+        var minVelocity = this.map.tileHeight * 1;
+        var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
+        this.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
+        this.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
+        var maxAcceleration = this.map.tileHeight * 4;
+        var minAcceleration = this.map.tileHeight * 2;
+        this.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
+        this.dispose = false;
+        this.time = 0;
+        this.alpha = 1;
+        this.alphaSpeed = Math.random() * 3 + 1;
+        this.timeLimit = 5;
     }
     
 }

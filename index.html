@@ -128,16 +128,16 @@ and open the template in the editor.
             }
             
             function onKeyDown(key) {
-                if (key.keyCode === 38) {
+                if (key.keyCode === 87) {
                     currentLevel.player.moveUp(true);
                 }
-                if (key.keyCode === 37) {
+                if (key.keyCode === 65) {
                     currentLevel.player.moveLeft(true);
                 }
-                if (key.keyCode === 39) {
+                if (key.keyCode === 68) {
                     currentLevel.player.moveRight(true);
                 }
-                if (key.keyCode === 40) {
+                if (key.keyCode === 83) {
                     currentLevel.player.moveDown(true);
                 }
                 if (key.keyCode === 32) {
@@ -146,16 +146,16 @@ and open the template in the editor.
             }
             
             function onKeyUp(key) {
-                if (key.keyCode === 38) {
+                if (key.keyCode === 87) {
                     currentLevel.player.moveUp(false);
                 }
-                if (key.keyCode === 37) {
+                if (key.keyCode === 65) {
                     currentLevel.player.moveLeft(false);
                 }
-                if (key.keyCode === 39) {
+                if (key.keyCode === 68) {
                     currentLevel.player.moveRight(false);
                 }
-                if (key.keyCode === 40) {
+                if (key.keyCode === 83) {
                     currentLevel.player.moveDown(false);
                 }
                 if (key.keyCode === 32) {

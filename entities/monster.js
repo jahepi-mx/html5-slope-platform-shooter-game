@@ -34,6 +34,7 @@ class Monster extends Entity {
         this.isStanding = false;
         this.dispose = false;
         this.life = 5;
+        this.bodyParts = ["enemy_head", "enemy_legs", "enemy_torso", "enemy_arm", "enemy_arm"];
     }
     
     update(dt) {
@@ -50,27 +51,22 @@ class Monster extends Entity {
             this.dispose = true;
             for (var a = 0; a < 10; a++) {
                 var particle = null;
-                if (this.level.particlesPooling.hasObjects()) {
-                    particle = this.level.particlesPooling.get();
-                    particle.resetState(this.position.x, this.position.y);
+                if (this.level.interactiveParticlesPooling.hasObjects()) {
+                    particle = this.level.interactiveParticlesPooling.get();
+                    particle.resetState(this.position.x, this.position.y, "");
                 } else {
-                    particle = new Particle(this.position.x, this.position.y, this.level);
+                    particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "");
                 }
-                particle.r = 255;
                 particle.g = 0;
-                var minSize = this.map.tileWidth * 0.08;
-                var maxSize = this.map.tileWidth * 0.16;
-                var size = Math.random() * (maxSize - minSize) + minSize;
-                var maxVelocity = this.map.tileWidth * 2;
-                var minVelocity = this.map.tileHeight * 1;
-                var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
-                particle.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
-                particle.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
-                var maxAcceleration = this.map.tileHeight * 8;
-                var minAcceleration = this.map.tileHeight * 4;
-                particle.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
-                particle.size.x = size;
-                particle.size.y = size; 
+                this.level.particles.push(particle);
+            }
+            for (let bodyPart of this.bodyParts) {
+                if (this.level.interactiveParticlesPooling.hasObjects()) {
+                    particle = this.level.interactiveParticlesPooling.get();
+                    particle.resetState(this.position.x, this.position.y, bodyPart);
+                } else {
+                    particle = new InteractiveParticle(this.position.x, this.position.y, this.level, bodyPart);
+                }
                 this.level.particles.push(particle);
             }
         }
@@ -103,19 +99,10 @@ class Monster extends Entity {
                     } else {
                         particle = new Particle(this.position.x + (this.direction.x < 0 ? -this.size.x * 0.5 : this.size.x * 0.5), this.position.y + this.size.y * 0.5, this.level);
                     }
-                    particle.r = 255;
                     particle.g = 0;
-                    var minSize = this.map.tileWidth * 0.08;
-                    var maxSize = this.map.tileWidth * 0.16;
+                    var minSize = this.map.tileWidth * 0.07;
+                    var maxSize = this.map.tileWidth * 0.1;
                     var size = Math.random() * (maxSize - minSize) + minSize;
-                    var maxVelocity = this.map.tileWidth * 2;
-                    var minVelocity = this.map.tileHeight * 1;
-                    var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
-                    particle.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
-                    particle.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
-                    var maxAcceleration = this.map.tileHeight * 8;
-                    var minAcceleration = this.map.tileHeight * 4;
-                    particle.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
                     particle.size.x = size;
                     particle.size.y = size; 
                     this.level.particles.push(particle);

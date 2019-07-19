@@ -42,6 +42,7 @@ class Level1 {
         
         this.bulletsPooling = new ObjectPooling(30);
         this.particlesPooling = new ObjectPooling(100);
+        this.interactiveParticlesPooling = new ObjectPooling(100);
     }
     
     update(dt) {
@@ -63,7 +64,11 @@ class Level1 {
         for (var a = 0; a < this.particles.length; a++) {
             this.particles[a].update(dt);
             if (this.particles[a].dispose) {
-                this.particlesPooling.add(this.particles[a]);
+                if (this.particles[a] instanceof InteractiveParticle) {
+                    this.interactiveParticlesPooling.add(this.particles[a]);
+                } else {
+                    this.particlesPooling.add(this.particles[a]);
+                }
                 this.particles.splice(a--, 1);
             }
         }
