@@ -3,26 +3,26 @@ class Level1 {
     constructor(pixelData, tileWidth, tileHeight, canvasWidth, canvasHeight) {
         
         this.camera = new Camera();
-        var mapWidth = 42;
+        var mapWidth = 48;
         var mapHeight = 10;
         var matrix = [
-            2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
-            2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,3,
-            2,0,0,0,0,0,0,0,0,0,0,0,4,12,4,4,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,3,
-            2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,20,21,0,0,1,1,1,0,0,0,0,0,0,0,3,
-            2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,20,41,42,21,0,0,0,0,0,0,0,0,0,0,0,3,
-            2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,20,41,1,1,42,21,0,0,0,0,0,0,0,0,0,0,3,
-            2,0,0,0,0,0,0,0,26,28,30,32,14,4,14,39,37,27,0,0,0,0,0,0,20,41,1,1,1,1,42,21,0,0,0,0,0,0,0,0,0,3,
-            2,0,0,0,22,24,14,4,5,1,1,1,1,1,1,1,1,6,4,4,4,4,4,4,5,1,1,1,1,1,1,42,21,0,0,22,24,25,23,0,0,3,
-            2,0,0,20,41,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,4,5,1,1,42,21,0,3,
-            1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1];
+            2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,0,0,0,0,0,0,0,0,4,12,4,4,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,20,21,0,0,1,1,1,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,20,41,42,21,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,20,41,1,1,42,21,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,0,0,0,0,26,28,30,32,14,4,14,39,37,27,0,0,0,0,0,0,20,41,1,1,1,1,42,21,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
+2,0,0,0,22,24,14,4,5,1,1,1,1,1,1,1,1,6,4,4,4,4,4,4,5,1,1,1,1,1,1,42,21,0,0,22,24,25,23,0,0,0,0,0,0,0,0,1,
+2,0,0,20,41,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,4,5,1,1,42,21,0,1,1,0,0,0,0,1,
+1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1,1,1,1,1,1,1];
 
         this.bullets = [];
         this.particles = [];
         this.parallaxBgs = [];
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 1.1, true));
-        this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background2", 1.0, -canvasHeight * 0.7, false));
-        this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background", 1.2, -canvasHeight * 0.05, false));
+        this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background2", 1, -canvasHeight * 0.7, false));
+        this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background", 1.1, -canvasHeight * 0.05, false));
         
         this.map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
         this.camera.setup(this.map);
@@ -43,6 +43,10 @@ class Level1 {
         this.bulletsPooling = new ObjectPooling(30);
         this.particlesPooling = new ObjectPooling(100);
         this.interactiveParticlesPooling = new ObjectPooling(100);
+        
+        this.isCinematicOn = false;
+        this.xOffsetTo = this.map.tileWidth * 42;
+        this.targetTile = this.map.tiles[1 * this.map.mapWidth + 42];
     }
     
     update(dt) {
@@ -54,6 +58,23 @@ class Level1 {
             this.camera.minX = this.camera.xOffset + this.map.canvasWidth * 0.5;
         }
         */
+        if (this.targetTile !== null && this.player.position.x >= this.targetTile.position.x && !this.isCinematicOn) {
+            this.isCinematicOn = true;
+            this.targetTile = null;
+            var xLeft = this.player.position.x - this.map.canvasWidth * 0.5;
+            var xDiff = this.xOffsetTo - xLeft;
+            this.camera.xOffset = this.xOffsetTo - xDiff;
+        }
+       
+        if (this.isCinematicOn) {
+            this.camera.xOffset += (this.xOffsetTo - this.camera.xOffset) * dt * 0.75;
+            this.camera.minX = this.xOffsetTo + this.map.canvasWidth * 0.5;
+            if (Math.abs(this.camera.xOffset - this.xOffsetTo) <= 10) {
+                this.camera.xOffset = this.xOffsetTo;
+                this.isCinematicOn = false;
+            }
+        }
+       
         for (var a = 0; a < this.bullets.length; a++) {
             this.bullets[a].update(dt);
             if (this.bullets[a].dispose) {
@@ -86,7 +107,10 @@ class Level1 {
                 this.monsters.splice(a--, 1);
             }
         }
-        this.player.update(dt);
+        
+        if (!this.isCinematicOn) {
+            this.player.update(dt);
+        }
     }
     
     render(context) {

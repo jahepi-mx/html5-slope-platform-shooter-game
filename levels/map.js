@@ -87,7 +87,7 @@ class Map {
     }
     
     render(context, player) {
-        var marginOfError = 2;
+        var marginOfError = 3;
         var offsetX = parseInt(this.canvasWidth / this.tileWidth * 0.5) + marginOfError;
         var offsetY = parseInt(this.canvasHeight / this.tileHeight * 0.5) + marginOfError;
         var playerX = parseInt(player.position.x / this.tileWidth);
