@@ -18,6 +18,7 @@ class Level1 {
 1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1,1,1,1,1,1,1];
 
         this.bullets = [];
+        this.enemyBullets = [];
         this.particles = [];
         this.parallaxBgs = [];
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background3", 1, -canvasHeight * 1.1, true));
@@ -31,6 +32,7 @@ class Level1 {
         
         this.monsters = [];
         this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, this));
+        this.monsters.push(new FlyingMonster(2, 2, this));
         
         this.movingTiles = [];
         this.movingTiles.push(new RotatingTile(this.camera, this, 2, 2));
@@ -82,6 +84,13 @@ class Level1 {
                 this.bullets.splice(a--, 1);
             }
         }
+        for (var a = 0; a < this.enemyBullets.length; a++) {
+            this.enemyBullets[a].update(dt);
+            if (this.enemyBullets[a].dispose) {
+                this.bulletsPooling.add(this.enemyBullets[a]);
+                this.enemyBullets.splice(a--, 1);
+            }
+        }
         for (var a = 0; a < this.particles.length; a++) {
             this.particles[a].update(dt);
             if (this.particles[a].dispose) {
@@ -126,6 +135,9 @@ class Level1 {
             monster.render(context);
         }
         for (let bullet of this.bullets) {
+            bullet.render(context);
+        }
+        for (let bullet of this.enemyBullets) {
             bullet.render(context);
         }
         for (let particle of this.particles) {
