@@ -54,20 +54,22 @@ class FlyingMonster extends Entity {
         }
         if (this.shootTime >= this.shootTimeLimit) {
             var diffVector = this.position.sub(this.player.position);
-            var radians = Math.atan2(diffVector.y, diffVector.x);
-            var bullet = null;
-            if (this.level.bulletsPooling.hasObjects()) {
-                bullet = this.level.bulletsPooling.get();
-                bullet.resetState(this.position.x, this.position.y, radians);
-            } else {
-                bullet = new Bullet(this.position.x, this.position.y, this.level, radians);
+            if (diffVector.lengthWithOutSqrt() <= this.map.tileWidth * this.map.tileWidth) {
+                var radians = Math.atan2(diffVector.y, diffVector.x);
+                var bullet = null;
+                if (this.level.bulletsPooling.hasObjects()) {
+                    bullet = this.level.bulletsPooling.get();
+                    bullet.resetState(this.position.x, this.position.y, radians);
+                } else {
+                    bullet = new Bullet(this.position.x, this.position.y, this.level, radians);
+                }
+                bullet.velocity.x = this.map.tileWidth * 2;
+                bullet.disposeTime = 1.5;
+                bullet.setImage("bullet");
+                bullet.size.x = this.map.tileWidth * 0.15;
+                bullet.size.y = this.map.tileWidth * 0.15; 
+                this.level.enemyBullets.push(bullet);
             }
-            bullet.velocity.x = this.map.tileWidth * 2;
-            bullet.disposeTime = 1.5;
-            bullet.setImage("bullet");
-            bullet.size.x = this.map.tileWidth * 0.15;
-            bullet.size.y = this.map.tileWidth * 0.15; 
-            this.level.enemyBullets.push(bullet);
             this.shootTime = 0;
         }
         if (this.changeTime >= this.changeTimeLimit) {
