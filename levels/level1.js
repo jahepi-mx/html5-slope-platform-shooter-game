@@ -33,6 +33,7 @@ class Level1 {
         this.monsters = [];
         this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, this));
         this.monsters.push(new FlyingMonster(2, 2, this));
+        this.monsters.push(new Boss(46, 1, this));
         
         this.movingTiles = [];
         this.movingTiles.push(new RotatingTile(this.camera, this, 2, 2));
