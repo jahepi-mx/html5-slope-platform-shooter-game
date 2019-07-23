@@ -28,7 +28,7 @@ class Level1 {
         this.map = new Map(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
         this.camera.setup(this.map);
         
-        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 40, 1, this);
+        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 43, 1, this);
         
         this.monsters = [];
         this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 34, 2, this));
