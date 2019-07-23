@@ -94,7 +94,7 @@ class InteractiveParticle extends Entity {
         if (this.image !== "") {
             context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, offsetY - newY, this.size.x, this.size.y);
         } else {
-            context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',0 ,' + this.alpha + ')';
+            context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',' + this.b + ',' + this.alpha + ')';
             context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
         }
     }

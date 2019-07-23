@@ -28,7 +28,7 @@ class Particle extends Entity {
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',0 ,' + this.alpha + ')';
+        context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',' + this.b + ',' + this.alpha + ')';
         context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
     }
     
