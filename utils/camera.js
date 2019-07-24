@@ -33,6 +33,14 @@ class Camera {
             this.position.y = 0;
         }
     }
+    
+    resetState() {
+        this.minX = 0;
+        this.maxX = 0;
+        this.minY = 0;
+        this.maxY = 0;
+        this.xOffset = 0;
+    }
 }
 
 

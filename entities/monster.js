@@ -91,6 +91,7 @@ class Monster extends Entity {
             this.attackingBloodTime += dt;
             if (this.attackingBloodTime > this.attackingBloodTimeLimit) {
                 this.attackingBloodTime = 0;
+                this.player.damage(1);
                 for (var a = 0; a < 3; a++) {
                     var particle = null;
                     if (this.level.particlesPooling.hasObjects()) {

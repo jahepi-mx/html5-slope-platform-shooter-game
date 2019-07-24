@@ -3,13 +3,14 @@ class Player extends Entity {
     constructor(width, height, x, y, level) {
         super();
         this.atlas = Atlas.getInstance();
-        this.assets = Assets.getInstance(); 
+        this.assets = Assets.getInstance();
         this.size.x = this.atlas.sprites["stand"].width / this.atlas.sprites["stand"].height * height;
         this.size.y = height; 
         this.map = level.map;
         this.level = level;
         this.position.x = x * this.map.tileWidth + this.map.tileWidth * 0.5;
         this.position.y = y * this.map.tileHeight + this.map.tileHeight * 0.5;
+        this.positionCopy = this.position.clone();
         this.friction.x = 0.8;
         this.friction.y = 1;
         this.camera = this.map.camera;
@@ -17,22 +18,32 @@ class Player extends Entity {
         this.walkScalarVelocity = this.map.tileWidth * 1.5;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
         this.acceleration.y = -this.map.tileHeight * 4;
-        this.isJumping = false;
-        this.left = this.right = this.up = false, this.down = false, this.jump = false;
-        this.isOnMovingTile = false;
-        this.movingTile = null;
         this.movingTiles = [];
-        this.isOnLadder = false;
         this.targetFriction = new Vector(Math.pow(this.friction.x, 60), Math.pow(this.friction.y, 60));
-        this.direction = new Vector(1, 0);
         this.runAnimation = new Animation(7, 3);
         this.cursor = Cursor.getInstance();
-        this.shootTime = 0;
-        this.shootTimeLimit = 0.1;
-        this.gunRadiansDir = 0;
+        this.resetState();
     }
     
     update(dt) {
+        if (this.life <= 0) {
+            for (; this.bloodDeadCounter < 10; this.bloodDeadCounter++) {
+                var particle = null;
+                if (this.level.interactiveParticlesPooling.hasObjects()) {
+                    particle = this.level.interactiveParticlesPooling.get();
+                    particle.resetState(this.position.x, this.position.y, "");
+                } else {
+                    particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "");
+                }
+                particle.g = 0;
+                this.level.particles.push(particle);
+            }
+            this.deadTime += dt;
+            if (this.deadTime >= this.deadTimeLimit) {
+                this.dispose = true;
+            }
+            return;
+        }
         this.gunRadiansDir = Math.atan2(this.cursor.position.y - (this.position.y - this.camera.position.y), this.cursor.position.x - (this.position.x - this.camera.position.x));
         this.shootTime += dt;
         if (this.shootTime >= this.shootTimeLimit && this.cursor.isPressed) {
@@ -121,8 +132,7 @@ class Player extends Entity {
         collided = false;
         var collidedWall = false;
         var collidedTopLadder = null;
-        var isOnLadderTmp = false;
-        
+        var isOnLadderTmp = false;        
         var hitFloor = false;
         var precision = 10;
         var step = tmpVelocity.y / precision; 
@@ -212,26 +222,21 @@ class Player extends Entity {
                 this.isOnLadder = true;
             }
             this.position.y = prevYPos;
-        }
-        
+        }       
         if (!collided && collidedMovingTile) {
             this.isOnMovingTile = true;
             this.isJumping = false;
             this.position.y = tmpPosY;
-        }
-        
+        }       
         if (collided && slopeTile === null) {
             this.position.y = tmpY;
-        }
-        
+        }        
         if (slopeTile !== null) {
             this.position.y = slopeTile.getNewY(this);
-        }
-        
+        }      
         if (this.isOnLadder) {
             hitFloor = true;
-        }
-        
+        }  
         if (!hitFloor) {
             this.velocity.addThis(this.acceleration.mulByScalar(dt));
         }
@@ -242,6 +247,9 @@ class Player extends Entity {
     }
     
     render(context) {
+        if (this.life <= 0) {
+            return;
+        }
         var newX = this.position.x - this.camera.position.x;
         var newY = this.position.y - this.camera.position.y;
         newX -= this.size.x * 0.5;
@@ -277,5 +285,27 @@ class Player extends Entity {
     
     makeJump(bool) {
         this.jump = bool;
-    }   
+    }
+    
+    damage(severity) {
+        this.life -= severity;
+    }
+    
+    resetState() {
+        this.position = this.positionCopy.clone();
+        this.isJumping = false;
+        this.left = this.right = this.up = false, this.down = false, this.jump = false;
+        this.isOnMovingTile = false;
+        this.movingTile = null;
+        this.isOnLadder = false;
+        this.direction = new Vector(1, 0);
+        this.shootTime = 0;
+        this.shootTimeLimit = 0.1;
+        this.gunRadiansDir = 0;
+        this.life = 10;
+        this.dispose = false;
+        this.deadTime = 0;
+        this.deadTimeLimit = 4;
+        this.bloodDeadCounter = 0;
+    }
 }

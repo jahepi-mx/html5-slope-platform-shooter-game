@@ -13,7 +13,7 @@ class Level1 {
 2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,20,41,42,21,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
 2,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,20,41,1,1,42,21,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
 2,0,0,0,0,0,0,0,26,28,30,32,14,4,14,39,37,27,0,0,0,0,0,0,20,41,1,1,1,1,42,21,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,
-2,0,0,0,22,24,14,4,5,1,1,1,1,1,1,1,1,6,4,4,4,4,4,4,5,1,1,1,1,1,1,42,21,0,0,22,24,25,23,0,0,0,0,0,0,0,0,1,
+2,0,0,0,22,24,14,4,5,1,1,1,1,1,1,1,1,6,4,45,45,45,45,4,5,1,1,1,1,1,1,42,21,0,0,22,24,25,23,0,0,0,0,0,0,0,0,1,
 2,0,0,20,41,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,4,5,1,1,42,21,0,1,1,0,0,0,0,1,
 1,4,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,4,1,1,1,1,1,1,1];
 
@@ -53,6 +53,12 @@ class Level1 {
     }
     
     update(dt) {
+        
+        if (this.player.dispose) {
+            this.resetState();
+            return;
+        }
+        
         // Example for offsetting the camera on the X axis. 
         /*
         var tile = this.map.tiles[4 * this.map.mapWidth + 13];
@@ -90,6 +96,11 @@ class Level1 {
             if (this.enemyBullets[a].dispose) {
                 this.bulletsPooling.add(this.enemyBullets[a]);
                 this.enemyBullets.splice(a--, 1);
+            } else {
+                if (this.enemyBullets[a].collide(this.player)) {
+                    this.player.damage(1);
+                    this.enemyBullets[a].isReadyToDispose = true;
+                }
             }
         }
         for (var a = 0; a < this.particles.length; a++) {
@@ -106,7 +117,7 @@ class Level1 {
         for (let parallaxBg of this.parallaxBgs) {
             parallaxBg.update(dt);
         }       
-        this.map.update(dt);
+        this.map.update(dt, this.player);
         this.camera.update(this.player);
         for (let movingTile of this.movingTiles) {
             movingTile.update(dt);
@@ -144,6 +155,22 @@ class Level1 {
         for (let particle of this.particles) {
             particle.render(context);
         }
+    }
+    
+    resetState() {
+        this.player.resetState();
+        this.monsters = [];
+        this.monsters.push(new Monster(this.map.tileWidth * 0.9, this.map.tileHeight * 0.9, 34, 2, this));
+        this.monsters.push(new FlyingMonster(2, 2, this));
+        this.monsters.push(new Boss(46, 1, this));
+        this.isCinematicOn = false;
+        this.xOffsetTo = this.map.tileWidth * 42;
+        this.targetTile = this.map.tiles[1 * this.map.mapWidth + 42];
+        this.bullets = [];
+        this.enemyBullets = [];
+        this.particles = [];
+        this.camera.resetState();
+        this.camera.setup(this.map);
     }
 }
 

@@ -3,6 +3,7 @@ let LADDER_TILE = 11;
 let TOP_LADDER_TILE = 12;
 let CEILING_TILE = 10;
 let SLOPE_TILE = 5;
+let POISON_WATER = 45;
 
 class Map {
     
@@ -38,6 +39,9 @@ class Map {
             }
             if (value === CEILING_TILE) {
                 tile = new CeilingTile(tileWidth, tileHeight, x, y, camera, value);
+            }
+            if (value === POISON_WATER) {
+                tile = new PosionWater(tileWidth, tileHeight, x, y, camera, value);
             }
             if (atlas.sprites["slope" + value] !== undefined) {
                 var ratios = this.getSlopeRatio("slope" + value);
@@ -83,7 +87,20 @@ class Map {
         return {"left": left / imgH, "right": right / imgH};
     }
     
-    update(dt) { 
+    update(dt, player) {
+        var marginOfError = 3;
+        var offsetX = parseInt(this.canvasWidth / this.tileWidth * 0.5) + marginOfError;
+        var offsetY = parseInt(this.canvasHeight / this.tileHeight * 0.5) + marginOfError;
+        var playerX = parseInt(player.position.x / this.tileWidth);
+        var playerY = parseInt(player.position.y / this.tileHeight);
+        
+        for (var y = playerY - offsetY; y < playerY + offsetY; y++) {
+            for (var x = playerX - offsetX; x < playerX + offsetX; x++) {
+                if (x >= 0 && y >= 0 && x < this.mapWidth && y < this.mapHeight) {
+                    this.tiles[y * this.mapWidth + x].update(dt);
+                }
+            }
+        }
     }
     
     render(context, player) {

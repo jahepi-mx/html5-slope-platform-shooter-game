@@ -11,46 +11,50 @@
 	<SubTexture name="boss_open_2.png" x="0" y="606" width="64" height="123"/>
 	<SubTexture name="boss_open_3.png" x="0" y="731" width="64" height="123"/>
 	<SubTexture name="bullet.png" x="134" y="1004" width="16" height="16"/>
-	<SubTexture name="enemy_1.png" x="210" y="936" width="46" height="64"/>
-	<SubTexture name="enemy_2.png" x="210" y="870" width="46" height="64"/>
-	<SubTexture name="enemy_arm.png" x="101" y="1002" width="31" height="16"/>
-	<SubTexture name="enemy_attack_1.png" x="210" y="804" width="46" height="64"/>
-	<SubTexture name="enemy_attack_2.png" x="210" y="738" width="46" height="64"/>
-	<SubTexture name="enemy_attack_3.png" x="162" y="936" width="46" height="64"/>
-	<SubTexture name="enemy_attack_4.png" x="114" y="863" width="46" height="64"/>
-	<SubTexture name="enemy_attack_5.png" x="114" y="929" width="46" height="64"/>
-	<SubTexture name="enemy_attack_left_1.png" x="132" y="606" width="46" height="64"/>
-	<SubTexture name="enemy_attack_left_2.png" x="162" y="672" width="46" height="64"/>
-	<SubTexture name="enemy_attack_left_3.png" x="162" y="738" width="46" height="64"/>
-	<SubTexture name="enemy_attack_left_4.png" x="162" y="804" width="46" height="64"/>
-	<SubTexture name="enemy_attack_left_5.png" x="162" y="870" width="46" height="64"/>
+	<SubTexture name="enemy_1.png" x="228" y="606" width="46" height="64"/>
+	<SubTexture name="enemy_2.png" x="210" y="738" width="46" height="64"/>
+	<SubTexture name="enemy_arm.png" x="101" y="995" width="31" height="16"/>
+	<SubTexture name="enemy_attack_1.png" x="210" y="672" width="46" height="64"/>
+	<SubTexture name="enemy_attack_2.png" x="210" y="804" width="46" height="64"/>
+	<SubTexture name="enemy_attack_3.png" x="180" y="606" width="46" height="64"/>
+	<SubTexture name="enemy_attack_4.png" x="114" y="731" width="46" height="64"/>
+	<SubTexture name="enemy_attack_5.png" x="132" y="606" width="46" height="64"/>
+	<SubTexture name="enemy_attack_left_1.png" x="114" y="863" width="46" height="64"/>
+	<SubTexture name="enemy_attack_left_2.png" x="114" y="929" width="46" height="64"/>
+	<SubTexture name="enemy_attack_left_3.png" x="162" y="804" width="46" height="64"/>
+	<SubTexture name="enemy_attack_left_4.png" x="162" y="672" width="46" height="64"/>
+	<SubTexture name="enemy_attack_left_5.png" x="162" y="738" width="46" height="64"/>
 	<SubTexture name="enemy_head.png" x="34" y="981" width="25" height="18"/>
-	<SubTexture name="enemy_left_1.png" x="180" y="606" width="46" height="64"/>
-	<SubTexture name="enemy_left_2.png" x="210" y="672" width="46" height="64"/>
+	<SubTexture name="enemy_left_1.png" x="162" y="870" width="46" height="64"/>
+	<SubTexture name="enemy_left_2.png" x="162" y="936" width="46" height="64"/>
 	<SubTexture name="enemy_legs.png" x="68" y="995" width="31" height="23"/>
 	<SubTexture name="enemy_torso.png" x="132" y="672" width="23" height="22"/>
 	<SubTexture name="flyingmonster_1.png" x="152" y="1004" width="16" height="16"/>
 	<SubTexture name="flyingmonster_2.png" x="132" y="696" width="16" height="16"/>
-	<SubTexture name="gun.png" x="252" y="0" width="46" height="64"/>
-	<SubTexture name="gun_left.png" x="228" y="606" width="46" height="64"/>
-	<SubTexture name="monster_run_1.png" x="252" y="66" width="46" height="64"/>
-	<SubTexture name="monster_run_2.png" x="252" y="132" width="46" height="64"/>
-	<SubTexture name="monster_run_3.png" x="252" y="198" width="46" height="64"/>
-	<SubTexture name="monster_run_4.png" x="252" y="264" width="46" height="64"/>
-	<SubTexture name="monster_run_5.png" x="252" y="330" width="46" height="64"/>
-	<SubTexture name="monster_run_6.png" x="252" y="396" width="46" height="64"/>
-	<SubTexture name="monster_run_left_1.png" x="300" y="132" width="46" height="64"/>
-	<SubTexture name="monster_run_left_2.png" x="300" y="66" width="46" height="64"/>
-	<SubTexture name="monster_run_left_3.png" x="300" y="462" width="46" height="64"/>
-	<SubTexture name="monster_run_left_4.png" x="300" y="396" width="46" height="64"/>
-	<SubTexture name="monster_run_left_5.png" x="114" y="731" width="46" height="64"/>
-	<SubTexture name="monster_run_left_6.png" x="66" y="929" width="46" height="64"/>
+	<SubTexture name="gun.png" x="210" y="936" width="46" height="64"/>
+	<SubTexture name="gun_left.png" x="210" y="870" width="46" height="64"/>
+	<SubTexture name="monster_run_1.png" x="252" y="132" width="46" height="64"/>
+	<SubTexture name="monster_run_2.png" x="252" y="0" width="46" height="64"/>
+	<SubTexture name="monster_run_3.png" x="252" y="66" width="46" height="64"/>
+	<SubTexture name="monster_run_4.png" x="252" y="330" width="46" height="64"/>
+	<SubTexture name="monster_run_5.png" x="252" y="198" width="46" height="64"/>
+	<SubTexture name="monster_run_6.png" x="252" y="264" width="46" height="64"/>
+	<SubTexture name="monster_run_left_1.png" x="300" y="198" width="46" height="64"/>
+	<SubTexture name="monster_run_left_2.png" x="252" y="396" width="46" height="64"/>
+	<SubTexture name="monster_run_left_3.png" x="300" y="132" width="46" height="64"/>
+	<SubTexture name="monster_run_left_4.png" x="300" y="264" width="46" height="64"/>
+	<SubTexture name="monster_run_left_5.png" x="300" y="396" width="46" height="64"/>
+	<SubTexture name="monster_run_left_6.png" x="300" y="462" width="46" height="64"/>
 	<SubTexture name="platform.png" x="34" y="1002" width="32" height="16"/>
+	<SubTexture name="radioactive_water_1.png" x="306" y="762" width="32" height="32"/>
+	<SubTexture name="radioactive_water_2.png" x="306" y="762" width="32" height="32"/>
+	<SubTexture name="radioactive_water_3.png" x="306" y="728" width="32" height="32"/>
+	<SubTexture name="radioactive_water_4.png" x="0" y="981" width="32" height="32"/>
 	<SubTexture name="run_1.png" x="300" y="330" width="46" height="64"/>
-	<SubTexture name="run_2.png" x="300" y="264" width="46" height="64"/>
-	<SubTexture name="run_3.png" x="300" y="198" width="46" height="64"/>
-	<SubTexture name="run_4.png" x="66" y="863" width="46" height="64"/>
-	<SubTexture name="run_5.png" x="114" y="797" width="46" height="64"/>
+	<SubTexture name="run_2.png" x="66" y="863" width="46" height="64"/>
+	<SubTexture name="run_3.png" x="114" y="797" width="46" height="64"/>
+	<SubTexture name="run_4.png" x="66" y="929" width="46" height="64"/>
+	<SubTexture name="run_5.png" x="300" y="66" width="46" height="64"/>
 	<SubTexture name="run_6.png" x="300" y="0" width="46" height="64"/>
 	<SubTexture name="run_7.png" x="276" y="594" width="46" height="64"/>
 	<SubTexture name="run_left_1.png" x="258" y="936" width="46" height="64"/>
@@ -60,50 +64,50 @@
 	<SubTexture name="run_left_5.png" x="258" y="672" width="46" height="64"/>
 	<SubTexture name="run_left_6.png" x="252" y="528" width="46" height="64"/>
 	<SubTexture name="run_left_7.png" x="252" y="462" width="46" height="64"/>
-	<SubTexture name="slope13.png" x="300" y="528" width="32" height="32"/>
-	<SubTexture name="slope14.png" x="306" y="694" width="32" height="32"/>
-	<SubTexture name="slope15.png" x="306" y="728" width="32" height="32"/>
-	<SubTexture name="slope16.png" x="306" y="762" width="32" height="32"/>
-	<SubTexture name="slope17.png" x="306" y="796" width="32" height="32"/>
-	<SubTexture name="slope18.png" x="306" y="830" width="32" height="32"/>
-	<SubTexture name="slope19.png" x="306" y="864" width="32" height="32"/>
-	<SubTexture name="slope20.png" x="306" y="898" width="32" height="32"/>
-	<SubTexture name="slope21.png" x="306" y="932" width="32" height="32"/>
-	<SubTexture name="slope22.png" x="306" y="966" width="32" height="32"/>
-	<SubTexture name="slope23.png" x="324" y="562" width="32" height="32"/>
-	<SubTexture name="slope24.png" x="324" y="596" width="32" height="32"/>
-	<SubTexture name="slope25.png" x="334" y="528" width="32" height="32"/>
-	<SubTexture name="slope26.png" x="340" y="630" width="32" height="32"/>
-	<SubTexture name="slope27.png" x="340" y="664" width="32" height="32"/>
-	<SubTexture name="slope28.png" x="340" y="698" width="32" height="32"/>
-	<SubTexture name="slope29.png" x="340" y="732" width="32" height="32"/>
-	<SubTexture name="slope30.png" x="340" y="766" width="32" height="32"/>
-	<SubTexture name="slope31.png" x="340" y="800" width="32" height="32"/>
-	<SubTexture name="slope32.png" x="340" y="834" width="32" height="32"/>
-	<SubTexture name="slope33.png" x="340" y="868" width="32" height="32"/>
-	<SubTexture name="slope34.png" x="340" y="902" width="32" height="32"/>
-	<SubTexture name="slope35.png" x="340" y="936" width="32" height="32"/>
-	<SubTexture name="slope36.png" x="0" y="981" width="32" height="32"/>
-	<SubTexture name="slope37.png" x="348" y="0" width="32" height="32"/>
-	<SubTexture name="slope38.png" x="306" y="660" width="32" height="32"/>
-	<SubTexture name="slope39.png" x="340" y="970" width="32" height="32"/>
+	<SubTexture name="slope13.png" x="306" y="694" width="32" height="32"/>
+	<SubTexture name="slope14.png" x="306" y="830" width="32" height="32"/>
+	<SubTexture name="slope15.png" x="306" y="864" width="32" height="32"/>
+	<SubTexture name="slope16.png" x="306" y="796" width="32" height="32"/>
+	<SubTexture name="slope17.png" x="306" y="932" width="32" height="32"/>
+	<SubTexture name="slope18.png" x="306" y="966" width="32" height="32"/>
+	<SubTexture name="slope19.png" x="306" y="898" width="32" height="32"/>
+	<SubTexture name="slope20.png" x="334" y="528" width="32" height="32"/>
+	<SubTexture name="slope21.png" x="324" y="596" width="32" height="32"/>
+	<SubTexture name="slope22.png" x="324" y="562" width="32" height="32"/>
+	<SubTexture name="slope23.png" x="340" y="664" width="32" height="32"/>
+	<SubTexture name="slope24.png" x="340" y="698" width="32" height="32"/>
+	<SubTexture name="slope25.png" x="340" y="630" width="32" height="32"/>
+	<SubTexture name="slope26.png" x="340" y="766" width="32" height="32"/>
+	<SubTexture name="slope27.png" x="340" y="800" width="32" height="32"/>
+	<SubTexture name="slope28.png" x="340" y="732" width="32" height="32"/>
+	<SubTexture name="slope29.png" x="340" y="868" width="32" height="32"/>
+	<SubTexture name="slope30.png" x="340" y="902" width="32" height="32"/>
+	<SubTexture name="slope31.png" x="340" y="834" width="32" height="32"/>
+	<SubTexture name="slope32.png" x="340" y="970" width="32" height="32"/>
+	<SubTexture name="slope33.png" x="348" y="0" width="32" height="32"/>
+	<SubTexture name="slope34.png" x="340" y="936" width="32" height="32"/>
+	<SubTexture name="slope35.png" x="348" y="68" width="32" height="32"/>
+	<SubTexture name="slope36.png" x="348" y="102" width="32" height="32"/>
+	<SubTexture name="slope37.png" x="348" y="34" width="32" height="32"/>
+	<SubTexture name="slope38.png" x="300" y="528" width="32" height="32"/>
+	<SubTexture name="slope39.png" x="306" y="660" width="32" height="32"/>
 	<SubTexture name="stand.png" x="66" y="797" width="46" height="64"/>
 	<SubTexture name="stand_left.png" x="66" y="731" width="46" height="64"/>
-	<SubTexture name="tile1.png" x="300" y="528" width="32" height="32"/>
-	<SubTexture name="tile10.png" x="348" y="102" width="32" height="32"/>
-	<SubTexture name="tile11.png" x="348" y="136" width="32" height="32"/>
-	<SubTexture name="tile12.png" x="348" y="68" width="32" height="32"/>
-	<SubTexture name="tile2.png" x="348" y="34" width="32" height="32"/>
-	<SubTexture name="tile3.png" x="348" y="170" width="32" height="32"/>
-	<SubTexture name="tile4.png" x="348" y="204" width="32" height="32"/>
-	<SubTexture name="tile5.png" x="306" y="728" width="32" height="32"/>
-	<SubTexture name="tile6.png" x="306" y="762" width="32" height="32"/>
-	<SubTexture name="tile7.png" x="306" y="796" width="32" height="32"/>
-	<SubTexture name="tile8.png" x="306" y="830" width="32" height="32"/>
-	<SubTexture name="tile9.png" x="306" y="864" width="32" height="32"/>
-	<SubTexture name="walkable40.png" x="300" y="528" width="32" height="32"/>
-	<SubTexture name="walkable41.png" x="306" y="728" width="32" height="32"/>
-	<SubTexture name="walkable42.png" x="306" y="762" width="32" height="32"/>
-	<SubTexture name="walkable43.png" x="306" y="796" width="32" height="32"/>
-	<SubTexture name="walkable44.png" x="306" y="830" width="32" height="32"/>
+	<SubTexture name="tile1.png" x="306" y="694" width="32" height="32"/>
+	<SubTexture name="tile10.png" x="348" y="204" width="32" height="32"/>
+	<SubTexture name="tile11.png" x="348" y="238" width="32" height="32"/>
+	<SubTexture name="tile12.png" x="348" y="170" width="32" height="32"/>
+	<SubTexture name="tile2.png" x="348" y="136" width="32" height="32"/>
+	<SubTexture name="tile3.png" x="348" y="272" width="32" height="32"/>
+	<SubTexture name="tile4.png" x="348" y="306" width="32" height="32"/>
+	<SubTexture name="tile5.png" x="306" y="864" width="32" height="32"/>
+	<SubTexture name="tile6.png" x="306" y="796" width="32" height="32"/>
+	<SubTexture name="tile7.png" x="306" y="932" width="32" height="32"/>
+	<SubTexture name="tile8.png" x="306" y="966" width="32" height="32"/>
+	<SubTexture name="tile9.png" x="306" y="898" width="32" height="32"/>
+	<SubTexture name="walkable40.png" x="306" y="694" width="32" height="32"/>
+	<SubTexture name="walkable41.png" x="306" y="864" width="32" height="32"/>
+	<SubTexture name="walkable42.png" x="306" y="796" width="32" height="32"/>
+	<SubTexture name="walkable43.png" x="306" y="932" width="32" height="32"/>
+	<SubTexture name="walkable44.png" x="306" y="966" width="32" height="32"/>
 </TextureAtlas>
