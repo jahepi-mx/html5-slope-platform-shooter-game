@@ -122,9 +122,9 @@ class Boss extends Entity {
                 var particle = null;
                 if (this.level.interactiveParticlesPooling.hasObjects()) {
                     particle = this.level.interactiveParticlesPooling.get();
-                    particle.resetState(this.position.x, this.position.y, "");
+                    particle.resetState(this.position.x, this.position.y, "boss_texture");
                 } else {
-                    particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "");
+                    particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "boss_texture");
                 }
                 var minSize = this.map.tileWidth * 0.2;
                 var maxSize = this.map.tileWidth * 0.4;

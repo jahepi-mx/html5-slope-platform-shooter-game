@@ -35,9 +35,21 @@ class Monster extends Entity {
         this.dispose = false;
         this.life = 5;
         this.bodyParts = ["enemy_head", "enemy_legs", "enemy_torso", "enemy_arm", "enemy_arm"];
+        this.walkedDistant = 0;
+        this.walkedDistantTime = 0;
+        this.walkedDistantTimeLimit = 1;
     }
     
     update(dt) {
+        
+        this.walkedDistantTime += dt;
+        if (this.walkedDistantTime >= this.walkedDistantTimeLimit) {
+            if (Math.abs(this.walkedDistant) < this.walkScalarVelocity * 0.7) {
+                this.makeJump(true);
+            }
+            this.walkedDistantTime = 0;
+            this.walkedDistant = 0;
+        }
         
         for (let bullet of this.level.bullets) {
             if (this.collide(bullet)) {
@@ -176,6 +188,9 @@ class Monster extends Entity {
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                if (tile.type === POISON_WATER && tile.collide(this)) {
+                    this.life = 0; // Instant kill
+                }
                 if (!tile.walkable && this.collide(tile)) {   
                     collided = true;
                 }
@@ -184,6 +199,8 @@ class Monster extends Entity {
         
         if (collided) {
             this.position.x = tmpX;
+        } else {
+            this.walkedDistant += tmpVelocity.x;
         }
 
         var tmpY = this.position.y;
@@ -201,7 +218,17 @@ class Monster extends Entity {
         // This precision steps are for detecing collision on low framerate instances.
         for (var a = 0; a < precision; a++) {            
             this.position.y += step;
-            
+            if (!this.isOnMovingTile) {
+                for (let movingTile of this.level.movingTiles) {
+                    if (movingTile.collideFromFalling(this)) {
+                        if (!collidedMovingTile) {
+                            collidedMovingTile = true;
+                            tmpPosY = this.position.y;
+                            this.movingTile = movingTile;
+                        }
+                    }
+                }
+            }
             for (let move of this.moves) {
                 var newX = currentX + move[0];
                 var newY = currentY + move[1];
@@ -212,7 +239,7 @@ class Monster extends Entity {
                         this.velocity.y = 0;
                         // If the player hits the floor and not the ceiling
                         if (this.position.y - tmpY < 0) {
-                            this.isJumping = false;
+                            this.isJumping = this.jump = false;
                             hitFloor = true;
                         }
                     }
@@ -229,7 +256,7 @@ class Monster extends Entity {
                         if (thisBottom < correctBottom) {
                             slopeTile = tile;
                             this.velocity.y = 0;
-                            this.isJumping = false;
+                            this.isJumping = this.jump = false;
                             hitFloor = true;
                         }
                     }
@@ -248,7 +275,7 @@ class Monster extends Entity {
         
         if (!collided && collidedMovingTile) {
             this.isOnMovingTile = true;
-            this.isJumping = false;
+            this.isJumping = this.jump = false;
             this.position.y = tmpPosY;
         }
         

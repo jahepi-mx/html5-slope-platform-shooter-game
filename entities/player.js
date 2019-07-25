@@ -18,7 +18,6 @@ class Player extends Entity {
         this.walkScalarVelocity = this.map.tileWidth * 1.5;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
         this.acceleration.y = -this.map.tileHeight * 4;
-        this.movingTiles = [];
         this.targetFriction = new Vector(Math.pow(this.friction.x, 60), Math.pow(this.friction.y, 60));
         this.runAnimation = new Animation(7, 3);
         this.cursor = Cursor.getInstance();
@@ -113,6 +112,9 @@ class Player extends Entity {
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                if (tile.type === POISON_WATER && tile.collide(this)) {
+                    this.damage(1 << 30); // Instant kill
+                }
                 if (!tile.walkable && this.collide(tile)) {   
                     if ((this.isOnLadder && tile.type === WALL_TILE) || !this.isOnLadder) {
                         collided = true;
@@ -143,7 +145,7 @@ class Player extends Entity {
         for (var a = 0; a < precision; a++) {            
             this.position.y += step;
             if (!this.isOnMovingTile) {
-                for (let movingTile of this.movingTiles) {
+                for (let movingTile of this.level.movingTiles) {
                     if (movingTile.collideFromFalling(this)) {
                         if (!collidedMovingTile) {
                             collidedMovingTile = true;
@@ -302,7 +304,7 @@ class Player extends Entity {
         this.shootTime = 0;
         this.shootTimeLimit = 0.1;
         this.gunRadiansDir = 0;
-        this.life = 10;
+        this.life = 10000000;
         this.dispose = false;
         this.deadTime = 0;
         this.deadTimeLimit = 4;

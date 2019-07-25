@@ -49,7 +49,7 @@ class SlopeTile extends Tile {
         var atlas = Atlas.getInstance();
         var assets = Assets.getInstance(); 
         var image = "slope" + this.tmpType;
-        context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
     } 
 }
 

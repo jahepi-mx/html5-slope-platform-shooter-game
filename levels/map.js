@@ -4,6 +4,7 @@ let TOP_LADDER_TILE = 12;
 let CEILING_TILE = 10;
 let SLOPE_TILE = 5;
 let POISON_WATER = 45;
+let POISON_WATER_BOTTOM = 46;
 
 class Map {
     
@@ -40,7 +41,7 @@ class Map {
             if (value === CEILING_TILE) {
                 tile = new CeilingTile(tileWidth, tileHeight, x, y, camera, value);
             }
-            if (value === POISON_WATER) {
+            if (value === POISON_WATER || value === POISON_WATER_BOTTOM) {
                 tile = new PosionWater(tileWidth, tileHeight, x, y, camera, value);
             }
             if (atlas.sprites["slope" + value] !== undefined) {
