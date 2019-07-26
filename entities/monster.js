@@ -168,7 +168,7 @@ class Monster extends Entity {
             }
         }
         
-        if (this.jump && !this.isOnMovingTile && this.velocity.y >= 0) {
+        if (this.jump && !this.isOnMovingTile /*&& this.velocity.y >= 0*/) {
             if (!this.isJumping) {
                 this.velocity.y += this.jumpScalarVelocity * 4;
                 this.isJumping = true;

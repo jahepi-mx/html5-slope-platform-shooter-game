@@ -34,6 +34,6 @@ class PosionWater extends Tile {
         var otherHeight = entity.size.y * 0.5;
         var xDistant = Math.abs(this.position.x - entity.position.x);
         var yDistant = Math.abs(this.position.y - entity.position.y);
-        return xDistant <= (width + otherWidth) * 0.5 && yDistant <= (height + otherHeight) * 0.5;
+        return xDistant <= (width + otherWidth) * 0.65 && yDistant <= (height + otherHeight) * 0.65;
     }
 }
