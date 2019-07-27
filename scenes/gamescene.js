@@ -34,7 +34,7 @@ class GameScene extends Scene {
         
         this.context.fillStyle = "#00ff00";
         this.context.font = parseInt(this.currentLevel.map.tileHeight * 0.15) + "px Arial";
-        this.context.fillText(parseInt(this.fps), this.currentLevel.map.tileWidth * 0.15, this.currentLevel.map.tileHeight * 0.15);
+        this.context.fillText(parseInt(this.fps) + "  " + this.currentLevel.monsters.length, this.currentLevel.map.tileWidth * 0.15, this.currentLevel.map.tileHeight * 0.15);
                 
     }
     
