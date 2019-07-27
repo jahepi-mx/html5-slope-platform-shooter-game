@@ -9,6 +9,9 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+            @font-face { font-family: 'joystix'; src: url('assets/fonts/PixelMYZ.ttf'); }
+        </style>
         <script type="text/javascript" src="utils/camera.js"></script>
         <script type="text/javascript" src="entities/entity.js"></script>
         <script type="text/javascript" src="math/vector.js"></script>
@@ -35,13 +38,16 @@ and open the template in the editor.
         <script type="text/javascript" src="utils/objectpooling.js"></script>
         <script type="text/javascript" src="entities/interactiveparticle.js"></script>
         <script type="text/javascript" src="entities/boss.js"></script>
+        <script type="text/javascript" src="scenes/scenemanager.js"></script>
+        <script type="text/javascript" src="scenes/scene.js"></script>
+        <script type="text/javascript" src="scenes/mainscene.js"></script>
+        <script type="text/javascript" src="scenes/gamescene.js"></script>
         <script type="text/javascript">
             var canvas;
-            var context;
             var prevTime = 0;
             var offsetY;
             var cursor;
-            var currentLevel = null;
+            var sceneManager = null;
             
             window.onload = function() {
                 var assets = Assets.getInstance();
@@ -54,13 +60,7 @@ and open the template in the editor.
             }
             
             function onLoadAtlas() {
-                var tileWidth = window.innerWidth / 5;
-                var tileHeight = window.innerHeight / 4;
-                var canvasWidth = tileWidth * 5;
-                var canvasHeight = tileHeight * 4;
                 canvas = document.getElementById("engine");
-                context = canvas.getContext("2d");
-                offsetY = canvasHeight; 
                 canvas.style = "border: 1px solid #ccc; background-color: #ff7f15";
                 document.onkeydown = onKeyDown;
                 document.onkeyup = onKeyUp;
@@ -83,15 +83,9 @@ and open the template in the editor.
                 canvas.addEventListener("mouseout", function(evt) {
                     cursor.isPressed = false;
                 });
-                
-                var assets = Assets.getInstance();
-                canvas.width = assets.spritesAtlas.width;
-                canvas.height = assets.spritesAtlas.height;
-                context.drawImage(assets.spritesAtlas, 0, 0);
-                var pixelData = context.getImageData(0, 0, assets.spritesAtlas.width, assets.spritesAtlas.height).data;
-                canvas.width = canvasWidth;
-                canvas.height = canvasHeight;
-                currentLevel = new Level1(pixelData, tileWidth, tileHeight, canvasWidth, canvasHeight);
+                sceneManager = SceneManager.getInstance();
+                sceneManager.setCanvas(canvas);
+                sceneManager.setScene("game");
                 requestAnimationFrame(update);
             }
             
@@ -115,59 +109,53 @@ and open the template in the editor.
                     requestAnimationFrame(update);
                     return;
                 }
-                
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.imageSmoothingEnabled = false;
-                
-                currentLevel.update(dt);
-                currentLevel.render(context);        
-                
-                context.fillStyle = "#00ff00";
-                context.font = parseInt(currentLevel.map.tileHeight * 0.15) + "px Arial";
-                context.fillText(parseInt(fps), currentLevel.map.tileWidth * 0.15, currentLevel.map.tileHeight * 0.15);
-                
+
+                sceneManager.scene.update(dt);
+                sceneManager.scene.render();        
+
                 prevTime = time;
                 requestAnimationFrame(update);
             }
             
             function onKeyDown(key) {
                 if (key.keyCode === 87) {
-                    currentLevel.player.moveUp(true);
+                    sceneManager.scene.up(true);
                 }
                 if (key.keyCode === 65) {
-                    currentLevel.player.moveLeft(true);
+                    sceneManager.scene.left(true);
                 }
                 if (key.keyCode === 68) {
-                    currentLevel.player.moveRight(true);
+                    sceneManager.scene.right(true);
                 }
                 if (key.keyCode === 83) {
-                    currentLevel.player.moveDown(true);
+                    sceneManager.scene.down(true);
                 }
                 if (key.keyCode === 32) {
-                    currentLevel.player.makeJump(true);
+                    sceneManager.scene.jump(true);
                 }
             }
             
             function onKeyUp(key) {
                 if (key.keyCode === 87) {
-                    currentLevel.player.moveUp(false);
+                    sceneManager.scene.up(false);
                 }
                 if (key.keyCode === 65) {
-                    currentLevel.player.moveLeft(false);
+                    sceneManager.scene.left(false);
                 }
                 if (key.keyCode === 68) {
-                    currentLevel.player.moveRight(false);
+                    sceneManager.scene.right(false);
                 }
                 if (key.keyCode === 83) {
-                    currentLevel.player.moveDown(false);
+                    sceneManager.scene.down(false);
                 }
                 if (key.keyCode === 32) {
-                    currentLevel.player.makeJump(false);
+                    sceneManager.scene.jump(false);
                 }
             }
         </script>
     </head>
     <body style="margin:0; padding: 0">
         <canvas id="engine"></canvas>
+        <span style="font-family: joystix; display: none">Hidden text just for loading font before canvas.</span>
     </body>
 </html>
