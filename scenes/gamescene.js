@@ -18,7 +18,7 @@ class GameScene extends Scene {
         this.fps = 0;
         this.dispose = false;
         this.time = 0;
-        this.timeLimit = 2;
+        this.timeLimit = 60 * 60 * 24;
         this.sceneManager = SceneManager.getInstance();
     }
     
@@ -46,23 +46,21 @@ class GameScene extends Scene {
         } 
     }
     
-    left(bool) {
-        this.currentLevel.player.moveLeft(bool);
-    }
-    
-    right(bool) {
-        this.currentLevel.player.moveRight(bool);
-    }
-    
-    up(bool) {
-        this.currentLevel.player.moveUp(bool);
-    }
-    
-    down(bool) {
-        this.currentLevel.player.moveDown(bool);
-    }
-    
-    jump(bool) {
-        this.currentLevel.player.makeJump(bool);
+    input(key, pressed) {
+        if (key === 87) {
+            this.currentLevel.player.moveUp(pressed);
+        }
+        if (key === 65) {
+            this.currentLevel.player.moveLeft(pressed);
+        }
+        if (key === 68) {
+            this.currentLevel.player.moveRight(pressed);
+        }
+        if (key === 83) {
+            this.currentLevel.player.moveDown(pressed);
+        }
+        if (key === 32) {
+            this.currentLevel.player.makeJump(pressed);
+        }
     }
 }

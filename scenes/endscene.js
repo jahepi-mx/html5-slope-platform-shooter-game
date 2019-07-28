@@ -14,6 +14,8 @@ class EndScene extends Scene {
         canvas.height = canvasHeight;
         offsetY = canvasHeight;
         this.imageData = null;
+        this.fontSize = this.tileHeight * 0.3;
+        this.fontSize2 = this.tileHeight * 0.2;
     }
     
     setImageData(imageData) {
@@ -36,19 +38,20 @@ class EndScene extends Scene {
         }
     }
     
-    update(dt) {
-        this.fontSize = this.tileHeight * 0.3;
-    }
-    
     render() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.imageSmoothingEnabled = false;
         
         this.context.putImageData(this.imageData, 0, 0);
         
-        this.context.font = this.fontSize + "px Tahoma";
+        this.context.font = this.fontSize + "px Impact";
+        this.context.fillStyle = "#fff";
+        this.context.textAlign = "center";
+        this.context.fillText("The demo has ended", this.canvas.width * 0.5, this.canvas.height * 0.5); 
+        
+        this.context.font = this.fontSize2 + "px Impact";
         this.context.fillStyle = "#ffac69";
         this.context.textAlign = "center";
-        this.context.fillText("END", this.canvas.width * 0.5, this.canvas.height * 0.85); 
+        this.context.fillText("Thanks for playing", this.canvas.width * 0.5, this.canvas.height * 0.58); 
     }
 }

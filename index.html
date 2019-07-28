@@ -116,39 +116,11 @@ and open the template in the editor.
             }
             
             function onKeyDown(key) {
-                if (key.keyCode === 87) {
-                    sceneManager.scene.up(true);
-                }
-                if (key.keyCode === 65) {
-                    sceneManager.scene.left(true);
-                }
-                if (key.keyCode === 68) {
-                    sceneManager.scene.right(true);
-                }
-                if (key.keyCode === 83) {
-                    sceneManager.scene.down(true);
-                }
-                if (key.keyCode === 32) {
-                    sceneManager.scene.jump(true);
-                }
+                sceneManager.scene.input(key.keyCode, true);
             }
             
             function onKeyUp(key) {
-                if (key.keyCode === 87) {
-                    sceneManager.scene.up(false);
-                }
-                if (key.keyCode === 65) {
-                    sceneManager.scene.left(false);
-                }
-                if (key.keyCode === 68) {
-                    sceneManager.scene.right(false);
-                }
-                if (key.keyCode === 83) {
-                    sceneManager.scene.down(false);
-                }
-                if (key.keyCode === 32) {
-                    sceneManager.scene.jump(false);
-                }
+                sceneManager.scene.input(key.keyCode, false);
             }
         </script>
     </head>

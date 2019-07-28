@@ -9,15 +9,8 @@ class Scene {
     
     render() {}
     
-    left(bool) {}
+    input(key, pressed) {}
     
-    right(bool) {}
-    
-    up(bool) {}
-    
-    down(bool) {}
-    
-    jump(bool) {}
 }
 
 
