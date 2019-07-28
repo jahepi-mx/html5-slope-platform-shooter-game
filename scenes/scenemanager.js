@@ -22,7 +22,9 @@ class SceneManager {
         switch (name) {
             case "main": this.scene = new MainScene(this.canvas); break;
             case "game": this.scene = new GameScene(this.canvas); break;
+            case "end": this.scene = new EndScene(this.canvas); break;
         }
+        return this.scene;
     }
 }
 

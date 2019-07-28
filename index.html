@@ -9,9 +9,6 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style type="text/css">
-            @font-face { font-family: 'joystix'; src: url('assets/fonts/PixelMYZ.ttf'); }
-        </style>
         <script type="text/javascript" src="utils/camera.js"></script>
         <script type="text/javascript" src="entities/entity.js"></script>
         <script type="text/javascript" src="math/vector.js"></script>
@@ -42,6 +39,7 @@ and open the template in the editor.
         <script type="text/javascript" src="scenes/scene.js"></script>
         <script type="text/javascript" src="scenes/mainscene.js"></script>
         <script type="text/javascript" src="scenes/gamescene.js"></script>
+        <script type="text/javascript" src="scenes/endscene.js"></script>
         <script type="text/javascript">
             var canvas;
             var prevTime = 0;
@@ -85,7 +83,7 @@ and open the template in the editor.
                 });
                 sceneManager = SceneManager.getInstance();
                 sceneManager.setCanvas(canvas);
-                sceneManager.setScene("game");
+                sceneManager.setScene("main");
                 requestAnimationFrame(update);
             }
             
@@ -156,6 +154,5 @@ and open the template in the editor.
     </head>
     <body style="margin:0; padding: 0">
         <canvas id="engine"></canvas>
-        <span style="font-family: joystix; display: none">Hidden text just for loading font before canvas.</span>
     </body>
 </html>
