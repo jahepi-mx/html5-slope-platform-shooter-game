@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="patterns" tilewidth="32" tileheight="32" tilecount="46" columns="0">
+<tileset name="patterns" tilewidth="32" tileheight="32" tilecount="48" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="../separated_sprites/tile1.png"/>
@@ -138,5 +138,11 @@
  </tile>
  <tile id="45">
   <image width="32" height="32" source="../separated_sprites/radioactive_water.png"/>
+ </tile>
+ <tile id="46">
+  <image width="32" height="32" source="../separated_sprites/walkable47.png"/>
+ </tile>
+ <tile id="47">
+  <image width="32" height="32" source="../separated_sprites/walkable48.png"/>
  </tile>
 </tileset>

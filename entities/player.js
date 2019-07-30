@@ -112,6 +112,9 @@ class Player extends Entity {
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                if (tile === null) {
+                    continue;
+                }
                 if (tile.type === POISON_WATER && tile.collide(this)) {
                     this.damage(1 << 30); // Instant kill
                 }
@@ -161,6 +164,9 @@ class Player extends Entity {
                 var newY = currentY + move[1];
                 if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                     var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                    if (tile === null) {
+                        continue;
+                    }
                     if (!tile.walkable && this.collide(tile)) {
                         if ((this.isOnLadder && tile.type === WALL_TILE) || !this.isOnLadder) {
                             collided = true;
@@ -290,7 +296,7 @@ class Player extends Entity {
     }
     
     damage(severity) {
-        this.life -= severity;
+        this.life = this.life - severity < 0 ? 0 : this.life - severity;
     }
     
     resetState() {
@@ -304,7 +310,8 @@ class Player extends Entity {
         this.shootTime = 0;
         this.shootTimeLimit = 0.1;
         this.gunRadiansDir = 0;
-        this.life = 10000000;
+        this.life = 20;
+        this.maxLife = this.life;
         this.dispose = false;
         this.deadTime = 0;
         this.deadTimeLimit = 4;

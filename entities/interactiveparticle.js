@@ -30,6 +30,9 @@ class InteractiveParticle extends Entity {
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                if (tile === null) {
+                    continue;
+                }
                 if (!tile.walkable && this.collide(tile)) {   
                     collided = true;
                 }
@@ -56,6 +59,9 @@ class InteractiveParticle extends Entity {
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                if (tile === null) {
+                    continue;
+                }
                 if (!tile.walkable && this.collide(tile)) {
                     collided = true;
                 }

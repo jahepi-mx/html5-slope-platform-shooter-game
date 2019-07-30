@@ -20,6 +20,7 @@ class GameScene extends Scene {
         this.time = 0;
         this.timeLimit = 60 * 60 * 24;
         this.sceneManager = SceneManager.getInstance();
+        this.map = this.currentLevel.map;
     }
     
     update(dt) {
@@ -37,13 +38,21 @@ class GameScene extends Scene {
         
         this.context.fillStyle = "#00ff00";
         this.context.font = parseInt(this.currentLevel.map.tileHeight * 0.15) + "px Arial";
-        this.context.fillText(parseInt(this.fps) + "  " + this.currentLevel.monsters.length, this.currentLevel.map.tileWidth * 0.15, this.currentLevel.map.tileHeight * 0.15);
+        this.context.fillText(parseInt(this.fps) + "  " + this.currentLevel.monsters.length, this.map.tileWidth * 0.15, this.map.tileHeight * 0.15);
         if (this.time >= this.timeLimit && !this.dispose) {
             this.dispose = true;
             var imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
             var scene = this.sceneManager.setScene("end");
             scene.setImageData(imageData);
-        } 
+        }
+        
+        // Player Life
+        this.context.fillStyle = "#fff";
+        this.context.fillText("Life", this.map.tileWidth * 0.15, this.map.tileHeight * 0.4);
+        this.context.fillStyle = "#ff0000";
+        var lifeWidth = this.map.canvasWidth * 0.15;
+        var lifeHeight = this.map.canvasHeight * 0.02;
+        this.context.fillRect(this.map.tileWidth * 0.15, this.map.tileHeight * 0.45, lifeWidth * this.currentLevel.player.life / this.currentLevel.player.maxLife, lifeHeight);
     }
     
     input(key, pressed) {

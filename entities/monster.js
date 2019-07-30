@@ -188,6 +188,9 @@ class Monster extends Entity {
             var newY = currentY + move[1];
             if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                 var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                if (tile === null) {
+                    continue;
+                }
                 if (tile.type === POISON_WATER && tile.collide(this)) {
                     this.life = 0; // Instant kill
                 }
@@ -234,6 +237,9 @@ class Monster extends Entity {
                 var newY = currentY + move[1];
                 if (newX >= 0 && newX < this.map.mapWidth && newY >= 0 && newY < this.map.mapHeight) {
                     var tile = this.map.tiles[newY * this.map.mapWidth + newX];
+                    if (tile === null) {
+                        continue;
+                    }
                     if (!tile.walkable && this.collide(tile)) {
                         collided = true;
                         this.velocity.y = 0;

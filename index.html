@@ -12,7 +12,7 @@ and open the template in the editor.
         <script type="text/javascript" src="utils/camera.js"></script>
         <script type="text/javascript" src="entities/entity.js"></script>
         <script type="text/javascript" src="math/vector.js"></script>
-        <script type="text/javascript" src="levels/map.js"></script>
+        <script type="text/javascript" src="levels/levelmap.js"></script>
         <script type="text/javascript" src="tiles/tile.js"></script>
         <script type="text/javascript" src="entities/player.js"></script>
         <script type="text/javascript" src="entities/monster.js"></script>
@@ -90,7 +90,7 @@ and open the template in the editor.
             var fpsLimit = 0;
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               
-                var maxFps = 1 / 35;
+                var maxFps = 1 / 10;
                 fpsLimit += dt;
                 if (fpsLimit >= maxFps) {
                     dt = fpsLimit;
@@ -102,7 +102,7 @@ and open the template in the editor.
                 }
                 
                 var fps = 1 / dt;
-                if (fps < 10) {
+                if (fps < 5) {
                     prevTime = time;
                     requestAnimationFrame(update);
                     return;

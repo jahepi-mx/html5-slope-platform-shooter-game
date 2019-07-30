@@ -6,9 +6,9 @@ let SLOPE_TILE = 5;
 let POISON_WATER = 45;
 let POISON_WATER_BOTTOM = 46;
 
-class Map {
+class LevelMap {
     
-    constructor(matrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera, pixelData) {
+    constructor(matrix, frontMatrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, camera, pixelData) {
         
         this.tiles = [];
         this.camera = camera;
@@ -19,6 +19,7 @@ class Map {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.pixelData = pixelData;
+        this.frontTiles = new Map();
 
         var atlas = Atlas.getInstance();
         for (var a = 0; a < mapWidth * mapHeight; a++) {
@@ -26,6 +27,14 @@ class Map {
             var y = (mapHeight - 1) - parseInt(a / mapWidth);
             var value = matrix[a];
             var tile = new Tile(tileWidth, tileHeight, x, y, camera, value);
+            
+            var frontValue = frontMatrix[a];
+            if (frontValue > 0) {
+                var frontTile = new Tile(tileWidth, tileHeight, x, y, camera, frontValue);
+                frontTile.walkable = true;
+                frontTile.tmpType = frontValue;
+                this.frontTiles.set(y * mapWidth + x, frontTile);
+            }
             
             if (atlas.sprites["walkable" + value] !== undefined) {
                 tile.walkable = true;
@@ -48,6 +57,9 @@ class Map {
                 var ratios = this.getSlopeRatio("slope" + value);
                 tile = new SlopeTile(tileWidth, tileHeight, x, y, camera, value, tileHeight * ratios.left, tileHeight * ratios.right);
             }
+            if (value === 0) {
+                tile = null;
+            } 
             this.tiles[y * mapWidth + x] = tile;
         }
     }
@@ -98,7 +110,9 @@ class Map {
         for (var y = playerY - offsetY; y < playerY + offsetY; y++) {
             for (var x = playerX - offsetX; x < playerX + offsetX; x++) {
                 if (x >= 0 && y >= 0 && x < this.mapWidth && y < this.mapHeight) {
-                    this.tiles[y * this.mapWidth + x].update(dt);
+                    if (this.tiles[y * this.mapWidth + x] !== null) {
+                        this.tiles[y * this.mapWidth + x].update(dt);
+                    }
                 }
             }
         }
@@ -114,7 +128,27 @@ class Map {
         for (var y = playerY - offsetY; y < playerY + offsetY; y++) {
             for (var x = playerX - offsetX; x < playerX + offsetX; x++) {
                 if (x >= 0 && y >= 0 && x < this.mapWidth && y < this.mapHeight) {
-                    this.tiles[y * this.mapWidth + x].render(context);
+                    if (this.tiles[y * this.mapWidth + x] !== null) {
+                        this.tiles[y * this.mapWidth + x].render(context);
+                    }
+                }
+            }
+        }
+    }
+    
+    renderFront(context, player) {
+        var marginOfError = 3;
+        var offsetX = parseInt(this.canvasWidth / this.tileWidth * 0.5) + marginOfError;
+        var offsetY = parseInt(this.canvasHeight / this.tileHeight * 0.5) + marginOfError;
+        var playerX = parseInt(player.position.x / this.tileWidth);
+        var playerY = parseInt(player.position.y / this.tileHeight);
+        
+        for (var y = playerY - offsetY; y < playerY + offsetY; y++) {
+            for (var x = playerX - offsetX; x < playerX + offsetX; x++) {
+                if (x >= 0 && y >= 0 && x < this.mapWidth && y < this.mapHeight) {
+                    if (this.frontTiles.has(y * this.mapWidth + x)) {
+                        this.frontTiles.get(y * this.mapWidth + x).render(context);
+                    }
                 }
             }
         }
