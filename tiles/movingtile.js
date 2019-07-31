@@ -1,11 +1,11 @@
 class MovingTile extends Entity {
     
-    constructor(camera, level) {
+    constructor(camera, level, startX, startY, endX, endY, speed) {
         super();
         var map = level.map;
-        this.start = new Vector(19 * map.tileWidth + map.tileWidth * 0.5, 3 * map.tileHeight + map.tileHeight * 0.5);
-        this.end = new Vector(22 * map.tileWidth + map.tileWidth * 0.5, 3 * map.tileHeight + map.tileHeight * 0.5);
-        this.size.x = map.tileHeight * 0.7 * 2;
+        this.start = new Vector(startX * map.tileWidth + map.tileWidth * 0.5, startY * map.tileHeight + map.tileHeight * 0.5);
+        this.end = new Vector(endX * map.tileWidth + map.tileWidth * 0.5, endY * map.tileHeight + map.tileHeight * 0.5);
+        this.size.x = map.tileWidth;
         this.size.y = map.tileHeight * 0.7;
         this.map = map;
         this.position.x = this.start.x;
@@ -14,11 +14,12 @@ class MovingTile extends Entity {
         this.turn = 0;
         this.translation = new Vector(0, 0);
         this.prevPosition = new Vector(0, 0);
-        this.velocity = new Vector(map.tileHeight * 0.5, 0);
+        this.velocity = new Vector(speed, 0);
         this.velocityLength = this.velocity.length();
         this.camera = camera;
         this.atlas = Atlas.getInstance();
-        this.assets = Assets.getInstance(); 
+        this.assets = Assets.getInstance();
+        this.changeDirectionMargin = Math.min(this.map.tileWidth, this.map.tileHeight) * 0.2;
     }
     
     update(dt) {
@@ -34,7 +35,7 @@ class MovingTile extends Entity {
         this.prevPosition.y = this.position.y;
         this.position.addThis(translation);
         
-        if (length < 5) {
+        if (length < this.changeDirectionMargin) {
             this.to = this.turn++ % 2 > 0 ? this.start.clone() : this.end.clone();
         }
     }

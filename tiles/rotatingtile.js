@@ -1,15 +1,15 @@
 class RotatingTile extends MovingTile {
     
-    constructor(camera, level, x, y) {
+    constructor(camera, level, x, y, length) {
         super(camera, level);
         var map = level.map;
-        this.velocityLength = Math.min(map.tileWidth, map.tileHeight);
+        this.velocityLength = length;
         this.start = new Vector(x * map.tileWidth + map.tileWidth * 0.5, y * map.tileHeight + map.tileHeight * 0.5);
         // Start vector is the origin and velocityLenght is the radius of the rotation
         this.position.x = this.start.x + this.velocityLength;
         this.position.y = this.start.y;
         this.degrees = 45;
-        this.speed = map.tileHeight * 0.01;
+        this.speed = map.tileHeight * 0.005;
     }
     
     update(dt) {
