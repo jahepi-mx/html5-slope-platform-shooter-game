@@ -5,6 +5,7 @@ class Cursor {
     constructor() {
         this.position = new Vector();
         this.isPressed = false;
+        this.config = Config.getInstance();
     }
     
     static getInstance() {
@@ -16,7 +17,7 @@ class Cursor {
 
     update(x, y) {
         this.position.x = x;
-        this.position.y = offsetY - y;
+        this.position.y = this.config.offsetY - y;
     }
 };
 

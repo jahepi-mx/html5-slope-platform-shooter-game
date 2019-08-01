@@ -35,21 +35,11 @@ class SlopeTile extends Tile {
         
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
-        /*
-        context.fillStyle = "#f4f4f4";
-        context.strokeStyle = "#f4f4f4";
-        context.beginPath();
-        context.moveTo(newX, offsetY - newY);
-        context.lineTo(newX + this.size.x, offsetY - newY);
-        context.lineTo(newX + this.size.x, offsetY - (newY + this.high));
-        context.lineTo(newX, offsetY - (newY + this.low));
-        context.lineTo(newX, offsetY - newY);
-        context.fill();
-        */
+        
         var atlas = Atlas.getInstance();
         var assets = Assets.getInstance(); 
         var image = "slope" + this.tmpType;
-        context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
+        context.drawImage(assets.spritesAtlas, atlas.sprites[image].x, atlas.sprites[image].y, atlas.sprites[image].width, atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x + 1, this.size.y + 1);
     } 
 }
 

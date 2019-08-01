@@ -8,13 +8,13 @@ class MainScene extends Scene {
         this.assets = Assets.getInstance();
         this.width = 5;
         this.height = 4;
-        var canvasWidth = window.innerWidth;
-        var canvasHeight = window.innerHeight;
+        var canvasWidth = window.screen.availHeight * this.config.screenRatio;
+        var canvasHeight = window.screen.availHeight;
         this.tileWidth = canvasWidth / this.width;
         this.tileHeight = canvasHeight / this.height;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
-        offsetY = canvasHeight;
+        this.config.offsetY = canvasHeight;
         var camera = new Camera();
         this.parallaxBgs = [];
         this.parallaxBgs.push(new ParallaxBg(camera, canvasWidth, canvasHeight, "background3", 1, 0, true));
@@ -35,7 +35,7 @@ class MainScene extends Scene {
             var x = this.canvas.width * 0.9;
             var y = this.canvas.height * 0.75;
             if (this.cursor.position.x >= x - half && this.cursor.position.x <= x
-                    && offsetY - this.cursor.position.y >= y - half && offsetY - this.cursor.position.y <= y + half) {
+                    && this.config.offsetY - this.cursor.position.y >= y - half && this.config.offsetY - this.cursor.position.y <= y + half) {
                 if (!this.dispose) {
                     this.sceneManager.setScene("game");
                     this.dispose = true;

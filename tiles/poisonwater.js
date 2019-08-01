@@ -24,7 +24,7 @@ class PosionWater extends Tile {
         } else {
             image = "radioactive_water_" + (this.animation.getFrame() + 1);
         }
-        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x + 1, this.size.y + 1);
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x + 1, this.size.y + 1);
     }
     
     collide(entity) {

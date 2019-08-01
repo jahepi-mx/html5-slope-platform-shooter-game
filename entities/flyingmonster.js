@@ -93,7 +93,7 @@ class FlyingMonster extends Entity {
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         var image = "flyingmonster_" + (this.animation.getFrame() + 1);
-        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x, this.size.y);
     }
 }
 

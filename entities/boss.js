@@ -162,6 +162,6 @@ class Boss extends Entity {
                 this.image = "boss_close_" + (this.closeMouthAnimation.getFrame() + 1);
             } 
         }
-        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, this.config.offsetY - newY, this.size.x, this.size.y);
     }
 }

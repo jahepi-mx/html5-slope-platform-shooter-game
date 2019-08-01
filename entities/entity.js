@@ -6,6 +6,7 @@ class Entity {
         this.velocity = new Vector(0, 0);
         this.acceleration = new Vector(0, 0);
         this.friction = new Vector(0, 0);
+        this.config = Config.getInstance();
     }
     
     update(dt) {

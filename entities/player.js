@@ -267,9 +267,9 @@ class Player extends Entity {
         if ((this.left || this.right) && !this.isJumping && !this.isOnLadder) {
              image = "run_" + (this.direction.x > 0 ? "" : "left_") + (this.runAnimation.getFrame() + 1);
         }
-        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x, this.size.y);
         context.save();
-        context.translate(newX + this.size.x * 0.5, offsetY - (newY - this.size.y * 0.5));
+        context.translate(newX + this.size.x * 0.5, this.config.offsetY - (newY - this.size.y * 0.5));
         context.rotate(-this.gunRadiansDir + (this.direction.x > 0 ? 0 : Math.PI));
         context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[gunImage].x, this.atlas.sprites[gunImage].y, this.atlas.sprites[gunImage].width, this.atlas.sprites[gunImage].height, -this.size.x * 0.5, -this.size.y * 0.5, this.size.x, this.size.y);
         context.restore();

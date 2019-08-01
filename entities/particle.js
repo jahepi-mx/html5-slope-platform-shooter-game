@@ -29,7 +29,7 @@ class Particle extends Entity {
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         context.fillStyle = 'rgb(' + this.r + ', ' + this.g + ',' + this.b + ',' + this.alpha + ')';
-        context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+        context.fillRect(newX, this.config.offsetY - newY, this.size.x, this.size.y);
     }
     
     resetState(x, y) {

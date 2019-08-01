@@ -56,10 +56,10 @@ class Bullet extends Entity {
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         if (this.hasImage) {
-            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, offsetY - newY, this.size.x, this.size.y);
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, this.config.offsetY - newY, this.size.x, this.size.y);
         } else {
             context.fillStyle = "#fdff00";
-            context.fillRect(newX, offsetY - newY, this.size.x, this.size.y);
+            context.fillRect(newX, this.config.offsetY - newY, this.size.x, this.size.y);
         }
     }
     

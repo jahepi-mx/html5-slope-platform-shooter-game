@@ -315,7 +315,7 @@ class Monster extends Entity {
         } else if (this.isAttacking) {
             image = "enemy_attack_" + (this.direction.x > 0 ? "" : "left_") + (this.attackAnimation.getFrame() + 1);
         }
-        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, offsetY - newY, this.size.x, this.size.y);
+        context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x, this.size.y);
     }
     
     moveLeft(bool) {

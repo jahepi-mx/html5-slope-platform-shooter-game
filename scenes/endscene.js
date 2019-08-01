@@ -6,13 +6,13 @@ class EndScene extends Scene {
         this.assets = Assets.getInstance();
         this.width = 5;
         this.height = 4;
-        var canvasWidth = window.innerWidth;
-        var canvasHeight = window.innerHeight;
+        var canvasWidth = window.screen.availHeight * this.config.screenRatio;
+        var canvasHeight = window.screen.availHeight;
         this.tileWidth = canvasWidth / this.width;
         this.tileHeight = canvasHeight / this.height;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
-        offsetY = canvasHeight;
+        this.config.offsetY = canvasHeight;
         this.imageData = null;
         this.fontSize = this.tileHeight * 0.3;
         this.fontSize2 = this.tileHeight * 0.2;

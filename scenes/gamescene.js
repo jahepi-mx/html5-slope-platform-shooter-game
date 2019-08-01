@@ -2,11 +2,11 @@ class GameScene extends Scene {
     
     constructor(canvas) {
         super(canvas);
-        var canvasWidth = window.innerWidth;
-        var canvasHeight = window.innerHeight;
+        var canvasWidth = window.screen.availHeight * this.config.screenRatio;
+        var canvasHeight = window.screen.availHeight;
         var tileWidth = canvasWidth / 5;
         var tileHeight = canvasHeight / 4;
-        offsetY = canvasHeight; 
+        this.config.offsetY = canvasHeight;
         var assets = Assets.getInstance();
         canvas.width = assets.spritesAtlas.width;
         canvas.height = assets.spritesAtlas.height;
