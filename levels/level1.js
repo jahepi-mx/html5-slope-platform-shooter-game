@@ -69,9 +69,11 @@ class Level1 {
         this.particlesPooling = new ObjectPooling(100);
         this.interactiveParticlesPooling = new ObjectPooling(100);
         
+        var tiles1 = [5 * this.map.mapWidth + 41, 6 * this.map.mapWidth + 41, 7 * this.map.mapWidth + 41, 8 * this.map.mapWidth + 41];
+        var tiles2 = [1 * this.map.mapWidth + 262, 2 * this.map.mapWidth + 262, 3 * this.map.mapWidth + 262, 4 * this.map.mapWidth + 262];
         this.cinematics = [
-            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 42, this.map.tiles[1 * this.map.mapWidth + 42]),
-            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 263, this.map.tiles[0 * this.map.mapWidth + 263])
+            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 42, this.map.tiles[1 * this.map.mapWidth + 42], new Vector(42 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5), tiles1),
+            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 263, this.map.tiles[0 * this.map.mapWidth + 263], new Vector(263 * this.map.tileWidth + this.map.tileWidth * 0.5, 1 * this.map.tileHeight + this.map.tileHeight * 0.5), tiles2)
         ];
     }
     
@@ -174,7 +176,7 @@ class Level1 {
     
     resetState() {
         this.player.resetState();
-        this.monsters = [];
+        //this.monsters = [];
         //this.monsters.push(new Monster(this.map.tileWidth * 0.9, this.map.tileHeight * 0.9, 34, 2, this));
         //this.monsters.push(new FlyingMonster(2, 2, this));
         //this.monsters.push(new Boss(46, 1, this));
@@ -184,20 +186,22 @@ class Level1 {
         this.bullets = [];
         this.enemyBullets = [];
         this.particles = [];
-        this.camera.resetState();
-        this.camera.setup(this.map);
+        //this.camera.resetState();
+        //this.camera.setup(this.map);
     }
 }
 
 class Cinematic {
     
-    constructor(player, map, camera, xOffsetTo, targetTile) {
+    constructor(player, map, camera, xOffsetTo, targetTile, checkpoint, blockTiles) {
         this.isCinematicOn = false;
         this.xOffsetTo = xOffsetTo;
         this.targetTile = targetTile;
         this.player = player;
         this.map = map;
         this.camera = camera;
+        this.checkpoint = checkpoint;
+        this.blockTiles = blockTiles;
     }
     
     update(dt) {
@@ -208,8 +212,11 @@ class Cinematic {
             var xDiff = this.xOffsetTo - xLeft;
             this.camera.xOffset = this.xOffsetTo - xDiff;
             
+            for (let blockTile of this.blockTiles) {
+                this.map.tiles[blockTile] = new Tile(this.map.tileWidth, this.map.tileHeight, blockTile % this.map.mapWidth, parseInt(blockTile / this.map.mapWidth), this.camera, 0);
+            }
             // Check point
-            this.player.positionCopy = new Vector(42 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5);
+            this.player.positionCopy = this.checkpoint;
         }
        
         if (this.isCinematicOn) {

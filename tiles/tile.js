@@ -8,13 +8,11 @@ class Tile extends Entity {
         this.position.y = y * height + height * 0.5;
         this.camera = camera;
         this.type = type;
-        this.walkable = type === 0;
+        this.walkable = false;
         this.tmpType = type;
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance(); 
-        if (this.type > 0) {
-            this.type = WALL_TILE;
-        }
+        this.type = WALL_TILE;
     }
     
     render(context) {
@@ -23,7 +21,7 @@ class Tile extends Entity {
         newX -= this.size.x * 0.5;
         newY += this.size.y * 0.5;
         
-        if (!this.walkable) {
+        if (!this.walkable && this.tmpType > 0) {
             var image = "tile" + this.tmpType;
             context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x + 1, this.size.y + 1);
         }
