@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="patterns" tilewidth="32" tileheight="32" tilecount="48" columns="0">
+<tileset name="patterns" tilewidth="32" tileheight="32" tilecount="58" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="../separated_sprites/tile1.png"/>
@@ -144,5 +144,35 @@
  </tile>
  <tile id="47">
   <image width="32" height="32" source="../separated_sprites/walkable48.png"/>
+ </tile>
+ <tile id="48">
+  <image width="32" height="32" source="../separated_sprites/walkable49.png"/>
+ </tile>
+ <tile id="49">
+  <image width="32" height="32" source="../separated_sprites/walkable50.png"/>
+ </tile>
+ <tile id="50">
+  <image width="32" height="32" source="../separated_sprites/walkable51.png"/>
+ </tile>
+ <tile id="51">
+  <image width="32" height="32" source="../separated_sprites/walkable52.png"/>
+ </tile>
+ <tile id="52">
+  <image width="32" height="32" source="../separated_sprites/walkable53.png"/>
+ </tile>
+ <tile id="53">
+  <image width="32" height="32" source="../separated_sprites/walkable54.png"/>
+ </tile>
+ <tile id="54">
+  <image width="32" height="32" source="../separated_sprites/walkable55.png"/>
+ </tile>
+ <tile id="55">
+  <image width="32" height="32" source="../separated_sprites/walkable56.png"/>
+ </tile>
+ <tile id="56">
+  <image width="32" height="32" source="../separated_sprites/walkable57.png"/>
+ </tile>
+ <tile id="57">
+  <image width="32" height="32" source="../separated_sprites/walkable58.png"/>
  </tile>
 </tileset>

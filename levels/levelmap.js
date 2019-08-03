@@ -2,6 +2,7 @@ let WALL_TILE = 1;
 let LADDER_TILE = 11;
 let TOP_LADDER_TILE = 12;
 let CEILING_TILE = 10;
+let FRONT_TILE = 16;
 let SLOPE_TILE = 5;
 let POISON_WATER = 45;
 let POISON_WATER_BOTTOM = 46;
@@ -33,6 +34,7 @@ class LevelMap {
                 var frontTile = new Tile(tileWidth, tileHeight, x, y, camera, frontValue);
                 frontTile.walkable = true;
                 frontTile.tmpType = frontValue;
+                frontTile.type = FRONT_TILE;
                 this.frontTiles.set(y * mapWidth + x, frontTile);
             }
             

@@ -13,6 +13,7 @@ class Tile extends Entity {
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance(); 
         this.type = WALL_TILE;
+        this.frontYOffset = 0;
     }
     
     render(context) {
@@ -27,7 +28,12 @@ class Tile extends Entity {
         }
         if (this.walkable && this.tmpType > 0) {
             var image = "walkable" + this.tmpType;
-            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x + 1, this.size.y + 1);
+            if (this.type === FRONT_TILE) {
+                this.frontYOffset = this.size.y / this.atlas.sprites[image].height * 2;
+                context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - (newY - this.frontYOffset), this.size.x, this.size.y + 1);
+            } else {
+                context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[image].x, this.atlas.sprites[image].y, this.atlas.sprites[image].width, this.atlas.sprites[image].height, newX, this.config.offsetY - newY, this.size.x + 1, this.size.y + 1);
+            }   
         }
     }
 }
