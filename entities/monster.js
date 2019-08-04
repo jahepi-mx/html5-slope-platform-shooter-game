@@ -1,5 +1,5 @@
 class Monster extends Entity {
-    constructor(width, height, x, y, level) {
+    constructor(width, height, x, y, level, speed, life) {
         super();
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance(); 
@@ -13,7 +13,7 @@ class Monster extends Entity {
         this.friction.y = 1;
         this.camera = this.map.camera;
         this.jumpScalarVelocity = this.map.tileHeight * 0.8;
-        this.walkScalarVelocity = this.map.tileWidth * 1.2;
+        this.walkScalarVelocity = speed;
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
         this.acceleration.y = -this.map.tileHeight * 4;
         this.isJumping = false;
@@ -33,7 +33,7 @@ class Monster extends Entity {
         this.attackingBloodTimeLimit = 0.5;
         this.isStanding = false;
         this.dispose = false;
-        this.life = 5;
+        this.life = life;
         this.bodyParts = ["enemy_head", "enemy_legs", "enemy_torso", "enemy_arm", "enemy_arm"];
         this.walkedDistant = 0;
         this.walkedDistantTime = 0;

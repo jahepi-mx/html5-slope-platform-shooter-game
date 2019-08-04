@@ -54,8 +54,8 @@ class Level1 {
         this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 2, this);
         
         this.monsters = [];
-        this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 1, 2, this));
-        this.monsters.push(new FlyingMonster(2, 2, this));
+        //this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 1, 2, this));
+        //this.monsters.push(new FlyingMonster(2, 2, this));
         //this.monsters.push(new Boss(46, 1, this));
         
         this.movingTiles = [];
@@ -71,9 +71,42 @@ class Level1 {
         
         var tiles1 = [5 * this.map.mapWidth + 41, 6 * this.map.mapWidth + 41, 7 * this.map.mapWidth + 41, 8 * this.map.mapWidth + 41];
         var tiles2 = [1 * this.map.mapWidth + 262, 2 * this.map.mapWidth + 262, 3 * this.map.mapWidth + 262, 4 * this.map.mapWidth + 262];
+        
         this.cinematics = [
-            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 42, this.map.tiles[1 * this.map.mapWidth + 42], new Vector(42 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5), tiles1),
-            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 263, this.map.tiles[0 * this.map.mapWidth + 263], new Vector(263 * this.map.tileWidth + this.map.tileWidth * 0.5, 1 * this.map.tileHeight + this.map.tileHeight * 0.5), tiles2)
+            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 42, this.map.tiles[1 * this.map.mapWidth + 42], tiles1),
+            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 263, this.map.tiles[0 * this.map.mapWidth + 263], tiles2)
+        ];
+        
+        this.checkpoints = [
+            {checked: false, position: new Vector(20 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(23 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(26 * this.map.tileWidth + this.map.tileWidth * 0.5, 2 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(42 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(65 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(74 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(263 * this.map.tileWidth + this.map.tileWidth * 0.5, 1 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+        ];
+        
+        this.events = [
+            
+            new EnemyEvent((function() {
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 46, 8, this, this.map.tileWidth * 0.5, 7)); 
+            }).bind(this), new Vector(42 * this.map.tileWidth, 5 * this.map.tileHeight)),
+            
+            new EnemyEvent((function() {
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 0.8, 7));
+               this.monsters.push(new Monster(tileWidth * 0.8, tileHeight * 0.8, 70, 5, this, this.map.tileWidth * 1, 7));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 1.1, 7));
+            }).bind(this), new Vector(67 * this.map.tileWidth, 3 * this.map.tileHeight)),
+            
+            new EnemyEvent((function() {
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 0.8, 7));
+               this.monsters.push(new Monster(tileWidth * 0.8, tileHeight * 0.8, 79, 5, this, this.map.tileWidth * 1, 7));
+               this.monsters.push(new Monster(tileWidth * 0.7, tileHeight * 0.7, 79, 5, this, this.map.tileWidth * 1.1, 7));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.2, 7));
+               this.monsters.push(new Monster(tileWidth * 0.6, tileHeight * 0.6, 79, 5, this, this.map.tileWidth * 1.3, 7));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.4, 7));
+            }).bind(this), new Vector(76 * this.map.tileWidth, 3 * this.map.tileHeight)),
         ];
     }
     
@@ -82,6 +115,17 @@ class Level1 {
         if (this.player.dispose) {
             this.resetState();
             return;
+        }
+        
+        for (let checkpoint of this.checkpoints) {
+            if (!checkpoint.checked && this.player.position.x >= checkpoint.position.x) {
+                this.player.positionCopy = checkpoint.position;
+                checkpoint.checked = true;
+            }
+        }
+        
+        for (let event of this.events) {
+            event.check(this.player);
         }
         
         // Example for offsetting the camera on the X axis. 
@@ -193,14 +237,13 @@ class Level1 {
 
 class Cinematic {
     
-    constructor(player, map, camera, xOffsetTo, targetTile, checkpoint, blockTiles) {
+    constructor(player, map, camera, xOffsetTo, targetTile, blockTiles) {
         this.isCinematicOn = false;
         this.xOffsetTo = xOffsetTo;
         this.targetTile = targetTile;
         this.player = player;
         this.map = map;
         this.camera = camera;
-        this.checkpoint = checkpoint;
         this.blockTiles = blockTiles;
     }
     
@@ -215,8 +258,6 @@ class Cinematic {
             for (let blockTile of this.blockTiles) {
                 this.map.tiles[blockTile] = new Tile(this.map.tileWidth, this.map.tileHeight, blockTile % this.map.mapWidth, parseInt(blockTile / this.map.mapWidth), this.camera, 0);
             }
-            // Check point
-            this.player.positionCopy = this.checkpoint;
         }
        
         if (this.isCinematicOn) {
@@ -225,6 +266,24 @@ class Cinematic {
             if (Math.abs(this.camera.xOffset - this.xOffsetTo) <= 10) {
                 this.camera.xOffset = this.xOffsetTo;
                 this.isCinematicOn = false;
+            }
+        }
+    }
+}
+
+class EnemyEvent {
+    
+    constructor(strategyCallback, position) {
+        this.executed = false;
+        this.strategy = strategyCallback;
+        this.position = position;
+    }
+    
+    check(player) {
+        if (!this.executed) {
+            if (player.position.x >= this.position.x) {
+                this.executed = true;
+                this.strategy();
             }
         }
     }
