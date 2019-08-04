@@ -90,14 +90,14 @@ class Level1 {
         this.events = [
             
             new EnemyEvent((function() {
-               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 46, 8, this, this.map.tileWidth * 0.5, 7)); 
-            }).bind(this), new Vector(42 * this.map.tileWidth, 5 * this.map.tileHeight)),
+               this.monsters.push(new Monster(tileWidth * 1.5, tileHeight * 1.5, 46, 8, this, this.map.tileWidth * 0.5, 7)); 
+            }).bind(this), new Vector(42.1 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5)),
             
             new EnemyEvent((function() {
                this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 0.8, 7));
                this.monsters.push(new Monster(tileWidth * 0.8, tileHeight * 0.8, 70, 5, this, this.map.tileWidth * 1, 7));
                this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 1.1, 7));
-            }).bind(this), new Vector(67 * this.map.tileWidth, 3 * this.map.tileHeight)),
+            }).bind(this), new Vector(67 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)),
             
             new EnemyEvent((function() {
                this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 0.8, 7));
@@ -106,7 +106,7 @@ class Level1 {
                this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.2, 7));
                this.monsters.push(new Monster(tileWidth * 0.6, tileHeight * 0.6, 79, 5, this, this.map.tileWidth * 1.3, 7));
                this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.4, 7));
-            }).bind(this), new Vector(76 * this.map.tileWidth, 3 * this.map.tileHeight)),
+            }).bind(this), new Vector(76 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)),
         ];
     }
     
@@ -220,7 +220,7 @@ class Level1 {
     
     resetState() {
         this.player.resetState();
-        //this.monsters = [];
+        this.monsters = [];
         //this.monsters.push(new Monster(this.map.tileWidth * 0.9, this.map.tileHeight * 0.9, 34, 2, this));
         //this.monsters.push(new FlyingMonster(2, 2, this));
         //this.monsters.push(new Boss(46, 1, this));
@@ -232,6 +232,11 @@ class Level1 {
         this.particles = [];
         //this.camera.resetState();
         //this.camera.setup(this.map);
+        for (let event of this.events) {
+            if (event.position.x >= this.player.position.x) {
+                event.executed = false;
+            }
+        }
     }
 }
 

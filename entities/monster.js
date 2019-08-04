@@ -70,6 +70,13 @@ class Monster extends Entity {
                     particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "");
                 }
                 particle.g = 0;
+                var minSize = this.size.x * 0.1;
+                var maxSize = this.size.x * 0.2;
+                var size = Math.random() * (maxSize - minSize) + minSize;
+                particle.size.x = size;
+                particle.size.y = size;
+                particle.friction.x = 0.97;
+                particle.friction.y = 0.97;
                 this.level.particles.push(particle);
             }
             for (let bodyPart of this.bodyParts) {
@@ -79,6 +86,9 @@ class Monster extends Entity {
                 } else {
                     particle = new InteractiveParticle(this.position.x, this.position.y, this.level, bodyPart);
                 }
+                var ratio = this.atlas.sprites[bodyPart].width / this.atlas.sprites[bodyPart].height;
+                particle.size.x = this.size.x * 0.5;
+                particle.size.y = particle.size.x / ratio;
                 this.level.particles.push(particle);
             }
         }
