@@ -1,6 +1,6 @@
 class Boss extends Entity {
     
-    constructor(x, y, level) {
+    constructor(x, y, level, width, life) {
         super();
         var width = 64;
         var height = 123;
@@ -11,7 +11,7 @@ class Boss extends Entity {
         this.map = level.map;
         this.player = level.player;
         this.camera = this.level.camera;
-        this.size.x = this.map.tileWidth * 1.5;
+        this.size.x = width;
         this.size.y = this.size.x * ratio;
         var x = this.map.tileWidth * x + this.map.tileWidth;
         this.position.x = x - this.size.x * 0.5;
@@ -25,7 +25,7 @@ class Boss extends Entity {
         this.closeMouthAnimation.stopAtSequenceCallback = this.onCloseMouth.bind(this);
         this.closeMouthAnimation.stopAtSequence = 1;
         this.openAnimation = true;
-        this.life = 10;
+        this.life = life;
         this.dispose = false;
         this.thowUp = false;
         this.throwUpTime = 0;

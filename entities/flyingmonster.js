@@ -1,6 +1,6 @@
 class FlyingMonster extends Entity {
     
-    constructor(x, y, level) {
+    constructor(x, y, level, width, height, life) {
         super();
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
@@ -8,10 +8,10 @@ class FlyingMonster extends Entity {
         this.map = level.map;
         this.camera = level.camera;
         this.player = level.player;
-        this.size.x = this.map.tileWidth * 0.5;
-        this.size.y = this.map.tileHeight * 0.5;
+        this.size.x = width;
+        this.size.y = height;
         this.length = this.map.tileWidth * 1;
-        this.life = 50;
+        this.life = life;
         this.dispose = false;
         this.position.x = this.map.tileWidth * x + this.size.x * 0.5;
         this.position.y = this.map.tileHeight * y + this.size.y * 0.5;

@@ -84,29 +84,48 @@ class Level1 {
             {checked: false, position: new Vector(42 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5)},
             {checked: false, position: new Vector(65 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)},
             {checked: false, position: new Vector(74 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(92 * this.map.tileWidth + this.map.tileWidth * 0.5, 4 * this.map.tileHeight + this.map.tileHeight * 0.5)},
+            {checked: false, position: new Vector(116 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5)},
             {checked: false, position: new Vector(263 * this.map.tileWidth + this.map.tileWidth * 0.5, 1 * this.map.tileHeight + this.map.tileHeight * 0.5)},
         ];
         
         this.events = [
             
             new EnemyEvent((function() {
-               this.monsters.push(new Monster(tileWidth * 1.5, tileHeight * 1.5, 46, 8, this, this.map.tileWidth * 0.5, 7)); 
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 46, 8, this, this.map.tileWidth * 0.5, 7)); 
             }).bind(this), new Vector(42.1 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5)),
             
             new EnemyEvent((function() {
-               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 0.8, 7));
-               this.monsters.push(new Monster(tileWidth * 0.8, tileHeight * 0.8, 70, 5, this, this.map.tileWidth * 1, 7));
-               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 1.1, 7));
+               this.monsters.push(new Monster(tileWidth * 1, tileHeight * 1, 70, 5, this, this.map.tileWidth * 0.8, 7));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 70, 5, this, this.map.tileWidth * 1, 7));
+               this.monsters.push(new Monster(tileWidth * 1.1, tileHeight * 1.1, 70, 5, this, this.map.tileWidth * 1.1, 7));
             }).bind(this), new Vector(67 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)),
             
             new EnemyEvent((function() {
-               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 0.8, 7));
-               this.monsters.push(new Monster(tileWidth * 0.8, tileHeight * 0.8, 79, 5, this, this.map.tileWidth * 1, 7));
-               this.monsters.push(new Monster(tileWidth * 0.7, tileHeight * 0.7, 79, 5, this, this.map.tileWidth * 1.1, 7));
-               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.2, 7));
-               this.monsters.push(new Monster(tileWidth * 0.6, tileHeight * 0.6, 79, 5, this, this.map.tileWidth * 1.3, 7));
-               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.4, 7));
+               this.monsters.push(new Monster(tileWidth * 1, tileHeight * 1, 79, 5, this, this.map.tileWidth * 0.8, 7));
+               this.monsters.push(new Monster(tileWidth * 1.1, tileHeight * 1.1, 79, 5, this, this.map.tileWidth * 1, 9));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.1, 7));
+               this.monsters.push(new Monster(tileWidth * 1.3, tileHeight * 1.3, 79, 5, this, this.map.tileWidth * 1.2, 10));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 79, 5, this, this.map.tileWidth * 1.3, 7));
+               this.monsters.push(new Monster(tileWidth * 1.2, tileHeight * 1.2, 79, 5, this, this.map.tileWidth * 1.4, 10));
             }).bind(this), new Vector(76 * this.map.tileWidth + this.map.tileWidth * 0.5, 3 * this.map.tileHeight + this.map.tileHeight * 0.5)),
+            
+            new EnemyEvent((function() {
+               this.monsters.push(new FlyingMonster(98, 8, this, this.map.tileWidth * 0.5, this.map.tileHeight * 0.5, 30));
+            }).bind(this), new Vector(92 * this.map.tileWidth + this.map.tileWidth * 0.5, 4 * this.map.tileHeight + this.map.tileHeight * 0.5)),
+            
+            new EnemyEvent((function() {
+               this.monsters.push(new Monster(tileWidth * 1, tileHeight * 1, 109, 8, this, this.map.tileWidth * 0.8, 7));
+               this.monsters.push(new Monster(tileWidth * 1.1, tileHeight * 1.1, 109, 8, this, this.map.tileWidth * 1, 9));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 109, 8, this, this.map.tileWidth * 1.1, 7));
+               this.monsters.push(new Monster(tileWidth * 1.3, tileHeight * 1.3, 109, 8, this, this.map.tileWidth * 1.2, 10));
+               this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 109, 8, this, this.map.tileWidth * 1.3, 7));
+               this.monsters.push(new Monster(tileWidth * 1.2, tileHeight * 1.2, 109, 8, this, this.map.tileWidth * 1.4, 10));
+            }).bind(this), new Vector(100 * this.map.tileWidth + this.map.tileWidth * 0.5, 7 * this.map.tileHeight + this.map.tileHeight * 0.5)),
+            
+            new EnemyEvent((function() {
+               this.monsters.push(new Boss(115, 5, this, this.map.tileWidth * 1.2, 50));
+            }).bind(this), new Vector(111 * this.map.tileWidth + this.map.tileWidth * 0.5, 5 * this.map.tileHeight + this.map.tileHeight * 0.5)),
         ];
     }
     
