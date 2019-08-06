@@ -44,7 +44,7 @@ class Monster extends Entity {
         
         this.walkedDistantTime += dt;
         if (this.walkedDistantTime >= this.walkedDistantTimeLimit) {
-            if (Math.abs(this.walkedDistant) < this.walkScalarVelocity * 0.7) {
+            if (Math.abs(this.walkedDistant) < this.walkScalarVelocity * 0.7 && !this.isAttacking) {
                 this.makeJump(true);
             }
             this.walkedDistantTime = 0;

@@ -1,6 +1,6 @@
 class FlyingMonster extends Entity {
     
-    constructor(x, y, level, width, height, life) {
+    constructor(x, y, level, width, height, life, speed) {
         super();
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
@@ -10,7 +10,7 @@ class FlyingMonster extends Entity {
         this.player = level.player;
         this.size.x = width;
         this.size.y = height;
-        this.length = this.map.tileWidth * 1;
+        this.length = speed;
         this.life = life;
         this.dispose = false;
         this.position.x = this.map.tileWidth * x + this.size.x * 0.5;
@@ -49,6 +49,13 @@ class FlyingMonster extends Entity {
                     particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "");
                 }
                 particle.g = 0;
+                var minSize = this.size.x * 0.1;
+                var maxSize = this.size.x * 0.2;
+                var size = Math.random() * (maxSize - minSize) + minSize;
+                particle.size.x = size;
+                particle.size.y = size;
+                particle.friction.x = 0.99;
+                particle.friction.y = 0.99;
                 this.level.particles.push(particle);
             }
         }
@@ -64,10 +71,10 @@ class FlyingMonster extends Entity {
                     bullet = new Bullet(this.position.x, this.position.y, this.level, radians);
                 }
                 bullet.velocity.x = this.map.tileWidth * 2;
-                bullet.disposeTime = 1.5;
+                bullet.disposeTime = 2;
                 bullet.setImage("bullet");
-                bullet.size.x = this.map.tileWidth * 0.15;
-                bullet.size.y = this.map.tileWidth * 0.15; 
+                bullet.size.x = this.size.x * 0.35;
+                bullet.size.y = this.size.x * 0.35; 
                 this.level.enemyBullets.push(bullet);
             }
             this.shootTime = 0;

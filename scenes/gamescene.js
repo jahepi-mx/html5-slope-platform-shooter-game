@@ -18,19 +18,20 @@ class GameScene extends Scene {
         this.fps = 0;
         this.dispose = false;
         this.time = 0;
-        this.timeLimit = 60 * 60 * 24;
+        this.timeLimit = 2;
         this.sceneManager = SceneManager.getInstance();
         this.map = this.currentLevel.map;
     }
     
     update(dt) {
-        this.time += dt;
         this.fps = 1 / dt;
         this.currentLevel.update(dt);  
+        if (this.currentLevel.dispose) {
+            this.time += dt;
+        }
     }
     
     render() {
-        
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.imageSmoothingEnabled = false;
                 

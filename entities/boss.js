@@ -1,12 +1,12 @@
 class Boss extends Entity {
     
-    constructor(x, y, level, width, life) {
+    constructor(x, y, level, width, life, player, isFinal) {
         super();
-        var width = 64;
-        var height = 123;
-        var ratio = height / width;
+        this.origVector = new Vector(x, y);
+        this.image = "boss_laser_1";
         this.atlas = Atlas.getInstance();
-        this.assets = Assets.getInstance(); 
+        this.assets = Assets.getInstance();
+        var ratio = this.atlas.sprites[this.image].height / this.atlas.sprites[this.image].width; 
         this.level = level;
         this.map = level.map;
         this.player = level.player;
@@ -17,7 +17,6 @@ class Boss extends Entity {
         this.position.x = x - this.size.x * 0.5;
         var y = this.map.tileHeight * y;
         this.position.y = y + this.size.y * 0.5;
-        this.image = "boss_laser_1";
         this.openMouthAnimation = new Animation(3, 2);
         this.openMouthAnimation.stopAtSequenceCallback = this.onOpenMouth.bind(this);
         this.openMouthAnimation.stopAtSequence = 1;
@@ -38,12 +37,17 @@ class Boss extends Entity {
         this.laserAnimationOn = false;
         this.laserTime = 0;
         this.laserTimeLimit = Math.random() * 3 + 2;
+        this.player = player;
+        this.isGettingHit = false;
+        this.isGettingHitTimeLimit = 0.1;
+        this.isGettingHitTime = this.isGettingHitTimeLimit;
+        this.isFinal = isFinal;
     }
     
     onOpenMouth() {
         this.openAnimation = false;
         this.closeMouthAnimation.reset();
-        var monster = new Monster(this.map.tileWidth * 0.9, this.map.tileHeight * 0.9, 45.5, 1, this.level);
+        var monster = new Monster(this.size.x * 0.4, this.size.x * 0.4, this.origVector.x, this.origVector.y, this.level, this.map.tileWidth, 5);
         monster.velocity.y = this.map.tileHeight * 3;
         monster.velocity.x = this.map.tileWidth;
         this.level.monsters.push(monster);
@@ -70,14 +74,19 @@ class Boss extends Entity {
             bullet = new Bullet(this.position.x, this.position.y, this.level, radians);
         }
         bullet.velocity.x = this.map.tileWidth * 2;
-        bullet.disposeTime = 1.5;
+        bullet.disposeTime = 3;
         bullet.setImage("bullet");
-        bullet.size.x = this.map.tileWidth * 0.5;
-        bullet.size.y = this.map.tileWidth * 0.5; 
+        bullet.size.x = this.size.x * 0.4;
+        bullet.size.y = this.size.x * 0.4; 
         this.level.enemyBullets.push(bullet);
     }
     
     update(dt) {
+        this.isGettingHitTime += dt;
+        if (this.isGettingHitTime >= this.isGettingHitTimeLimit) {
+            this.isGettingHit = false;
+        }
+        
         if (this.throwUpsCount === this.throwUpsLimit) {
             this.throwUp = false;
             this.closeMouthAnimation.reset();
@@ -112,8 +121,14 @@ class Boss extends Entity {
                 this.acceleration.x += bullet.xDisplacement * this.length;
                 this.acceleration.y += bullet.yDisplacement * this.length;
                 this.life--;
+                this.isGettingHit = true;
+                this.isGettingHitTime = 0;
                 break;
             }
+        }
+        
+        if (this.collide(this.player)) {
+            this.player.damage(1000);
         }
         
         if (this.life <= 0) {
@@ -126,8 +141,8 @@ class Boss extends Entity {
                 } else {
                     particle = new InteractiveParticle(this.position.x, this.position.y, this.level, "boss_texture");
                 }
-                var minSize = this.map.tileWidth * 0.2;
-                var maxSize = this.map.tileWidth * 0.4;
+                var minSize = this.size.x * 0.2;
+                var maxSize = this.size.x * 0.4;
                 var size = Math.random() * (maxSize - minSize) + minSize;
                 particle.size.x = size;
                 particle.size.y = size;
@@ -154,12 +169,24 @@ class Boss extends Entity {
         newY += this.size.y * 0.5;
         
         if (this.laserAnimationOn) {
-            this.image = "boss_laser_" + (this.laserAnimation.getFrame() + 1);
+            if (this.isGettingHit) {
+                this.image = "boss_laser_red_" + (this.laserAnimation.getFrame() + 1);
+            } else {
+                this.image = "boss_laser_" + (this.laserAnimation.getFrame() + 1);
+            }
         } else {
             if (this.openAnimation) {
-                this.image = "boss_open_" + (this.openMouthAnimation.getFrame() + 1);
+                 if (this.isGettingHit) {
+                    this.image = "boss_open_red_" + (this.openMouthAnimation.getFrame() + 1);
+                } else {
+                    this.image = "boss_open_" + (this.openMouthAnimation.getFrame() + 1);
+                }
             } else {
-                this.image = "boss_close_" + (this.closeMouthAnimation.getFrame() + 1);
+                if (this.isGettingHit) {
+                    this.image = "boss_close_red_" + (this.closeMouthAnimation.getFrame() + 1);
+                } else {
+                    this.image = "boss_close_" + (this.closeMouthAnimation.getFrame() + 1);
+                }
             } 
         }
         context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[this.image].x, this.atlas.sprites[this.image].y, this.atlas.sprites[this.image].width, this.atlas.sprites[this.image].height, newX, this.config.offsetY - newY, this.size.x, this.size.y);
