@@ -154,8 +154,10 @@ class Boss extends Entity {
                 var velocity = Math.random() * (maxVelocity - minVelocity) + minVelocity;
                 particle.velocity.x = velocity * (Math.random() < 0.5 ? 1 : -1);
                 particle.velocity.y = velocity * (Math.random() < 0.5 ? 1 : -1);
-                var maxAcceleration = this.map.tileHeight * 5;
-                var minAcceleration = this.map.tileHeight * 3;
+                particle.friction.x = 0.97;
+                particle.friction.y = 0.97;
+                var maxAcceleration = this.size.x * 3;
+                var minAcceleration = this.size.x * 1;
                 particle.acceleration.y = -(Math.random() * (maxAcceleration - minAcceleration) + minAcceleration);
                 this.level.particles.push(particle);
             }
