@@ -52,7 +52,7 @@ class Monster extends Entity {
         }
         
         for (let bullet of this.level.bullets) {
-            if (this.collide(bullet)) {
+            if (!bullet.isReadyToDispose && this.collide(bullet)) {
                 bullet.isReadyToDispose = true;
                 this.life--;
                 break;
@@ -75,8 +75,8 @@ class Monster extends Entity {
                 var size = Math.random() * (maxSize - minSize) + minSize;
                 particle.size.x = size;
                 particle.size.y = size;
-                particle.friction.x = 0.97;
-                particle.friction.y = 0.97;
+                particle.friction.x = 0.98;
+                particle.friction.y = 0.98;
                 this.level.particles.push(particle);
             }
             for (let bodyPart of this.bodyParts) {

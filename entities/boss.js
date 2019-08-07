@@ -1,6 +1,6 @@
 class Boss extends Entity {
     
-    constructor(x, y, level, width, life, player, isFinal) {
+    constructor(x, y, level, width, life, player, isFinal, enemiesThrowwupNumber) {
         super();
         this.origVector = new Vector(x, y);
         this.image = "boss_laser_1";
@@ -42,15 +42,19 @@ class Boss extends Entity {
         this.isGettingHitTimeLimit = 0.1;
         this.isGettingHitTime = this.isGettingHitTimeLimit;
         this.isFinal = isFinal;
+        this.enemiesThorwupNumber = enemiesThrowwupNumber;
     }
     
     onOpenMouth() {
         this.openAnimation = false;
         this.closeMouthAnimation.reset();
-        var monster = new Monster(this.size.x * 0.4, this.size.x * 0.4, this.origVector.x, this.origVector.y, this.level, this.map.tileWidth, 5);
-        monster.velocity.y = this.map.tileHeight * 3;
-        monster.velocity.x = this.map.tileWidth;
-        this.level.monsters.push(monster);
+        for (var a = 0; a < this.enemiesThorwupNumber; a++) {
+            var speedRatio = 0.5 + Math.random();
+            var monster = new Monster(this.size.x * 0.4, this.size.x * 0.4, this.origVector.x, this.origVector.y, this.level, this.map.tileWidth * speedRatio, 5);
+            monster.velocity.y = this.size.y * 0.5;
+            monster.velocity.x = this.size.x;
+            this.level.monsters.unshift(monster);
+        }
     }
     
     onCloseMouth() {
