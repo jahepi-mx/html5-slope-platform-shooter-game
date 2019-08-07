@@ -49,6 +49,8 @@ class Level1 {
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background2", 1, -canvasHeight * 0.7, false));
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background", 1.1, -canvasHeight * 0.05, false));
         
+        this.frontParallax = new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background4", 1.3, -canvasHeight * 0.08, false);
+        
         this.map = new LevelMap(matrix, frontMatrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
         this.camera.setup(this.map);
         
@@ -246,7 +248,8 @@ class Level1 {
         }
         for (let parallaxBg of this.parallaxBgs) {
             parallaxBg.update(dt);
-        }       
+        }
+        this.frontParallax.update(dt);
         this.map.update(dt, this.player);
         this.camera.update(this.player);
         for (let movingTile of this.movingTiles) {
@@ -289,6 +292,7 @@ class Level1 {
             particle.render(context);
         }
         this.map.renderFront(context, this.player);
+        this.frontParallax.render(context);
     }
     
     resetState() {
