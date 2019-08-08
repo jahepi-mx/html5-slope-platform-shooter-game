@@ -49,12 +49,12 @@ class Level1 {
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background2", 1, -canvasHeight * 0.7, false));
         this.parallaxBgs.push(new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background", 1.1, -canvasHeight * 0.05, false));
         
-        this.frontParallax = new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background4", 1.3, -canvasHeight * 0.08, false);
+        this.frontParallax = new ParallaxBg(this.camera, canvasWidth, canvasHeight, "background4", 1.3, 0, false);
         
         this.map = new LevelMap(matrix, frontMatrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
         this.camera.setup(this.map);
         
-        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 2, 2, this);
+        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 2, this);
         
         this.monsters = [];
         //this.monsters.push(new Monster(tileWidth * 0.9, tileHeight * 0.9, 1, 2, this));
