@@ -60,6 +60,7 @@ class Monster extends Entity {
         }
         
         if (this.life <= 0) {
+            this.assets.playAudio(this.assets["monster_die" + parseInt(Math.random() * 4)], false, 0.1);
             this.dispose = true;
             for (var a = 0; a < 10; a++) {
                 var particle = null;

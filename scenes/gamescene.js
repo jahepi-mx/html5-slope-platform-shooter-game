@@ -7,11 +7,11 @@ class GameScene extends Scene {
         var tileWidth = canvasWidth / 5;
         var tileHeight = canvasHeight / 4;
         this.config.offsetY = canvasHeight;
-        var assets = Assets.getInstance();
-        canvas.width = assets.spritesAtlas.width;
-        canvas.height = assets.spritesAtlas.height;
-        this.context.drawImage(assets.spritesAtlas, 0, 0);
-        var pixelData = this.context.getImageData(0, 0, assets.spritesAtlas.width, assets.spritesAtlas.height).data;
+        this.assets = Assets.getInstance();
+        canvas.width = this.assets.spritesAtlas.width;
+        canvas.height = this.assets.spritesAtlas.height;
+        this.context.drawImage(this.assets.spritesAtlas, 0, 0);
+        var pixelData = this.context.getImageData(0, 0, this.assets.spritesAtlas.width, this.assets.spritesAtlas.height).data;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
         this.currentLevel = new Level1(pixelData, tileWidth, tileHeight, canvasWidth, canvasHeight);

@@ -10,8 +10,8 @@ class Assets {
         this.srcs = ["assets/sprites/sprites.png"];
         this.keys = ["spritesAtlas"];
         this.audio = {};
-        this.audio.srcs = [];
-        this.audio.keys = [];
+        this.audio.srcs = ["assets/sounds/boss.mp3", "assets/sounds/boss_gun.mp3", "assets/sounds/main.mp3", "assets/sounds/monster_die0.mp3", "assets/sounds/monster_die1.mp3", "assets/sounds/monster_die2.mp3", "assets/sounds/monster_die3.mp3", "assets/sounds/player_gun.mp3", "assets/sounds/robot_die0.mp3", "assets/sounds/robot_die1.mp3"];
+        this.audio.keys = ["boss", "boss_gun", "main", "monster_die0", "monster_die1", "monster_die2", "monster_die3", "player_gun", "robot_die0", "robot_die1"];
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         this.audioContext = new AudioContext();
     }

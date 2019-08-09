@@ -39,6 +39,7 @@ class FlyingMonster extends Entity {
             }
         }
         if (this.life <= 0) {
+            this.assets.playAudio(this.assets["robot_die" + parseInt(Math.random() * 2)], false, 0.1);
             this.dispose = true;
             for (var a = 0; a < 5; a++) {
                 var particle = null;
@@ -64,6 +65,7 @@ class FlyingMonster extends Entity {
         if (this.shootTime >= this.shootTimeLimit) {
             var diffVector = this.position.sub(this.player.position);
             if (diffVector.lengthWithOutSqrt() <= this.map.tileWidth * this.map.tileWidth) {
+                this.assets.playAudio(this.assets.boss_gun, false, 0.1);
                 var radians = Math.atan2(diffVector.y, diffVector.x);
                 var bullet = null;
                 if (this.level.bulletsPooling.hasObjects()) {

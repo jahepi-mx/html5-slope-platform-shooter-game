@@ -48,6 +48,12 @@ and open the template in the editor.
             var sceneManager = null;
             
             window.onload = function() {
+                canvas = document.getElementById("engine");
+                canvas.style = "border: 1px solid #ccc; background-color: #ff7f15";
+                var context = canvas.getContext("2d");
+                context.fillStyle = 'white';
+                context.textAlign = "center";
+                context.fillText("loading...", canvas.width / 2, canvas.height / 2);
                 var assets = Assets.getInstance();
                 assets.loadAll(onLoadAssets, null);
             };
@@ -58,8 +64,6 @@ and open the template in the editor.
             }
             
             function onLoadAtlas() {
-                canvas = document.getElementById("engine");
-                canvas.style = "border: 1px solid #ccc; background-color: #ff7f15";
                 document.onkeydown = onKeyDown;
                 document.onkeyup = onKeyUp;
                 cursor = Cursor.getInstance();

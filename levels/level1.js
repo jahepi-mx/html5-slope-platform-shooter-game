@@ -76,8 +76,14 @@ class Level1 {
         var tiles2 = [1 * this.map.mapWidth + 262, 2 * this.map.mapWidth + 262, 3 * this.map.mapWidth + 262, 4 * this.map.mapWidth + 262];
         
         this.cinematics = [
-            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 42, this.map.tiles[1 * this.map.mapWidth + 42], tiles1),
-            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 263, this.map.tiles[0 * this.map.mapWidth + 263], tiles2)
+            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 42, this.map.tiles[1 * this.map.mapWidth + 42], tiles1, null),
+            new Cinematic(this.player, this.map, this.camera, this.map.tileWidth * 263, this.map.tiles[0 * this.map.mapWidth + 263], tiles2, function() {
+                if (!this.isPlayingBossMusic) {
+                    this.isPlayingBossMusic = true;
+                    this.music.stop();
+                    this.music = this.assets.playAudio(this.assets.boss, true, 0.2);
+                }
+            }.bind(this))
         ];
         
         this.checkpoints = [
@@ -207,6 +213,10 @@ class Level1 {
                this.monsters.push(new Boss(267, 1, this, this.map.tileWidth * 1.5, 150, this.player, true, 4));
             }).bind(this), new Vector(263 * this.map.tileWidth + this.map.tileWidth * 0.5, 11 * this.map.tileHeight + this.map.tileHeight * 0.5)),
         ];
+        
+        this.assets = Assets.getInstance();
+        this.music = this.assets.playAudio(this.assets.main, true, 0.2);
+        this.isPlayingBossMusic = false;
     }
     
     update(dt) {
@@ -346,7 +356,7 @@ class Level1 {
 
 class Cinematic {
     
-    constructor(player, map, camera, xOffsetTo, targetTile, blockTiles) {
+    constructor(player, map, camera, xOffsetTo, targetTile, blockTiles, callBack) {
         this.isCinematicOn = false;
         this.xOffsetTo = xOffsetTo;
         this.targetTile = targetTile;
@@ -354,6 +364,7 @@ class Cinematic {
         this.map = map;
         this.camera = camera;
         this.blockTiles = blockTiles;
+        this.callBack = callBack;
     }
     
     update(dt) {
@@ -370,6 +381,9 @@ class Cinematic {
         }
        
         if (this.isCinematicOn) {
+            if (this.callBack !== null) {
+                this.callBack();
+            }
             this.camera.xOffset += (this.xOffsetTo - this.camera.xOffset) * dt;
             this.camera.minX = this.xOffsetTo + this.map.canvasWidth * 0.5;
             if (Math.abs(this.camera.xOffset - this.xOffsetTo) <= 10) {

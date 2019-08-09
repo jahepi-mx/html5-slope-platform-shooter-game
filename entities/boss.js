@@ -64,6 +64,7 @@ class Boss extends Entity {
     }
     
     onLaserAnimation() {
+        this.assets.playAudio(this.assets.boss_gun, false, 0.1);
         this.throwUpTimeLimit = Math.random() * 3 + 2;
         this.throwUpTime = 0;
         this.laserAnimationOn = false;
@@ -136,6 +137,7 @@ class Boss extends Entity {
         }
         
         if (this.life <= 0) {
+            this.assets.playAudio(this.assets["monster_die" + parseInt(Math.random() * 4)], false, 0.1);
             this.dispose = true;
             for (var a = 0; a < 20; a++) {
                 var particle = null;

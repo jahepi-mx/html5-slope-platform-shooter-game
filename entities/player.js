@@ -46,6 +46,7 @@ class Player extends Entity {
         this.gunRadiansDir = Math.atan2(this.cursor.position.y - (this.position.y - this.camera.position.y), this.cursor.position.x - (this.position.x - this.camera.position.x));
         this.shootTime += dt;
         if (this.shootTime >= this.shootTimeLimit && this.cursor.isPressed) {
+            this.assets.playAudio(this.assets.player_gun, false, 0.1);
             var bullet = null;
             if (this.level.bulletsPooling.hasObjects()) {
                 bullet = this.level.bulletsPooling.get();
