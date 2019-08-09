@@ -51,8 +51,8 @@ class FlyingMonster extends Entity {
                 particle.r = 239;
                 particle.g = 239;
                 particle.b = 239;
-                var minSize = this.size.x * 0.15;
-                var maxSize = this.size.x * 0.3;
+                var minSize = this.size.x * 0.1;
+                var maxSize = this.size.x * 0.2;
                 var size = Math.random() * (maxSize - minSize) + minSize;
                 particle.size.x = size;
                 particle.size.y = size;
