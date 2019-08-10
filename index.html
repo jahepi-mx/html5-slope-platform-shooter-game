@@ -46,21 +46,40 @@ and open the template in the editor.
             var prevTime = 0;
             var cursor;
             var sceneManager = null;
-            
+            var localContext;
             window.onload = function() {
                 canvas = document.getElementById("engine");
                 canvas.style = "border: 1px solid #ccc; background-color: #ff7f15";
-                var context = canvas.getContext("2d");
-                context.fillStyle = 'white';
-                context.textAlign = "center";
-                context.fillText("loading...", canvas.width / 2, canvas.height / 2);
+                canvas.width = window.screen.availHeight * Config.getInstance().screenRatio;
+                canvas.height = window.screen.availHeight;
+                localContext = canvas.getContext("2d");
                 var assets = Assets.getInstance();
-                assets.loadAll(onLoadAssets, null);
+                assets.loadAll(onLoadAssets, onDownloadAssets);
             };
+            
+            function onDownloadAssets() {
+                localContext.clearRect(0, 0, canvas.width, canvas.height);
+                localContext.imageSmoothingEnabled = false;
+                var percentage = Math.floor(Assets.getInstance().getLoadedRatio() * 100);
+                localContext.font = Math.floor(canvas.height * .14) + "px Impact";
+                localContext.fillStyle = 'white';
+                localContext.textAlign = "center";
+                localContext.fillText("Loading assets... " + percentage + "%", canvas.width / 2, canvas.height / 2);
+            }
             
             function onLoadAssets() {
                 var atlas = Atlas.getInstance();
-                atlas.loadAll(onLoadAtlas, null);
+                atlas.loadAll(onLoadAtlas, onDownloadAtlas);
+            }
+            
+            function onDownloadAtlas() {
+                localContext.clearRect(0, 0, canvas.width, canvas.height);
+                localContext.imageSmoothingEnabled = false;
+                var percentage = Math.floor(Atlas.getInstance().getLoadedRatio() * 100);
+                localContext.font = Math.floor(canvas.height * .14) + "px Impact";
+                localContext.fillStyle = 'white';
+                localContext.textAlign = "center";
+                localContext.fillText("Loading atlas... " + percentage + "%", canvas.width / 2, canvas.height / 2);
             }
             
             function onLoadAtlas() {
@@ -90,7 +109,7 @@ and open the template in the editor.
                 sceneManager.setScene("main");
                 requestAnimationFrame(update);
             }
-            
+
             var fpsLimit = 0;
             function update(time) {
                 var dt = (time - prevTime) / 1000;                               

@@ -2,42 +2,50 @@ class Monster extends Entity {
     constructor(width, height, x, y, level, speed, life) {
         super();
         this.atlas = Atlas.getInstance();
-        this.assets = Assets.getInstance(); 
-        this.size.x = this.atlas.sprites["stand"].width / this.atlas.sprites["stand"].height * height;
-        this.size.y = height; 
+        this.assets = Assets.getInstance();         
         this.map = level.map;
-        this.level = level;
-        this.position.x = x * this.map.tileWidth + this.map.tileWidth * 0.5;
-        this.position.y = y * this.map.tileHeight + this.map.tileHeight * 0.5;
+        this.level = level;      
         this.friction.x = 0.8;
         this.friction.y = 1;
         this.camera = this.map.camera;
-        this.jumpScalarVelocity = this.map.tileHeight * 0.8;
-        this.walkScalarVelocity = speed;
+        this.jumpScalarVelocity = this.map.tileHeight * 0.8;        
         this.moves = [[0,0],[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[-1,-1],[1,-1]];
-        this.acceleration.y = -this.map.tileHeight * 4;
-        this.isJumping = false;
-        this.left = this.right = this.up = false, this.down = false, this.jump = false;
-        this.isOnMovingTile = false;
-        this.movingTile = null;
+        this.acceleration.y = -this.map.tileHeight * 4;       
         this.targetFriction = new Vector(Math.pow(this.friction.x, 60), Math.pow(this.friction.y, 60));
         this.direction = new Vector(1, 0);
         this.runAnimation = new Animation(6, 2);
         this.attackAnimation = new Animation(5, 3);
         this.standingAnimation = new Animation(2, 2);
-        this.player = level.player;
+        this.player = level.player;  
+        this.attackingTimeLimit = 0.5;
+        this.attackingBloodTimeLimit = 0.5;
+        this.bodyParts = ["enemy_head", "enemy_legs", "enemy_torso", "enemy_arm", "enemy_arm"];
+        this.walkedDistantTimeLimit = 1;
+        this.resetState(height, x, y, speed, life);
+    }
+    
+    resetState(height, x, y, speed, life) {
+        this.size.x = this.atlas.sprites["stand"].width / this.atlas.sprites["stand"].height * height;
+        this.size.y = height; 
+        this.position.x = x * this.map.tileWidth + this.map.tileWidth * 0.5;
+        this.position.y = y * this.map.tileHeight + this.map.tileHeight * 0.5;
+        this.walkScalarVelocity = speed;
+        this.direction.x = 1;
+        this.direction.y = 0;
         this.isAttacking = false;
         this.attackingTime = 0;
-        this.attackingTimeLimit = 0.5;
         this.attackingBloodTime = 0;
-        this.attackingBloodTimeLimit = 0.5;
         this.isStanding = false;
         this.dispose = false;
         this.life = life;
-        this.bodyParts = ["enemy_head", "enemy_legs", "enemy_torso", "enemy_arm", "enemy_arm"];
         this.walkedDistant = 0;
         this.walkedDistantTime = 0;
-        this.walkedDistantTimeLimit = 1;
+        this.isJumping = false;
+        this.left = this.right = this.up = false, this.down = false, this.jump = false;
+        this.isOnMovingTile = false;
+        this.movingTile = null;
+        this.velocity.x = 0;
+        this.velocity.y = 0;
     }
     
     update(dt) {

@@ -39,7 +39,7 @@ class GameScene extends Scene {
         
         this.context.fillStyle = "#00ff00";
         this.context.font = parseInt(this.currentLevel.map.tileHeight * 0.15) + "px Arial";
-        this.context.fillText(parseInt(this.fps) + "  " + this.currentLevel.monsters.length + " " + this.currentLevel.interactiveParticlesPooling.size(), this.map.tileWidth * 0.15, this.map.tileHeight * 0.15);
+        this.context.fillText(parseInt(this.fps) + "  " + this.currentLevel.monsters.length + " " + this.currentLevel.interactiveParticlesPooling.size() + " " + this.currentLevel.monstersPooling.size() + " " + this.currentLevel.flyingMonstersPooling.size(), this.map.tileWidth * 0.15, this.map.tileHeight * 0.15);
         if (this.time >= this.timeLimit && !this.dispose) {
             this.dispose = true;
             var imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);

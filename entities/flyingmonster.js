@@ -8,6 +8,15 @@ class FlyingMonster extends Entity {
         this.map = level.map;
         this.camera = level.camera;
         this.player = level.player;
+        this.friction.x = 0.9;
+        this.friction.y = 0.9;
+        this.changeTimeLimit = 1;
+        this.shootTimeLimit = 1;
+        this.animation = new Animation(2, 4);
+        this.resetState(x, y, width, height, life, speed);
+    }
+    
+    resetState(x, y, width, height, life, speed) {
         this.size.x = width;
         this.size.y = height;
         this.length = speed;
@@ -15,13 +24,8 @@ class FlyingMonster extends Entity {
         this.dispose = false;
         this.position.x = this.map.tileWidth * x + this.size.x * 0.5;
         this.position.y = this.map.tileHeight * y + this.size.y * 0.5;
-        this.friction.x = 0.9;
-        this.friction.y = 0.9;
         this.changeTime = 0;
-        this.changeTimeLimit = 1;
         this.shootTime = 0;
-        this.shootTimeLimit = 1;
-        this.animation = new Animation(2, 4);
     }
     
     update(dt) {
@@ -39,7 +43,7 @@ class FlyingMonster extends Entity {
             }
         }
         if (this.life <= 0) {
-            this.assets.playAudio(this.assets["robot_die" + parseInt(Math.random() * 2)], false, 0.1);
+            this.assets.playAudio(this.assets["robot_die" + parseInt(Math.random() * 2)], false, 0.2);
             this.dispose = true;
             for (var a = 0; a < 5; a++) {
                 var particle = null;
