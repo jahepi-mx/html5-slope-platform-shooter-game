@@ -7,6 +7,11 @@ and open the template in the editor.
 <html>
     <head>
         <title>TODO supply a title</title>
+        <style type="text/css">
+            body {
+                background-color: black;
+            }
+        </style>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="utils/camera.js"></script>
@@ -49,7 +54,7 @@ and open the template in the editor.
             var localContext;
             window.onload = function() {
                 canvas = document.getElementById("engine");
-                canvas.style = "border: 1px solid #ccc; background-color: #ff7f15";
+                canvas.style = "background-color: #ff7f15";
                 canvas.width = window.screen.availHeight * Config.getInstance().screenRatio;
                 canvas.height = window.screen.availHeight;
                 localContext = canvas.getContext("2d");
