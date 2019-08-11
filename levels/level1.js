@@ -54,7 +54,7 @@ class Level1 {
         this.map = new LevelMap(matrix, frontMatrix, mapWidth, mapHeight, tileWidth, tileHeight, canvasWidth, canvasHeight, this.camera, pixelData);
         this.camera.setup(this.map);
         
-        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 225, 2, this);
+        this.player = new Player(tileWidth * 0.9, tileHeight * 0.9, 1, 2, this);
         
         this.monsters = [];
         
@@ -185,6 +185,13 @@ class Level1 {
             }).bind(this), new Vector(154 * this.map.tileWidth + this.map.tileWidth * 0.5, 1 * this.map.tileHeight + this.map.tileHeight * 0.5)),
             
             new EnemyEvent((function() {
+                for (var a = 0; a < 25; a++) {
+                    var speedRatio = 0.5 + Math.random();
+                    this.monsters.push(this.createMonsterInstance(tileWidth * 0.6, tileHeight * 0.6, 172, 5, this, this.map.tileWidth * speedRatio, 3));
+                }
+            }).bind(this), new Vector(166 * this.map.tileWidth + this.map.tileWidth * 0.5, 7 * this.map.tileHeight + this.map.tileHeight * 0.5)),
+                       
+            new EnemyEvent((function() {
                 for (var a = 0; a < 30; a++) {
                     var speedRatio = 0.5 + Math.random();
                     this.monsters.push(this.createMonsterInstance(tileWidth * 0.7, tileHeight * 0.7, 200, 5, this, this.map.tileWidth * speedRatio, 3));
@@ -194,6 +201,13 @@ class Level1 {
                     this.monsters.push(this.createMonsterInstance(tileWidth * 0.7, tileHeight * 0.7, 185, 4, this, this.map.tileWidth * speedRatio, 3));
                 }
             }).bind(this), new Vector(174 * this.map.tileWidth + this.map.tileWidth * 0.5, 2 * this.map.tileHeight + this.map.tileHeight * 0.5)),
+            
+            new EnemyEvent((function() {
+                for (var a = 0; a < 30; a++) {
+                    var speedRatio = 0.5 + Math.random();
+                    this.monsters.push(this.createMonsterInstance(tileWidth * 0.7, tileHeight * 0.7, 203, 4, this, this.map.tileWidth * speedRatio, 3));
+                }
+            }).bind(this), new Vector(195 * this.map.tileWidth + this.map.tileWidth * 0.5, 2 * this.map.tileHeight + this.map.tileHeight * 0.5)),
             
             new EnemyEvent((function() {
                 for (var a = 0; a < 15; a++) {
