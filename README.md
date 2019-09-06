@@ -1,6 +1,6 @@
 # Platform Shooter
 
-This is a short platform shooter developed from scratch in Javascript and Html5
+This is a short platform shooter developed from scratch in Javascript and Html5 which showcases several game techniques such as slopes, parallax scrolling and basic physics.
 
 ## Maps
 
