@@ -1,14 +1,14 @@
-# Platform Shooter
+## Platform Shooter
 
-This is a short platform shooter developed from scratch in Javascript and Html5 which showcases several game techniques such as slopes, parallax scrolling and basic physics.
+This is a short platform shooter developed from scratch in JavaScript and HTML5, showcasing several game techniques such as slopes, parallax scrolling, and basic physics.
 
 ## Maps
 
-Maps were built in a Map Editor called Tiled for easier manipulation: https://www.mapeditor.org
+The maps were built using a Map Editor called **Tiled** for easier manipulation: https://www.mapeditor.org.
 
-The map files are located in the project folder /assets/sprites/maps
+The map files are located in the project folder: _/assets/sprites/maps_
 
-## Control Sheme
+## Control Scheme
 
 - a - left
 - w - up
@@ -17,6 +17,10 @@ The map files are located in the project folder /assets/sprites/maps
 - mouse right click - shoot
 - space bar - jump
 
-## Playable game
+## Screenshot
+
+![Game picture](https://jahepi-mx.github.io/images/spp1.png)
+
+## Playable Game
 
 https://jahepi-mx.github.io/slope-platform-shooter
